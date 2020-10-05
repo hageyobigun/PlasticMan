@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private IPlayerInput _playerInput;
     private PlayerMove _playerMove;
     private PlayerAttack _PlayerAttack;
+    [SerializeField] private List<GameObject> playerStageBlock = null;
 
     private void Awake()
     {
@@ -16,10 +17,12 @@ public class PlayerController : MonoBehaviour
         _playerMove = new PlayerMove(this.gameObject);
         _PlayerAttack = GetComponent<PlayerAttack>();
 
-        this.UpdateAsObservable().Subscribe(_ => _playerInput.Inputting());
+        //移動
+        this.UpdateAsObservable()
+            .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
+            .Subscribe(_ => _playerMove.Move(playerStageBlock));
 
-        this.UpdateAsObservable().Subscribe(_ => _playerMove.Move(_playerInput.MoveDirection()));
-
+        //攻撃
         this.UpdateAsObservable()
             .Where(_ => _playerInput.IsAttack())
             .Subscribe(_ => _PlayerAttack.BulletAttack());

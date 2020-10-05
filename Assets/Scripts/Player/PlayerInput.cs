@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class PlayerInput : IPlayerInput
 {
-    private float _horizontal;
-    private float _vertical;
+    private int _moveDirection;
 
-    public void Inputting()
+    public int Inputting()
     {
-        _horizontal = 0;
-        _vertical = 0;
+        _moveDirection = 0;
         if (Input.GetKeyDown(KeyCode.W))
         {
-            _vertical = 2;
+            _moveDirection = -3;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            _vertical = -2;
+            _moveDirection = 3;
         }
         else if(Input.GetKeyDown(KeyCode.A))
         {
-            _horizontal = -3;
+            _moveDirection = -1;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            _horizontal = 3;
+            _moveDirection = 1;
         }
+        return _moveDirection;
     }
 
-    public Vector3 MoveDirection() => new Vector3(_horizontal, _vertical, 0f);
 
     public bool IsAttack() => Input.GetKeyDown(KeyCode.Space);
 }

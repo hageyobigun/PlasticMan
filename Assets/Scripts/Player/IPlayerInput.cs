@@ -2,9 +2,7 @@
 
 public interface IPlayerInput
 {
-    void    Inputting();
-
-    Vector3 MoveDirection();
+    int    Inputting();
 
     bool    IsAttack();
 }

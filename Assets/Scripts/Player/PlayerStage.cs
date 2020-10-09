@@ -4,19 +4,33 @@ using UnityEngine;
 
 public class PlayerStage
 {
-    private GameObject[,] stageBlocks = null;
+    private GameObject stageBlockParent;
+    private List<GameObject> stageList = new List<GameObject>();
+    private int _playerPos;
 
-
-    public void GetStageBlock(List<GameObject> block)
+    public PlayerStage(GameObject gameObject, int playerPos)
     {
-        var count = 0;
-        for(var x = 0;x < 3; x++)
+        stageBlockParent = gameObject;
+        _playerPos = playerPos;
+        foreach (Transform childTransform in stageBlockParent.transform)
         {
-            for (var y = 0; y < 3; y++)
-            {
-                stageBlocks[x, y] = block[count];
-                count++;
-            }
+            stageList.Add(childTransform.gameObject);
         }
     }
+
+    public bool IsStage(int _moveDirection)
+    {
+        var nextPos = _playerPos + _moveDirection;
+        if (nextPos < 0 || nextPos > 8) return false;
+
+        if (_moveDirection == 1 && nextPos % 3 == 0) return false;
+
+        if (_moveDirection == -1 && _playerPos % 3 == 0) return false;
+
+        _playerPos += _moveDirection;
+
+        return true;
+    }
+
+    public GameObject PlayerPos => stageList[_playerPos];
 }

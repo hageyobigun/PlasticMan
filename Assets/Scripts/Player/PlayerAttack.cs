@@ -9,6 +9,6 @@ public class PlayerAttack:MonoBehaviour
 
     public void BulletAttack()
     {
-        Instantiate(bullet, this.transform.position, Quaternion.identity);
+        Instantiate(bullet, this.transform.position + new Vector3(0,0.6f,0), Quaternion.identity);
     }
 }

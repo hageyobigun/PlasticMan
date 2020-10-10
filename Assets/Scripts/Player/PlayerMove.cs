@@ -14,6 +14,6 @@ public class PlayerMove
     public void Move(GameObject movePos)
     {
         _player.transform.position = movePos.transform.position;
-        _player.transform.position += new Vector3(0, 0, -1);
+        _player.transform.position += new Vector3(0, -0.7f, -1);
     }
 }

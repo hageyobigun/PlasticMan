@@ -2,3 +2,4 @@
 {
     void Attacked();
 }
+//消すかも

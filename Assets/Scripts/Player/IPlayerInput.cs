@@ -2,7 +2,11 @@
 
 public interface IPlayerInput
 {
-    int    Inputting();
+    int Inputting();
 
-    bool    IsAttack();
+    bool IsBulltetAttack();
+
+    bool IsFireAttack();
+
+    bool IsBombAttack();
 }

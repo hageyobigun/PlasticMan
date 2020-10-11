@@ -22,10 +22,20 @@ public class PlayerController : MonoBehaviour
             .Where(_ => _playerStage.IsStage(_playerInput.Inputting()))
             .Subscribe(_ => _playerMove.Move(_playerStage.PlayerPos));
 
-        //攻撃
+        //攻撃(bullet)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsAttack())
+            .Where(_ => _playerInput.IsBulltetAttack())
             .Subscribe(_ => _PlayerAttack.BulletAttack());
+
+        //攻撃(fire)
+        this.UpdateAsObservable()
+            .Where(_ => _playerInput.IsFireAttack())
+            .Subscribe(_ => _PlayerAttack.FireAttack());
+
+        //攻撃(bomb)
+        this.UpdateAsObservable()
+            .Where(_ => _playerInput.IsBombAttack())
+            .Subscribe(_ => _PlayerAttack.BombAttack());
     }
 
     private void Initialize()

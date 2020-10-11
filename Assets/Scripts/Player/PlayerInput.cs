@@ -28,6 +28,10 @@ public class PlayerInput : IPlayerInput
         return _moveDirection;
     }
 
+    public bool IsBulltetAttack() => Input.GetKeyDown(KeyCode.Space);
 
-    public bool IsAttack() => Input.GetKeyDown(KeyCode.Space);
+    public bool IsFireAttack() => Input.GetKeyDown(KeyCode.V);
+
+    public bool IsBombAttack() => Input.GetKeyDown(KeyCode.B);
+
 }

@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
     private PlayerStage _playerStage;
-    [SerializeField] private GameObject stage = null;
-
 
     private void Awake()
     {
@@ -20,7 +18,7 @@ public class PlayerController : MonoBehaviour
         //移動
         this.UpdateAsObservable()
             .Where(_ => _playerStage.IsStage(_playerInput.Inputting()))
-            .Subscribe(_ => _playerMove.Move(_playerStage.PlayerPos));
+            .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
 
         //攻撃(bullet)
         this.UpdateAsObservable()
@@ -42,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerInput = new PlayerInput();
         _playerMove = new PlayerMove(this.gameObject);
-        _playerStage = new PlayerStage(stage, 4);
+        _playerStage = new PlayerStage(4);
         _PlayerAttack = GetComponent<PlayerAttack>();
     }
 }

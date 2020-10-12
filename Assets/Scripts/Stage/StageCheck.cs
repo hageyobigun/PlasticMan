@@ -2,16 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStage
+public class StageCheck : MonoBehaviour
 {
-    private int _playerPos;
 
-    public PlayerStage(int playerPos)
-    {
-        _playerPos = playerPos;
-    }
-
-    public bool IsStage(int _moveDirection)
+    public bool IsStage(int _moveDirection, int _playerPos)
     {
         var nextPos = _playerPos + _moveDirection;
         if (nextPos < 0 || nextPos > 8) return false;
@@ -24,6 +18,4 @@ public class PlayerStage
 
         return true;
     }
-
-    public GameObject getPlayerPos => StageManager.Instance.playerStageList[_playerPos];
 }

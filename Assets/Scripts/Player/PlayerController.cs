@@ -4,12 +4,15 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour , Player.IAttackable
 {
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
     private PlayerStage _playerStage;
+
+    [SerializeField] private int hpValue = 1;
+    protected bool IsDead() => --hpValue <= 0;
 
     private void Awake()
     {
@@ -42,5 +45,13 @@ public class PlayerController : MonoBehaviour
         _playerMove = new PlayerMove(this.gameObject);
         _playerStage = new PlayerStage(4);
         _PlayerAttack = GetComponent<PlayerAttack>();
+    }
+
+    public void Attacked()
+    {
+        if (IsDead())
+        {
+            Destroy(gameObject);
+        }
     }
 }

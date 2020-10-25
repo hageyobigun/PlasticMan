@@ -1,5 +1,16 @@
-﻿public interface IAttackable
+﻿namespace Enemy
 {
-    void Attacked();
+    public interface IAttackable
+    {
+        void Attacked();
+    }
 }
-//消すかも
+
+
+namespace Player
+{
+    public interface IAttackable
+    {
+        void Attacked();
+    }
+}

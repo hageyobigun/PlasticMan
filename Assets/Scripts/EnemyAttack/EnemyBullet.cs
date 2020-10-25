@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     Rigidbody2D _rigidbody2D;
 
@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _rigidbody2D.AddForce(new Vector2(1000, 0));
+        _rigidbody2D.AddForce(new Vector2(-1000, 0));
     }
 
     private void OnBecameInvisible()
@@ -20,8 +20,8 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var attackable = collision.GetComponent<Enemy.IAttackable>();
-        if(attackable != null)
+        var attackable = collision.GetComponent<Player.IAttackable>();
+        if (attackable != null)
         {
             attackable.Attacked();
             Destroy(gameObject);

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveEnemy
+public class EnemyMove
 {
     private int _enemyPos;
     private GameObject enemy;
 
-    public MoveEnemy(int enemyPos, GameObject gameObject)
+    public EnemyMove(int enemyPos, GameObject gameObject)
     {
         _enemyPos = enemyPos;
         enemy = gameObject;
@@ -26,7 +26,6 @@ public class MoveEnemy
 
         return true;
     }
-
 
     public void Move()
     {

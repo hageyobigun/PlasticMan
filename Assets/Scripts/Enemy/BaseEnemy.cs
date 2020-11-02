@@ -29,9 +29,19 @@ public abstract class BaseEnemy : MonoBehaviour, Enemy.IAttackable
             .Subscribe(_ => _enemyMove.Move())
             .AddTo(gameObject);
 
-        //移動
-        Observable.Interval(TimeSpan.FromSeconds(0.4))
+        //攻撃
+        Observable.Interval(TimeSpan.FromSeconds(0.5))
             .Subscribe(_ => _enemyAttacks.BulletAttack())
+            .AddTo(gameObject);
+
+        //攻撃
+        Observable.Interval(TimeSpan.FromSeconds(1.1))
+            .Subscribe(_ => _enemyAttacks.BombAttack())
+            .AddTo(gameObject);
+
+        //攻撃
+        Observable.Interval(TimeSpan.FromSeconds(1.6))
+            .Subscribe(_ => _enemyAttacks.FireAttack())
             .AddTo(gameObject);
     }
 

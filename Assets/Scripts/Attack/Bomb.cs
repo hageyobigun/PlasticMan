@@ -10,57 +10,72 @@ public class Bomb : MonoBehaviour
     private Animator animator;
     private BoxCollider2D boxCollider2d;
 
+    [SerializeField] private int playerId = 0;
+
+    private float gravity = -9.8f;    //重力
+    [SerializeField] private float flightTime = 10;  //滞空時間
+    [SerializeField] private float speedRate = 100;   //滞空時間を基準とした移動速度倍率
+
 
     //雑なので改善予定？
-    void Start()
+    public void Start()
     {
         animator = GetComponent<Animator>();
         boxCollider2d = GetComponent<BoxCollider2D>();
         boxCollider2d.enabled = false;
-        SetTarget(this.transform.position + new Vector3(9.4f, 0, 0), 60);
+        StartCoroutine(ThrowBomb());
 
     }
 
-    IEnumerator ThrowBall()
+    public IEnumerator ThrowBomb()
     {
-        float b = Mathf.Tan(deg * Mathf.Deg2Rad);
-        float a = (target.y - b * target.x) / (target.x * target.x);
+        var startPos = transform.position; // 初期位置
+        var endPos = startPos + new Vector3(9.4f * playerId, 0, 0);
+        var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
+        var vn = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
 
-        for (float x = 0; x <= this.target.x; x += 0.3f)
+        // 放物運動
+        for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
         {
-            float y = a * x * x + b * x;
-            transform.position = new Vector3(x, y, 0) + offset;
-            yield return null;
+            var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
+            p.y = startPos.y + vn * t + 0.5f * gravity * t * t; // 鉛直方向の座標 y
+            transform.position = p;
+
+            yield return null; //1フレーム経過
         }
+        // 終点座標へ補正
+        transform.position = endPos;
+
         boxCollider2d.enabled = true;
         animator.SetTrigger("explosionTrigger");
-        gameObject.transform.localScale = new Vector3(2, 2, 1);
+        gameObject.transform.localScale = new Vector3(2, 2, 1);//爆破の大きさ
         yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);
-
-    }
-
-    public void SetTarget(Vector3 target, float deg)
-    {
-        this.offset = transform.position;
-        this.target = target - this.offset;
-        this.deg = deg;
-
-        StartCoroutine("ThrowBall");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var attackable = collision.GetComponent<Enemy.IAttackable>();
+        if (playerId == 1)//player
+        {
+            var attackable = collision.GetComponent<Enemy.IAttackable>();
+            if (attackable != null)
+            {
+                attackable.Attacked(4);
+            }
+        }
+        else if (playerId == -1)//enemy
+        {
+            var attackable = collision.GetComponent<Player.IAttackable>();
+            if (attackable != null)
+            {
+                attackable.Attacked(4);
+            }
+        }
+
         var attacknotable = collision.GetComponent<IAttacknotable>();
         if (attacknotable != null)
         {
             Destroy(gameObject);
-        }
-
-        if (attackable != null)
-        {
-            attackable.Attacked(4);
         }
     }
 }

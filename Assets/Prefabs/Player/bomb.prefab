@@ -97,6 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c0958bd763e408aac0e703dfc42170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 1
+  flightTime: 1
+  speedRate: 1
 --- !u!95 &4440560204176887358
 Animator:
   serializedVersion: 3

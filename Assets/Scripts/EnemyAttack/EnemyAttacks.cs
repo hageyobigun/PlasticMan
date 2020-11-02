@@ -21,12 +21,12 @@ public class EnemyAttacks : MonoBehaviour
 
     public void FireAttack()
     {
-        Instantiate(fireBullet, this.transform.position + new Vector3(0, 1.0f, 0), Quaternion.Euler(0f, 0f, 90f));
+        Instantiate(fireBullet, this.transform.position + new Vector3(0, 1.0f, 0), Quaternion.Euler(0f, 0f, -90f));
     }
 
     public void BombAttack()
     {
-        Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+        Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, -1.0f), Quaternion.identity);
     }
 
     public IEnumerator BarrierGuard()

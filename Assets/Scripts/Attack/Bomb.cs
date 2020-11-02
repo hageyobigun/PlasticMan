@@ -8,13 +8,17 @@ public class Bomb : MonoBehaviour
     private Vector3 target;
     private float deg;
     private Animator animator;
+    private BoxCollider2D boxCollider2d;
 
 
     //雑なので改善予定？
     void Start()
     {
         animator = GetComponent<Animator>();
+        boxCollider2d = GetComponent<BoxCollider2D>();
+        boxCollider2d.enabled = false;
         SetTarget(this.transform.position + new Vector3(9.4f, 0, 0), 60);
+
     }
 
     IEnumerator ThrowBall()
@@ -28,7 +32,7 @@ public class Bomb : MonoBehaviour
             transform.position = new Vector3(x, y, 0) + offset;
             yield return null;
         }
-
+        boxCollider2d.enabled = true;
         animator.SetTrigger("explosionTrigger");
         gameObject.transform.localScale = new Vector3(2, 2, 1);
         yield return new WaitForSeconds(0.3f);
@@ -48,9 +52,15 @@ public class Bomb : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var attackable = collision.GetComponent<Enemy.IAttackable>();
+        var attacknotable = collision.GetComponent<IAttacknotable>();
+        if (attacknotable != null)
+        {
+            Destroy(gameObject);
+        }
+
         if (attackable != null)
         {
-            attackable.Attacked();
+            attackable.Attacked(4);
         }
     }
 }

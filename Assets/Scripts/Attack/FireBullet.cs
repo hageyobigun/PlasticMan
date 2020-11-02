@@ -21,9 +21,14 @@ public class FireBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var attackable = collision.GetComponent<Enemy.IAttackable>();
+        var attacknotable = collision.GetComponent<IAttacknotable>();
+        if (attacknotable != null)
+        {
+            Destroy(gameObject);
+        }
         if (attackable != null)
         {
-            attackable.Attacked();
+            attackable.Attacked(2);
         }
     }
 }

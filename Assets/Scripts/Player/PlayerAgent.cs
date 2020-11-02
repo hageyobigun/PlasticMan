@@ -4,17 +4,20 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
-public class EnemyAgent : Agent, Enemy.IAttackable
+public class PlayerAgent : Agent , Player.IAttackable
 {
     [SerializeField] private int hpValue = 1;
-    [SerializeField] private int _enemyPos = 4;
-    [SerializeField] private GameObject player = null;
+    [SerializeField] private GameObject enemy = null;
 
     private int[] moveList = { -3, -1, 1, 3 };
 
-    private EnemyMove _enemyMove ;
-    private EnemyAttacks _enemyAttacks;
-    private PlayerAgent _playerAgent;
+    private PlayerMove _playerMove;
+    private PlayerStage _playerStage;
+    private PlayerAttack _PlayerAttack;
+
+    private EnemyAgent _enemyAgent;
+
+
 
     protected bool IsDead() => --hpValue <= 0;
 
@@ -32,9 +35,10 @@ public class EnemyAgent : Agent, Enemy.IAttackable
 
     public override void Initialize()
     {
-        _enemyMove = new EnemyMove(_enemyPos, gameObject);
-        _enemyAttacks = GetComponent<EnemyAttacks>();
-        _playerAgent = player.GetComponent<PlayerAgent>();
+        _playerMove = new PlayerMove(this.gameObject);
+        _playerStage = new PlayerStage(4);
+        _PlayerAttack = GetComponent<PlayerAttack>();
+        _enemyAgent = enemy.GetComponent<EnemyAgent>();
     }
 
     //エピソード開始時
@@ -48,22 +52,21 @@ public class EnemyAgent : Agent, Enemy.IAttackable
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(this.transform.position);
-        sensor.AddObservation(player.transform.position);
+        sensor.AddObservation(enemy.transform.position);
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        //StartCoroutine(move(vectorAction));
-
+        //StartCoroutine(Move(vectorAction));
         int move = (int)vectorAction[0];
         int attack = (int)vectorAction[1];
 
-        bool isMove = _enemyMove.IsStage(moveList[move]);
-        if (attack == 1) _enemyAttacks.BulletAttack();
+        bool isMove = _playerStage.IsStage(moveList[move]);
+        if (attack == 1) _PlayerAttack.BulletAttack();
 
-        if (_playerAgent != null)
+        if (_enemyAgent != null)
         {
-            if (_playerAgent.GetHpValue <= 0)
+            if (_enemyAgent.GetHpValue <= 0)
             {
                 AddReward(1.0f);
                 EndEpisode();
@@ -71,7 +74,7 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         }
         if (isMove)
         {
-            _enemyMove.Move();
+            _playerMove.Move(_playerStage.getPlayerPos);
         }
         if (hpValue <= 0)
         {
@@ -79,19 +82,19 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         }
     }
 
-    //IEnumerator move(float[] vectorAction)
+    //IEnumerator Move(float[] vectorAction)
     //{
     //    int move = (int)vectorAction[0];
     //    int attack = (int)vectorAction[1];
 
     //    yield return new WaitForSeconds(1.0f);
 
-    //    bool isMove = _enemyMove.IsStage(moveList[move]);
-    //    if (attack == 1) _enemyAttacks.BulletAttack();
+    //    bool isMove = _playerStage.IsStage(moveList[move]);
+    //    if (attack == 1) _PlayerAttack.BulletAttack();
 
     //    if (isMove)
     //    {
-    //        _enemyMove.Move();
+    //        _playerMove.Move(_playerStage.getPlayerPos);
     //        AddReward(0.5f);
     //    }
     //    else
@@ -105,5 +108,4 @@ public class EnemyAgent : Agent, Enemy.IAttackable
     //        EndEpisode();
     //    }
     //}
-
 }

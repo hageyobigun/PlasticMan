@@ -14,6 +14,13 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     [SerializeField] private int hpValue = 1;
     protected bool IsDead() => --hpValue <= 0;
 
+    //プロパティー
+    public int GetplayerHpValue
+    {
+        get { return this.hpValue; }  //取得用
+        private set { this.hpValue = value; } //値入力用
+    }
+
     private void Awake()
     {
         Initialize();
@@ -37,6 +44,11 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         this.UpdateAsObservable()
             .Where(_ => _playerInput.IsBombAttack())
             .Subscribe(_ => _PlayerAttack.BombAttack());
+
+        //防御(barrier)
+        this.UpdateAsObservable()
+            .Where(_ => _playerInput.IsBarrier())
+            .Subscribe(_ => StartCoroutine(_PlayerAttack.BarrierGuard()));
     }
 
     private void Initialize()
@@ -47,11 +59,12 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _PlayerAttack = GetComponent<PlayerAttack>();
     }
 
-    public void Attacked()
+    public void Attacked(float damage)
     {
         if (IsDead())
         {
             Destroy(gameObject);
         }
     }
+
 }

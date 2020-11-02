@@ -21,9 +21,14 @@ public class EnemyBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var attackable = collision.GetComponent<Player.IAttackable>();
+        var attacknotable = collision.GetComponent<IAttacknotable>();
+        if (attacknotable != null)
+        {
+            Destroy(gameObject);
+        }
         if (attackable != null)
         {
-            attackable.Attacked();
+            attackable.Attacked(1);
             Destroy(gameObject);
         }
     }

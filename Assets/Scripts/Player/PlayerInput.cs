@@ -34,4 +34,6 @@ public class PlayerInput : IPlayerInput
 
     public bool IsBombAttack() => Input.GetKeyDown(KeyCode.B);
 
+    public bool IsBarrier() => Input.GetKeyDown(KeyCode.C);
+
 }

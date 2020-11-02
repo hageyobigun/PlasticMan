@@ -5,7 +5,7 @@ using UnityEngine;
 public class NormalEnemy : BaseEnemy
 {
 
-    public override void Attacked()
+    public override void Attacked(float damage)
     {
         if (IsDead())
         {

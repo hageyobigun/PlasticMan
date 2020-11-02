@@ -9,4 +9,6 @@ public interface IPlayerInput
     bool IsFireAttack();
 
     bool IsBombAttack();
+
+    bool IsBarrier();
 }

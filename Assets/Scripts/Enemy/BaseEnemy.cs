@@ -16,7 +16,7 @@ public abstract class BaseEnemy : MonoBehaviour, Enemy.IAttackable
 
     protected bool IsDead() => --hpValue <= 0;
 
-    public abstract void Attacked();
+    public abstract void Attacked(float damage);
 
     private void Awake()
     {

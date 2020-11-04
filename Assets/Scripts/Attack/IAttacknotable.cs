@@ -1,5 +1,5 @@
 ﻿
 public interface IAttacknotable
 {
-    void barriered();
+    bool barriered(int hitId);
 }

@@ -43,9 +43,12 @@ public class Bullet : MonoBehaviour
 
         var attacknotable = collision.GetComponent<IAttacknotable>();
 
-        if (attacknotable != null)
+        if (attacknotable.barriered(playerId))
         {
-            Destroy(gameObject);
+            if (attacknotable.barriered(playerId))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

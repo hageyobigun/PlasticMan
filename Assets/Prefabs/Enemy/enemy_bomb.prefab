@@ -143,5 +143,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: -1
-  flightTime: 1
-  speedRate: 1
+  flightTime: 2
+  speedRate: 2

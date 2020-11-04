@@ -42,7 +42,10 @@ public class FireBullet : MonoBehaviour
         var attacknotable = collision.GetComponent<IAttacknotable>();
         if (attacknotable != null)
         {
-            Destroy(gameObject);
+            if (attacknotable.barriered(playerId))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

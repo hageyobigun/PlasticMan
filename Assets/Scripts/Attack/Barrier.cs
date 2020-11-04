@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Barrier : MonoBehaviour, IAttacknotable
 {
+    [SerializeField] private int playerId = 0;
 
-   public void barriered()
+   public bool barriered(int hitId)
    {
-        Debug.Log("barrier");
+        if (playerId == 1 && hitId == 1)
+        {
+            return false;
+        }
+        else if (playerId == -1 && playerId == -1)
+        {
+            return false;
+        }
+        return true;
    }
 }

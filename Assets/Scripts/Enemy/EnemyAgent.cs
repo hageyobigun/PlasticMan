@@ -3,20 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using UniRx;
+using System;
 
 public class EnemyAgent : Agent, Enemy.IAttackable
 {
+    [SerializeField] private int death = 0 ;
+
     [SerializeField] private int hpValue = 1;
+    [SerializeField] private int maxMpValue = 100;
+    private int mpValue;
+
     [SerializeField] private int _enemyPos = 4;
     [SerializeField] private GameObject player = null;
-
-    private int[] moveList = { -3, -1, 1, 3 };
+    private int[] moveList = { -3, -1, 1, 3, 0};
 
     private EnemyMove _enemyMove ;
     private EnemyAttacks _enemyAttacks;
     private PlayerAgent _playerAgent;
 
     protected bool IsDead() => --hpValue <= 0;
+
+    //イベントを発行する核となるインスタンス
+    private Subject<int> attackSubject = new Subject<int>();
+
+    //イベントの購読側だけを公開
+    public IObservable<int> OnAttackAction
+    {
+        get { return attackSubject; }
+    }
 
     //プロパティー
     public int GetHpValue
@@ -35,13 +50,46 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         _enemyMove = new EnemyMove(_enemyPos, gameObject);
         _enemyAttacks = GetComponent<EnemyAttacks>();
         _playerAgent = player.GetComponent<PlayerAgent>();
+
+        attackSubject
+            .Where(attack => attack == 1)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
+            .Subscribe(_ => _enemyAttacks.BulletAttack());
+
+        attackSubject
+            .Where(attack => attack == 2 && mpValue >= 3)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ =>
+            {
+                _enemyAttacks.FireAttack();
+                mpValue -= 3;
+            });
+
+        attackSubject
+            .Where(attack => attack == 3 && mpValue >= 4)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ =>
+            {
+                _enemyAttacks.BombAttack();
+                mpValue -= 4;
+            });
+
+        attackSubject
+            .Where(attack => attack == 4 && mpValue >= 5)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ =>
+            {
+                StartCoroutine(_enemyAttacks.BarrierGuard());
+                mpValue -= 5;
+            });
+
     }
 
     //エピソード開始時
     public override void OnEpisodeBegin()
     {
-        base.OnEpisodeBegin();
-        hpValue = 5;
+        hpValue = 10;
+        mpValue = maxMpValue;
     }
 
 
@@ -49,17 +97,16 @@ public class EnemyAgent : Agent, Enemy.IAttackable
     {
         sensor.AddObservation(this.transform.position);
         sensor.AddObservation(player.transform.position);
+        sensor.AddObservation(mpValue);
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        //StartCoroutine(move(vectorAction));
-
         int move = (int)vectorAction[0];
         int attack = (int)vectorAction[1];
 
         bool isMove = _enemyMove.IsStage(moveList[move]);
-        if (attack == 1) _enemyAttacks.BulletAttack();
+        attackSubject.OnNext(attack);
 
         if (_playerAgent != null)
         {
@@ -73,37 +120,14 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         {
             _enemyMove.Move();
         }
-        if (hpValue <= 0)
+
+        if (hpValue < 0)
         {
+            AddReward(0.2f);
+            death++;
             EndEpisode();
         }
+        mpValue++;
     }
-
-    //IEnumerator move(float[] vectorAction)
-    //{
-    //    int move = (int)vectorAction[0];
-    //    int attack = (int)vectorAction[1];
-
-    //    yield return new WaitForSeconds(1.0f);
-
-    //    bool isMove = _enemyMove.IsStage(moveList[move]);
-    //    if (attack == 1) _enemyAttacks.BulletAttack();
-
-    //    if (isMove)
-    //    {
-    //        _enemyMove.Move();
-    //        AddReward(0.5f);
-    //    }
-    //    else
-    //    {
-    //        AddReward(-0.1f);
-    //    }
-
-    //    if (hpValue < 0)
-    //    {
-    //        AddReward(-0.5f);
-    //        EndEpisode();
-    //    }
-    //}
 
 }

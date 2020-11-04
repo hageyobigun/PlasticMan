@@ -33,6 +33,10 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         get { return attackSubject; }
     }
 
+    private Subject<Unit> mpSubject = new Subject<Unit>();
+
+    private Subject<int> moveSubject = new Subject<int>();
+
     //プロパティー
     public int GetHpValue
     {
@@ -67,7 +71,7 @@ public class EnemyAgent : Agent, Enemy.IAttackable
 
         attackSubject
             .Where(attack => attack == 3 && mpValue >= 4)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
             .Subscribe(_ =>
             {
                 _enemyAttacks.BombAttack();
@@ -76,13 +80,22 @@ public class EnemyAgent : Agent, Enemy.IAttackable
 
         attackSubject
             .Where(attack => attack == 4 && mpValue >= 5)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .ThrottleFirst(TimeSpan.FromSeconds(2.5f))
             .Subscribe(_ =>
             {
                 StartCoroutine(_enemyAttacks.BarrierGuard());
                 mpValue -= 5;
             });
 
+        mpSubject
+            .Where(_ => mpValue <= maxMpValue)
+            .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => mpValue++);
+
+        moveSubject
+            .Where(move => _enemyMove.IsStage(moveList[move]))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .Subscribe(_ => _enemyMove.Move());
     }
 
     //エピソード開始時
@@ -105,7 +118,7 @@ public class EnemyAgent : Agent, Enemy.IAttackable
         int move = (int)vectorAction[0];
         int attack = (int)vectorAction[1];
 
-        bool isMove = _enemyMove.IsStage(moveList[move]);
+        moveSubject.OnNext(move);
         attackSubject.OnNext(attack);
 
         if (_playerAgent != null)
@@ -116,10 +129,6 @@ public class EnemyAgent : Agent, Enemy.IAttackable
                 EndEpisode();
             }
         }
-        if (isMove)
-        {
-            _enemyMove.Move();
-        }
 
         if (hpValue < 0)
         {
@@ -127,7 +136,7 @@ public class EnemyAgent : Agent, Enemy.IAttackable
             death++;
             EndEpisode();
         }
-        mpValue++;
+        mpSubject.OnNext(Unit.Default);
     }
 
 }

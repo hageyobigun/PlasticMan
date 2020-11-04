@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
 
         var attacknotable = collision.GetComponent<IAttacknotable>();
 
-        if (attacknotable.barriered(playerId))
+        if (attacknotable != null)
         {
             if (attacknotable.barriered(playerId))
             {

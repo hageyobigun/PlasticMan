@@ -694,7 +694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &185885797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -712,7 +712,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 1000
   death: 0
-  hpValue: 10
+  hpValue: 100
   maxMpValue: 100
   _enemyPos: 4
   player: {fileID: 1227698764}
@@ -734,7 +734,7 @@ MonoBehaviour:
     VectorActionSize: 0500000005000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: e5e5fb9bcdfff4873b2b8db5cfcf0303, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 9998f481dea9646a9ba238f7f28ddd69, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: NormalEnemy
@@ -5254,7 +5254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1227698765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5288,7 +5288,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 1000
   death: 0
-  hpValue: 10
+  hpValue: 100
   enemy: {fileID: 185885796}
   maxMpValue: 100
 --- !u!114 &1227698767
@@ -5323,7 +5323,7 @@ MonoBehaviour:
     VectorActionSize: 0500000005000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: dee1f028a4ad044979e5295c4234d643, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: e5ea214c6da674ca3a4cc03b23fcba5a, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Player
@@ -5546,7 +5546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1236278759
 SpriteRenderer:
   m_ObjectHideFlags: 0

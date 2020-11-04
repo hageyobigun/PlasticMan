@@ -34,6 +34,9 @@ public class PlayerAgent : Agent , Player.IAttackable
         get { return attackSubject; }
     }
 
+    private Subject<Unit> mpSubject = new Subject<Unit>();
+
+    private Subject<int> moveSubject = new Subject<int>();
 
     //プロパティー
     public int GetHpValue
@@ -56,12 +59,12 @@ public class PlayerAgent : Agent , Player.IAttackable
 
         attackSubject
             .Where(attack => attack == 1)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ => _playerAttack.BulletAttack());
 
         attackSubject
             .Where(attack => attack == 2 && mpValue >= 3)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
             .Subscribe(_ =>
             {
                 _playerAttack.FireAttack();
@@ -70,7 +73,7 @@ public class PlayerAgent : Agent , Player.IAttackable
 
         attackSubject
             .Where(attack => attack == 3 && mpValue >= 4)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
             .Subscribe(_ =>
             {
                 _playerAttack.BombAttack();
@@ -79,12 +82,22 @@ public class PlayerAgent : Agent , Player.IAttackable
 
         attackSubject
             .Where(attack => attack == 4 && mpValue >= 5)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .ThrottleFirst(TimeSpan.FromSeconds(2.5f))
             .Subscribe(_ =>
             {
                 StartCoroutine(_playerAttack.BarrierGuard());
                 mpValue -= 5;
             });
+
+        mpSubject
+            .Where(_ => mpValue <= maxMpValue)
+            .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => mpValue++);
+
+        moveSubject
+            .Where(move => _playerStage.IsStage(moveList[move]))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
+            .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
     }
 
     //エピソード開始時
@@ -107,8 +120,9 @@ public class PlayerAgent : Agent , Player.IAttackable
         int move = (int)vectorAction[0];
         int attack = (int)vectorAction[1];
 
-        bool isMove = _playerStage.IsStage(moveList[move]);
+        moveSubject.OnNext(move);
         attackSubject.OnNext(attack);
+
         if (_enemyAgent != null)
         {
             if (_enemyAgent.GetHpValue <= 0)
@@ -117,17 +131,13 @@ public class PlayerAgent : Agent , Player.IAttackable
                 EndEpisode();
             }
         }
-        if (isMove)
-        {
-            _playerMove.Move(_playerStage.getPlayerPos);
-        }
         if (hpValue < 0)
         {
             AddReward(0.2f);
             death++;
             EndEpisode();
         }
-        mpValue++;
+        mpSubject.OnNext(Unit.Default);
     }
 
 }

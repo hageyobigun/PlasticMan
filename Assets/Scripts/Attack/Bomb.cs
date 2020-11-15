@@ -4,25 +4,22 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private Vector3 offset;
-    private Vector3 target;
-    private float deg;
-    private Animator animator;
-    private BoxCollider2D boxCollider2d;
+    //private Animator animator;
+    //private BoxCollider2D boxCollider2d;
 
     [SerializeField] private int playerId = 0;
 
     private float gravity = -9.8f;    //重力
     [SerializeField] private float flightTime = 10;  //滞空時間
     [SerializeField] private float speedRate = 100;   //滞空時間を基準とした移動速度倍率
-
+    [SerializeField] private GameObject explosion = null;
 
     //雑なので改善予定？
     public void Start()
     {
-        animator = GetComponent<Animator>();
-        boxCollider2d = GetComponent<BoxCollider2D>();
-        boxCollider2d.enabled = false;
+        //animator = GetComponent<Animator>();
+        //boxCollider2d = GetComponent<BoxCollider2D>();
+        //boxCollider2d.enabled = false;
         StartCoroutine(ThrowBomb());
 
     }
@@ -45,40 +42,48 @@ public class Bomb : MonoBehaviour
         }
         // 終点座標へ補正
         transform.position = endPos;
-
-        boxCollider2d.enabled = true;
-        animator.SetTrigger("explosionTrigger");
-        gameObject.transform.localScale = new Vector3(2, 2, 1);//爆破の大きさ
-        yield return new WaitForSeconds(0.3f);
+        Instance_explosion();
+        //boxCollider2d.enabled = true;
+        //animator.SetTrigger("explosionTrigger");
+        //gameObject.transform.localScale = new Vector3(2, 2, 1);//爆破の大きさ
+        //yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Instance_explosion()
     {
-        if (playerId == 1)//player
-        {
-            var attackable = collision.GetComponent<Enemy.IAttackable>();
-            if (attackable != null)
-            {
-                attackable.Attacked(4);
-            }
-        }
-        else if (playerId == -1)//enemy
-        {
-            var attackable = collision.GetComponent<Player.IAttackable>();
-            if (attackable != null)
-            {
-                attackable.Attacked(4);
-            }
-        }
-
-        var attacknotable = collision.GetComponent<IAttacknotable>();
-        if (attacknotable != null)
-        {
-            if (attacknotable.barriered(playerId))
-            {
-                Destroy(gameObject);
-            }
-        }
+        Instantiate(explosion, new Vector3(transform.position.x, 3.0f, transform.position.z), Quaternion.identity);
+        Instantiate(explosion, new Vector3(transform.position.x, 0.5f, transform.position.z), Quaternion.identity);
+        Instantiate(explosion, new Vector3(transform.position.x, -2.0f, transform.position.z), Quaternion.identity);
     }
+
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (playerId == 1)//player
+    //    {
+    //        var attackable = collision.GetComponent<Enemy.IAttackable>();
+    //        if (attackable != null)
+    //        {
+    //            attackable.Attacked(4);
+    //        }
+    //    }
+    //    else if (playerId == -1)//enemy
+    //    {
+    //        var attackable = collision.GetComponent<Player.IAttackable>();
+    //        if (attackable != null)
+    //        {
+    //            attackable.Attacked(4);
+    //        }
+    //    }
+
+    //    var attacknotable = collision.GetComponent<IAttacknotable>();
+    //    if (attacknotable != null)
+    //    {
+    //        if (attacknotable.barriered(playerId))
+    //        {
+    //            Destroy(gameObject);
+    //        }
+    //    }
+    //}
 }

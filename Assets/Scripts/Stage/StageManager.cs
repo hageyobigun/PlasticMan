@@ -9,13 +9,15 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
     public List<GameObject> playerStageList = new List<GameObject>();
     public List<GameObject> enemyStageList = new List<GameObject>();
 
+
+
     // Start is called before the first frame update
     private void Start()
     {
         getStage();
     }
 
-    public void getStage()
+    private void getStage()
     {
         foreach (Transform childTransform in playerStageBlockParent.transform)
         {
@@ -26,4 +28,6 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
             enemyStageList.Add(childTransform.gameObject);
         }
     }
+
+
 }

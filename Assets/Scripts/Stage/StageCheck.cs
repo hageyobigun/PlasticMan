@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageCheck : MonoBehaviour
+public class StageCheck
 {
 
     public bool IsStage(int _moveDirection, int _playerPos)

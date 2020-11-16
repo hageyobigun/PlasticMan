@@ -11,17 +11,17 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
     private PlayerStage _playerStage;
+    private SliderModel _sliderModel;
 
-    [SerializeField] private int hpValue = 1;
-    [SerializeField] private int maxMpValue = 100;
-    private int mpValue;
+    [SerializeField] private int hpValue = 100;
+    [SerializeField] private int mpValue = 100;
 
-    protected bool IsDead() => --hpValue <= 0;
+    protected bool IsDead() => _sliderModel.hp.Value <= 0;
 
     private void Awake()
     {
         Initialize();
-        mpValue = maxMpValue;
+        //mpValue = maxMpValue;
 
         //移動
         this.UpdateAsObservable()
@@ -37,42 +37,42 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //攻撃(fire)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsFireAttack() && mpValue >= 3)
+            .Where(_ => _playerInput.IsFireAttack() && _sliderModel.mp.Value >= 3)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                {
                    _PlayerAttack.FireAttack();
-                   mpValue -= 3;
+                   _sliderModel.mp.Value -= 3;
                }
             );
 
         //攻撃(bomb)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsBombAttack() && mpValue >= 4)
+            .Where(_ => _playerInput.IsBombAttack() && _sliderModel.mp.Value >= 4)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                 {
                     _PlayerAttack.BombAttack();
-                    mpValue -= 4;
+                    _sliderModel.mp.Value -= 4;
                 }
             );
 
         //防御(barrier)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsBarrier() && mpValue >= 5)
+            .Where(_ => _playerInput.IsBarrier() && _sliderModel.mp.Value >= 5)
             .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
             .Subscribe(_ =>
                 {
                     StartCoroutine(_PlayerAttack.BarrierGuard());
-                    mpValue -= 5;
+                    _sliderModel.mp.Value -= 5;
                 }
             );
 
-        //mp回復
-        Observable.Interval(TimeSpan.FromSeconds(1.0))
-            .Where(_ => mpValue <= maxMpValue)
-            .Subscribe(_ => mpValue++)
-            .AddTo(gameObject);
+        ////mp回復
+        //Observable.Interval(TimeSpan.FromSeconds(1.0))
+        //    .Where(_ => mpValue <= maxMpValue)
+        //    .Subscribe(_ => mpValue++)
+        //    .AddTo(gameObject);
     }
 
     private void Initialize()
@@ -81,10 +81,14 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _playerMove = new PlayerMove(this.gameObject);
         _playerStage = new PlayerStage(4);
         _PlayerAttack = GetComponent<PlayerAttack>();
+        _sliderModel = GetComponent<SliderModel>();
+        _sliderModel.Initialize(hpValue, mpValue);
     }
 
     public void Attacked(float damage)
     {
+        _sliderModel.hp.Value -= (int)damage;
+
         if (IsDead())
         {
             Destroy(gameObject);

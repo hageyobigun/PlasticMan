@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    //private Animator animator;
-    //private BoxCollider2D boxCollider2d;
 
     [SerializeField] private int playerId = 0;
 
@@ -17,11 +15,7 @@ public class Bomb : MonoBehaviour
     //雑なので改善予定？
     public void Start()
     {
-        //animator = GetComponent<Animator>();
-        //boxCollider2d = GetComponent<BoxCollider2D>();
-        //boxCollider2d.enabled = false;
         StartCoroutine(ThrowBomb());
-
     }
 
     public IEnumerator ThrowBomb()
@@ -43,13 +37,10 @@ public class Bomb : MonoBehaviour
         // 終点座標へ補正
         transform.position = endPos;
         Instance_explosion();
-        //boxCollider2d.enabled = true;
-        //animator.SetTrigger("explosionTrigger");
-        //gameObject.transform.localScale = new Vector3(2, 2, 1);//爆破の大きさ
-        //yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);
     }
 
+    //とりあえず後で改善予定
     private void Instance_explosion()
     {
         Instantiate(explosion, new Vector3(transform.position.x, 3.0f, transform.position.z), Quaternion.identity);

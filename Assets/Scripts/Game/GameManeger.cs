@@ -7,15 +7,17 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
 {
     public enum GameState
     {
+        Opening,
         Start,
         Playing,
         GameOver
     }
+
     private GameState currentGameState;
 
     void Start()
     {
-        currentGameState = GameState.Start;
+        currentGameState = GameState.Opening;
     }
 
     public void SetCurrentState(GameState state)
@@ -29,11 +31,14 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     {
         switch (state)
         {
-            case GameState.Start:
+            case GameState.Opening:
                 GameTitle();
                 break;
-            case GameState.Playing:
+            case GameState.Start:
                 GameStart();
+                break;
+            case GameState.Playing:
+                GamePlay();
                 break;
             case GameState.GameOver:
                 GameOver();
@@ -44,19 +49,22 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         }
     }
 
-
-    void GameTitle()
+    private void GameTitle()//タイトル画面
     {
-        SceneManager.LoadScene("Start");
-        
+        SceneManager.LoadScene("Title");
     }
 
-    public void GameStart()
+    private void GameStart()//選択画面
+    {
+        SceneManager.LoadScene("Start");
+    }
+
+    private void GamePlay()//ゲーム画面
     {
         SceneManager.LoadScene("Play");
     }
 
-    public void GameOver()
+    private void GameOver()//ゲームオーバー
     {
         SceneManager.LoadScene("GameOver");
     }

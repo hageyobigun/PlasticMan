@@ -31,7 +31,7 @@ public class StartButton : MonoBehaviour
             .Where(_ => Input.GetKeyDown(KeyCode.Return))
             .Subscribe(_ =>
             {
-                angularFrequency *= 5;
+                angularFrequency *= 5; //点滅加速
                 scene_move.OnNext(Unit.Default);
             });
 

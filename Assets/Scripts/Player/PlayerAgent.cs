@@ -5,6 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using UniRx;
 using System;
+using Character;
 
 public class PlayerAgent : Agent , Player.IAttackable
 {
@@ -23,11 +24,20 @@ public class PlayerAgent : Agent , Player.IAttackable
     private Subject<int> attackSubject = new Subject<int>();
     private Subject<int> moveSubject = new Subject<int>();
 
+    private State playerState;
+
     //プロパティー
     public int GetHpValue
     {
         get { return this._sliderModel.hp.Value; }  //取得用
         private set { this._sliderModel.hp.Value = value; } //値入力用
+    }
+
+    //プロパティー
+    public State GetState
+    {
+        get { return this.playerState; }  //取得用
+        private set { this.playerState = value; } //値入力用
     }
 
     public override void Initialize()
@@ -41,7 +51,11 @@ public class PlayerAgent : Agent , Player.IAttackable
         attackSubject
             .Where(attack => attack == 1)
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
-            .Subscribe(_ => _playerAttack.BulletAttack());
+            .Subscribe(_ =>
+            {
+                _playerAttack.BulletAttack();
+                playerState = State.Bullet_Attack;
+            });
 
         attackSubject
             .Where(attack => attack == 2 && _sliderModel.mp.Value >= 3)
@@ -50,6 +64,7 @@ public class PlayerAgent : Agent , Player.IAttackable
             {
                 _playerAttack.FireAttack();
                 _sliderModel.mp.Value -= 3;
+                playerState = State.Fire_Attack;
             });
 
         attackSubject
@@ -59,6 +74,7 @@ public class PlayerAgent : Agent , Player.IAttackable
             {
                 _playerAttack.BombAttack();
                 _sliderModel.mp.Value -= 4;
+                playerState = State.Bomb_Attack;
             });
 
         attackSubject
@@ -68,11 +84,11 @@ public class PlayerAgent : Agent , Player.IAttackable
             {
                 StartCoroutine(_playerAttack.BarrierGuard());
                 _sliderModel.mp.Value -= 5;
+                playerState = State.Barrier;
             });
 
         moveSubject
             .Where(move => _playerStage.IsStage(moveList[move]))
-            .ThrottleFirst(TimeSpan.FromSeconds(0.2f))
             .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
     }
 
@@ -80,6 +96,7 @@ public class PlayerAgent : Agent , Player.IAttackable
     public override void OnEpisodeBegin()
     {
         _sliderModel.Initialize(hpValue, mpValue);
+        playerState = State.Normal;
     }
 
 
@@ -89,6 +106,14 @@ public class PlayerAgent : Agent , Player.IAttackable
         sensor.AddObservation(enemy.transform.position);
         sensor.AddObservation(_sliderModel.hp.Value);
         sensor.AddObservation(_sliderModel.mp.Value);
+        if (_enemyAgent != null)
+        {
+            sensor.AddObservation((float)_enemyAgent.GetState);
+        }
+        else
+        {
+            sensor.AddObservation(-1);
+        }
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -109,7 +134,6 @@ public class PlayerAgent : Agent , Player.IAttackable
         }
         if (_sliderModel.hp.Value < 0)
         {
-            AddReward(0.2f);
             EndEpisode();
         }
     }
@@ -117,6 +141,7 @@ public class PlayerAgent : Agent , Player.IAttackable
     public void Attacked(float damage)
     {
         _sliderModel.hp.Value -= (int)damage;
+        AddReward(damage * 0.01f);
     }
 
 }

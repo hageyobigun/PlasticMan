@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using System;
+using Character;
 
 public class PlayerController : MonoBehaviour , Player.IAttackable
 {
@@ -17,11 +18,26 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     [SerializeField] private int mpValue = 100;
 
     protected bool IsDead() => _sliderModel.hp.Value <= 0;
+    private State playerState;
+
+    //プロパティー
+    public int GetHpValue
+    {
+        get { return this._sliderModel.hp.Value; }  //取得用
+        private set { this._sliderModel.hp.Value = value; } //値入力用
+    }
+
+    //プロパティー
+    public State GetState
+    {
+        get { return this.playerState; }  //取得用
+        private set { this.playerState = value; } //値入力用
+    }
+
 
     private void Awake()
     {
         Initialize();
-        //mpValue = maxMpValue;
 
         //移動
         this.UpdateAsObservable()
@@ -32,7 +48,11 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         this.UpdateAsObservable()
             .Where(_ => _playerInput.IsBulltetAttack())
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
-            .Subscribe(_ => _PlayerAttack.BulletAttack());
+            .Subscribe(_ =>
+            {
+                _PlayerAttack.BulletAttack();
+                playerState = State.Bullet_Attack;
+            });
 
 
         //攻撃(fire)
@@ -43,6 +63,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                {
                    _PlayerAttack.FireAttack();
                    _sliderModel.mp.Value -= 3;
+                   playerState = State.Fire_Attack;
                }
             );
 
@@ -54,6 +75,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                 {
                     _PlayerAttack.BombAttack();
                     _sliderModel.mp.Value -= 4;
+                    playerState = State.Bomb_Attack;
                 }
             );
 
@@ -65,14 +87,9 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                 {
                     StartCoroutine(_PlayerAttack.BarrierGuard());
                     _sliderModel.mp.Value -= 5;
+                    playerState = State.Barrier;
                 }
             );
-
-        ////mp回復
-        //Observable.Interval(TimeSpan.FromSeconds(1.0))
-        //    .Where(_ => mpValue <= maxMpValue)
-        //    .Subscribe(_ => mpValue++)
-        //    .AddTo(gameObject);
     }
 
     private void Initialize()
@@ -83,6 +100,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _PlayerAttack = GetComponent<PlayerAttack>();
         _sliderModel = GetComponent<SliderModel>();
         _sliderModel.Initialize(hpValue, mpValue);
+        playerState = State.Normal;
     }
 
     public void Attacked(float damage)

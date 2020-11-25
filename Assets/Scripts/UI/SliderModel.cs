@@ -15,8 +15,7 @@ public class SliderModel : MonoBehaviour
     public Text mpText;
 
     // Model
-    public ReactiveProperty<int> hp  = new ReactiveProperty<int>(); 
-
+    public ReactiveProperty<int> hp  = new ReactiveProperty<int>();
     public ReactiveProperty<int> mp = new ReactiveProperty<int>();
 
     void Start()

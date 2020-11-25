@@ -18,7 +18,7 @@ public class PlayerAgent : Agent , Player.IAttackable
     private PlayerMove _playerMove;
     private PlayerStage _playerStage;
     private PlayerAttack _playerAttack;
-    private EnemyAgent _enemyAgent;
+    private BaseEnemyAgent _enemyAgent;
     private SliderModel _sliderModel;
 
     private Subject<int> attackSubject = new Subject<int>();
@@ -45,7 +45,7 @@ public class PlayerAgent : Agent , Player.IAttackable
         _playerMove = new PlayerMove(this.gameObject);
         _playerStage = new PlayerStage(4);
         _playerAttack = GetComponent<PlayerAttack>();
-        _enemyAgent = enemy.GetComponent<EnemyAgent>();
+        _enemyAgent = enemy.GetComponent<BaseEnemyAgent>();
         _sliderModel = GetComponent<SliderModel>();
 
         attackSubject

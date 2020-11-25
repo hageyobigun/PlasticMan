@@ -12,7 +12,7 @@ public class Barrier : MonoBehaviour, IAttacknotable
         {
             return false;
         }
-        else if (playerId == -1 && playerId == -1)
+        else if (playerId == -1 && hitId == -1)
         {
             return false;
         }

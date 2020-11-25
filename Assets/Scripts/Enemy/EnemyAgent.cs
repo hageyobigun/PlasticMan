@@ -7,7 +7,7 @@ using UniRx;
 using System;
 using Character;
 
-public class EnemyAgent : Agent, Enemy.IAttackable
+public abstract class EnemyAgent : Agent, Enemy.IAttackable
 {
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;

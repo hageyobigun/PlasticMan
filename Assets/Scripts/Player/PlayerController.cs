@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         private set { this.playerState = value; } //値入力用
     }
 
-
     private void Awake()
     {
         Initialize();

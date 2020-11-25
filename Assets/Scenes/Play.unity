@@ -679,8 +679,6 @@ GameObject:
   - component: {fileID: 185885800}
   - component: {fileID: 185885799}
   - component: {fileID: 185885798}
-  - component: {fileID: 185885803}
-  - component: {fileID: 185885797}
   - component: {fileID: 185885804}
   - component: {fileID: 185885805}
   m_Layer: 0
@@ -690,25 +688,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &185885797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185885796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16077334513064498a0a32ded736f37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  hpValue: 50
-  mpValue: 100
-  player: {fileID: 1236278758}
 --- !u!114 &185885798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +706,7 @@ MonoBehaviour:
     VectorActionSize: 0500000005000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: 991ec408f95074262ac87b3dd8438691, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: NormalEnemy
@@ -848,20 +827,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &185885803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185885796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 10
-  TakeActionsBetweenDecisions: 0
 --- !u!114 &185885804
 MonoBehaviour:
   m_ObjectHideFlags: 0

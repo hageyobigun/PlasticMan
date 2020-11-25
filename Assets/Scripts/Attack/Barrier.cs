@@ -16,6 +16,7 @@ public class Barrier : MonoBehaviour, IAttacknotable
         {
             return false;
         }
+        
         return true;
    }
 }

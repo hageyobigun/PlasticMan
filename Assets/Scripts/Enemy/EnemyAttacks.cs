@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class EnemyAttacks : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class EnemyAttacks : MonoBehaviour
     [SerializeField] private GameObject fireBullet = null;
     [SerializeField] private GameObject bomb = null;
     [SerializeField] private GameObject barrier = null;
+
 
     public void Awake()
     {

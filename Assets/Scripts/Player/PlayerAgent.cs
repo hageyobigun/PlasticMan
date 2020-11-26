@@ -106,6 +106,7 @@ public class PlayerAgent : Agent , Player.IAttackable
         sensor.AddObservation(enemy.transform.position);
         sensor.AddObservation(_sliderModel.hp.Value);
         sensor.AddObservation(_sliderModel.mp.Value);
+        sensor.AddObservation((float)playerState);
         if (_enemyAgent != null)
         {
             sensor.AddObservation((float)_enemyAgent.GetState);

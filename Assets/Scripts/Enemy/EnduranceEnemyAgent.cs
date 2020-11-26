@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AttackEnemyAgent : BaseEnemyAgent
+public class EnduranceEnemyAgent : BaseEnemyAgent
 {
     public override void Initialize()
     {
@@ -20,7 +20,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
         {
             if (_playerAgent.GetHpValue <= 0) //撃破
             {
-                AddReward(1.0f);
+                AddReward(GetHpValue * 0.01f);
                 EndEpisode();
             }
         }
@@ -29,7 +29,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
         {
             if (_playerController.GetHpValue <= 0) //撃破
             {
-                AddReward(1.0f);
+                AddReward(GetHpValue * 0.01f);
                 EndEpisode();
             }
         }

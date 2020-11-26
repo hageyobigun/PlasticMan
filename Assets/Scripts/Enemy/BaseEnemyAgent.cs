@@ -50,6 +50,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         sensor.AddObservation(player.transform.position);
         sensor.AddObservation(_sliderModel.hp.Value);
         sensor.AddObservation(_sliderModel.mp.Value);
+        sensor.AddObservation((float)enemyState);
         if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
         else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
 
@@ -73,7 +74,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     public int GetHpValue
     {
         get { return this._sliderModel.hp.Value; }  //取得用
-        private set { this._sliderModel.hp.Value = value; } //値入力用
+        set { this._sliderModel.hp.Value = value; } //値入力用
     }
 
     //プロパティー

@@ -2,6 +2,8 @@
 
 public class AttackEnemyAgent : BaseEnemyAgent
 {
+    private int playerHp;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -10,6 +12,10 @@ public class AttackEnemyAgent : BaseEnemyAgent
     public override void OnEpisodeBegin()
     {
         base.OnEpisodeBegin();
+        if (_playerAgent != null)
+        {
+            playerHp = _playerAgent.GetHpValue;
+        }
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -18,9 +24,13 @@ public class AttackEnemyAgent : BaseEnemyAgent
 
         if (_playerAgent != null)
         {
+            if (_playerAgent.GetHpValue < playerHp)
+            {
+                AddReward(((float) playerHp - _playerAgent.GetHpValue) * 0.01f);
+                playerHp = _playerAgent.GetHpValue;
+            }
             if (_playerAgent.GetHpValue <= 0) //撃破
             {
-                AddReward(1.0f);
                 EndEpisode();
             }
         }
@@ -44,6 +54,5 @@ public class AttackEnemyAgent : BaseEnemyAgent
     public override void Attacked(float damage)
     {
         base.Attacked(damage);
-        AddReward(damage * 0.01f);
     }
 }

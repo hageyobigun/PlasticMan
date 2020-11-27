@@ -26,20 +26,6 @@ public class PlayerAgent : Agent , Player.IAttackable
 
     private State playerState;
 
-    //プロパティー
-    public int GetHpValue
-    {
-        get { return this._sliderModel.hp.Value; }  //取得用
-        private set { this._sliderModel.hp.Value = value; } //値入力用
-    }
-
-    //プロパティー
-    public State GetState
-    {
-        get { return this.playerState; }  //取得用
-        private set { this.playerState = value; } //値入力用
-    }
-
     public override void Initialize()
     {
         _playerMove = new PlayerMove(this.gameObject);
@@ -111,10 +97,6 @@ public class PlayerAgent : Agent , Player.IAttackable
         {
             sensor.AddObservation((float)_enemyAgent.GetState);
         }
-        else
-        {
-            sensor.AddObservation(-1);
-        }
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -145,4 +127,17 @@ public class PlayerAgent : Agent , Player.IAttackable
         AddReward(damage * 0.01f);
     }
 
+        //プロパティー
+    public int GetHpValue
+    {
+        get { return this._sliderModel.hp.Value; }  //取得用
+        private set { this._sliderModel.hp.Value = value; } //値入力用
+    }
+
+    //プロパティー
+    public State GetState
+    {
+        get { return this.playerState; }  //取得用
+        private set { this.playerState = value; } //値入力用
+    }
 }

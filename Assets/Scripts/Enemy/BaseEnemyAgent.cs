@@ -68,6 +68,10 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     public virtual void Attacked(float damage)
     {
         _sliderModel.hp.Value -= (int)damage;
+        if (_playerController != null && _sliderModel.hp.Value <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     //プロパティー

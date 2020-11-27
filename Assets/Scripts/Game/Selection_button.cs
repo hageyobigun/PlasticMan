@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UniRx.Triggers;
@@ -11,10 +9,13 @@ public class Selection_button : MonoBehaviour
 {
     [SerializeField] private Image cursor = null;
     [SerializeField] EventSystem eventSystem = null;
+    [SerializeField] private GameObject vsImage = null;
+    [SerializeField] private GameObject enemyButton = null;
     private GameObject selectedObj;
 
     private void Start()
     {
+        vsImage.SetActive(false);
         this.UpdateAsObservable()
             .Subscribe(_ =>
                 {
@@ -27,7 +28,8 @@ public class Selection_button : MonoBehaviour
 
     public void VsButton()
     {
-        Debug.Log("1vs1");
+        vsImage.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(enemyButton);
     }
 
     public void BossRushButton()

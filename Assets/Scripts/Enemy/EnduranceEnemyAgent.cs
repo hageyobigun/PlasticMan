@@ -1,10 +1,18 @@
-﻿using UnityEngine;
+﻿using Unity.MLAgents.Sensors;
+using UnityEngine;
 
 public class EnduranceEnemyAgent : BaseEnemyAgent
 {
+
     public override void Initialize()
     {
         base.Initialize();
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        base.CollectObservations(sensor);
+        sensor.AddObservation((float)GetState);
     }
 
     public override void OnEpisodeBegin()
@@ -20,30 +28,21 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
         {
             if (_playerAgent.GetHpValue <= 0) //撃破
             {
-                AddReward(GetHpValue * 0.01f);
+                AddReward(0.1f);
                 EndEpisode();
             }
         }
 
-        else if (_playerController != null)//切り替え可能
+        if (StepCount % 1000 == 0)
         {
-            if (_playerController.GetHpValue <= 0) //撃破
-            {
-                AddReward(GetHpValue * 0.01f);
-                EndEpisode();
-            }
+            AddReward(0.1f);
         }
-
-        if (GetHpValue < 0)//死亡
-        {
-            EndEpisode();
-        }
-
     }
+
+    
 
     public override void Attacked(float damage)
     {
         base.Attacked(damage);
-        AddReward(damage * 0.01f);
     }
 }

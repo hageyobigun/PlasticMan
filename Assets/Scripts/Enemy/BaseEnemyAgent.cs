@@ -50,10 +50,8 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         sensor.AddObservation(player.transform.position);
         sensor.AddObservation(_sliderModel.hp.Value);
         sensor.AddObservation(_sliderModel.mp.Value);
-        sensor.AddObservation((float)enemyState);
         if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
         else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
-
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -63,6 +61,19 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
 
         moveSubject.OnNext(move);
         attackSubject.OnNext(attack);
+        if (GetHpValue <= 0)//死亡
+        {
+            EndEpisode();
+        }
+
+        if (_playerController != null)//切り替え可能
+        {
+            if (_playerController.GetHpValue <= 0) //撃破
+            {
+                AddReward(1.0f);
+                EndEpisode();
+            }
+        }
     }
 
     public virtual void Attacked(float damage)

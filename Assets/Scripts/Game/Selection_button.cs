@@ -22,9 +22,9 @@ public class Selection_button : MonoBehaviour
                     selectedObj = eventSystem.currentSelectedGameObject.gameObject;
                     cursor.transform.position = selectedObj.transform.position + new Vector3(-330, 0, 0);//やり方変えるかも
                 });
+
+
     }
-
-
 
     public void VsButton()
     {

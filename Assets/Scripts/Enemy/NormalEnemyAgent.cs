@@ -1,7 +1,6 @@
 ﻿using Unity.MLAgents.Sensors;
-using UnityEngine;
 
-public class AttackEnemyAgent : BaseEnemyAgent
+public class NormalEnemyAgent : BaseEnemyAgent
 {
 
     public override void Initialize()
@@ -24,18 +23,24 @@ public class AttackEnemyAgent : BaseEnemyAgent
     {
         base.OnActionReceived(vectorAction);
 
-        if (_playerAgent != null)
+        if (_playerAgent != null) //撃破
         {
-            if (_playerAgent.GetHpValue <= 0) //撃破
+            if (_playerAgent.GetHpValue <= 0)
             {
                 AddReward(1.0f);
                 EndEpisode();
             }
         }
+
     }
 
     public override void Attacked(float damage)
     {
         base.Attacked(damage);
+        if (GetHpValue <= 0)//死亡
+        {
+            AddReward(-0.1f);
+        }
+
     }
 }

@@ -17,4 +17,11 @@ public class PlayerMove
         _player.transform.position += new Vector3(0, -1, -1);
     }
 
+    public void SelectMove(int number)
+    {
+        var movePos = StageManager.Instance.playerStageList[number];
+        _player.transform.position = movePos.transform.position;
+        _player.transform.position += new Vector3(0, -1, -1);
+    }
+
 }

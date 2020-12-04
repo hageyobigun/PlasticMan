@@ -23,6 +23,10 @@ public class SliderModel : MonoBehaviour
 
         this.hp.Subscribe(countNum =>
         {
+            if(hp.Value < 0)
+            {
+                hp.Value = 0;
+            }
             this.hpText.text = countNum.ToString() + "/" + hpSlider.maxValue;
             this.hpSlider.value = countNum;
         });
@@ -30,6 +34,10 @@ public class SliderModel : MonoBehaviour
 
         this.mp.Subscribe(countNum =>
         {
+            if (mp.Value < 0)
+            {
+                mp.Value = 0;
+            }
             this.mpText.text = countNum.ToString()  + "/" + mpSlider.maxValue;
             this.mpSlider.value = countNum;
         });

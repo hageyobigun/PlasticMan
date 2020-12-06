@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         if (IsDead())
         {
+            GameManeger.Instance.SetCurrentState(GameManeger.GameState.Lose);
             Destroy(gameObject);
         }
     }

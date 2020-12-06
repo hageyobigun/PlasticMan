@@ -9,19 +9,19 @@ public class PlayerInput : IPlayerInput
     public int Inputting()
     {
         _moveDirection = 0;
-        if (Input.GetKeyDown(KeyCode.W))//上
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))//上
         {
             _moveDirection = -3;
         }
-        else if (Input.GetKeyDown(KeyCode.S))//下
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))//下
         {
             _moveDirection = 3;
         }
-        else if(Input.GetKeyDown(KeyCode.A))//右
+        else if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))//左
         {
             _moveDirection = -1;
         }
-        else if (Input.GetKeyDown(KeyCode.D))//左
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))//右
         {
             _moveDirection = 1;
         }

@@ -81,6 +81,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         _sliderModel.hp.Value -= (int)damage;
         if (_playerController != null && _sliderModel.hp.Value <= 0)
         {
+            GameManeger.Instance.SetCurrentState(GameManeger.GameState.Win);
             Destroy(gameObject);
         }
     }

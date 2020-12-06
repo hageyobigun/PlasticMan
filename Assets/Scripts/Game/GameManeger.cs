@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UniRx;
+using System;
 
 public class GameManeger : SingletonMonoBehaviour<GameManeger>
 {
@@ -9,15 +11,23 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     {
         Opening,
         Start,
-        Playing,
-        GameOver
+        Playing_Vs,
+        Win,
+        Lose
     }
 
     private GameState currentGameState;
+    private Subject<GameState> gameStateSubjet = new Subject<GameState>();
+    public IObservable<GameState> gameStateChanged{get { return gameStateSubjet; }}
+
+    public int enemyNumber;
+
 
     void Start()
     {
         currentGameState = GameState.Opening;
+        enemyNumber = 0;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void SetCurrentState(GameState state)
@@ -37,11 +47,14 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             case GameState.Start:
                 GameStart();
                 break;
-            case GameState.Playing:
-                GamePlay();
+            case GameState.Playing_Vs:
+                GamePlayVs();
                 break;
-            case GameState.GameOver:
-                GameOver();
+            case GameState.Win:
+                GameWin();
+                break;
+            case GameState.Lose:
+                GameLose();
                 break;
             default:
                 break;
@@ -59,14 +72,19 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         SceneManager.LoadScene("Start");
     }
 
-    private void GamePlay()//ゲーム画面
+    private void GamePlayVs()//ゲーム画面
     {
+        gameStateSubjet = new Subject<GameState>();
         SceneManager.LoadScene("Play");
     }
 
-    private void GameOver()//ゲームオーバー
+    private void GameWin()//ゲームオーバー
     {
-        SceneManager.LoadScene("GameOver");
+        gameStateSubjet.OnNext(currentGameState);
     }
 
+    private void GameLose()//ゲームオーバー
+    {
+        gameStateSubjet.OnNext(currentGameState);
+    }
 }

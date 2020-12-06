@@ -5,12 +5,13 @@ using UniRx.Triggers;
 using UniRx;
 
 
-public class Selection_button : MonoBehaviour
+public class SelectionButton : MonoBehaviour
 {
     [SerializeField] private Image cursor = null;
     [SerializeField] EventSystem eventSystem = null;
     [SerializeField] private GameObject vsImage = null;
     [SerializeField] private GameObject enemyButton = null;
+    [SerializeField] private GameObject selectButton = null;
     private GameObject selectedObj;
 
     private void Start()
@@ -40,6 +41,12 @@ public class Selection_button : MonoBehaviour
     public void Explanation()
     {
         Debug.Log("ex");
+    }
+
+    public void CloseButton()
+    {
+        vsImage.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(selectButton);
     }
 
 }

@@ -12,27 +12,12 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
     private PlayerStage _playerStage;
-    private SliderModel _sliderModel;
-
+    [SerializeField] private LifePresenter _lifePresente = null;
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
 
-    protected bool IsDead() => _sliderModel.hp.Value <= 0;
     private State playerState;
 
-    //プロパティー
-    public int GetHpValue
-    {
-        get { return this._sliderModel.hp.Value; }  //取得用
-        private set { this._sliderModel.hp.Value = value; } //値入力用
-    }
-
-    //プロパティー
-    public State GetState
-    {
-        get { return this.playerState; }  //取得用
-        private set { this.playerState = value; } //値入力用
-    }
 
     private void Awake()
     {
@@ -56,61 +41,84 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //攻撃(fire)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsFireAttack() && _sliderModel.mp.Value >= 3)
+            .Where(_ => _playerInput.IsFireAttack() && mpValue >= 3)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                {
                    _PlayerAttack.FireAttack();
-                   _sliderModel.mp.Value -= 3;
+                   MpConsumption(3);
                    playerState = State.Fire_Attack;
                }
             );
 
         //攻撃(bomb)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsBombAttack() && _sliderModel.mp.Value >= 4)
+            .Where(_ => _playerInput.IsBombAttack() && mpValue >= 4)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                 {
                     _PlayerAttack.BombAttack();
-                    _sliderModel.mp.Value -= 4;
+                    MpConsumption(4);
                     playerState = State.Bomb_Attack;
                 }
             );
 
         //防御(barrier)
         this.UpdateAsObservable()
-            .Where(_ => _playerInput.IsBarrier() && _sliderModel.mp.Value >= 5)
+            .Where(_ => _playerInput.IsBarrier() && mpValue >= 5)
             .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
             .Subscribe(_ =>
                 {
                     StartCoroutine(_PlayerAttack.BarrierGuard());
-                    _sliderModel.mp.Value -= 5;
+                    MpConsumption(5);
                     playerState = State.Barrier;
                 }
             );
     }
 
+    //初期化
     private void Initialize()
     {
         _playerInput = new PlayerInput();
         _playerMove = new PlayerMove(this.gameObject);
         _playerStage = new PlayerStage(4);
         _PlayerAttack = GetComponent<PlayerAttack>();
-        _sliderModel = GetComponent<SliderModel>();
-        _sliderModel.Initialize(hpValue, mpValue);
+        _lifePresente.Initialize(hpValue, mpValue);
         playerState = State.Normal;
     }
 
+    //ダメージを受ける
     public void Attacked(float damage)
     {
-        _sliderModel.hp.Value -= (int)damage;
-
-        if (IsDead())
+        hpValue -= (int)damage;
+        _lifePresente.OnChangeHpLife(hpValue);
+        if (hpValue <= 0)
         {
             GameManeger.Instance.SetCurrentState(GameManeger.GameState.Lose);
             Destroy(gameObject);
         }
+    }
+
+    //MP消費
+    private void MpConsumption(int useValue)
+    {
+        mpValue -= useValue;
+        _lifePresente.OnChangeMpLife(mpValue);
+    }
+
+
+    //プロパティー
+    public int GetHpValue
+    {
+        get { return this.hpValue; }  //取得用
+        private set { this.hpValue = value; } //値入力用
+    }
+
+    //プロパティー
+    public State GetState
+    {
+        get { return this.playerState; }  //取得用
+        private set { this.playerState = value; } //値入力用
     }
 
 }

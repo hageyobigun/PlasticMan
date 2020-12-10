@@ -9,12 +9,14 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
     public List<GameObject> playerStageList = new List<GameObject>();
     public List<GameObject> enemyStageList = new List<GameObject>();
 
+    public StageCheck _stageCheck;
 
 
     // Start is called before the first frame update
     private void Start()
     {
         getStage();
+        _stageCheck = new StageCheck();
     }
 
     private void getStage()

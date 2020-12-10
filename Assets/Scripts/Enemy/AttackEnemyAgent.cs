@@ -11,7 +11,20 @@ public class AttackEnemyAgent : BaseEnemyAgent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        base.CollectObservations(sensor);
+        sensor.AddObservation(this.transform.position);
+        sensor.AddObservation(GetHpValue);
+        sensor.AddObservation(GetMpValue);
+        if (player != null)
+        {
+            sensor.AddObservation(player.transform.position);
+            if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
+            else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
+        }
+        else
+        {
+            sensor.AddObservation(this.transform.position);
+            sensor.AddObservation(0);
+        }
         sensor.AddObservation((float)GetState);
     }
 

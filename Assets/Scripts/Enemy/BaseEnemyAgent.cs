@@ -9,8 +9,8 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
 {
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
-    [SerializeField] private GameObject player = null;
     private int[] moveList = { -3, -1, 1, 3, 0};
+    public GameObject player;
 
     private EnemyMove _enemyMove;
     private SliderModel _sliderModel;
@@ -43,17 +43,6 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         enemyState = State.Normal;
     }
 
-
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        sensor.AddObservation(this.transform.position);
-        sensor.AddObservation(player.transform.position);
-        sensor.AddObservation(_sliderModel.hp.Value);
-        sensor.AddObservation(_sliderModel.mp.Value);
-        if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
-        else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
-    }
-
     public override void OnActionReceived(float[] vectorAction)
     {
         int move = (int)vectorAction[0];
@@ -66,12 +55,15 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
             EndEpisode();
         }
 
-        if (_playerController != null)//切り替え可能
+        if (player != null)
         {
-            if (_playerController.GetHpValue <= 0) //撃破
+            if (_playerController != null)//切り替え可能
             {
-                AddReward(1.0f);
-                EndEpisode();
+                if (_playerController.GetHpValue <= 0) //撃破
+                {
+                    AddReward(1.0f);
+                    EndEpisode();
+                }
             }
         }
     }

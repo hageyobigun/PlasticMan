@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
-    private PlayerStage _playerStage;
     [SerializeField] private LifePresenter _lifePresente = null;
+    [SerializeField] private StageManager _stageManager = null;
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
 
@@ -25,8 +25,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //移動
         this.UpdateAsObservable()
-            .Where(_ => _playerStage.IsStage(_playerInput.Inputting()))
-            .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
+            .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
+            .Subscribe(_ => _playerMove.Move());
 
         //攻撃(bullet)
         this.UpdateAsObservable()
@@ -80,8 +80,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private void Initialize()
     {
         _playerInput = new PlayerInput();
-        _playerMove = new PlayerMove(this.gameObject);
-        _playerStage = new PlayerStage(4);
+        _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
         _PlayerAttack = GetComponent<PlayerAttack>();
         _lifePresente.Initialize(hpValue, mpValue);
         playerState = State.Normal;

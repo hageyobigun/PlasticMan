@@ -13,7 +13,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     public GameObject player;
 
     private EnemyMove _enemyMove;
-    private SliderModel _sliderModel;
+    [SerializeField] private LifePresenter _lifePresenter = null;
 
     private Subject<int> attackSubject = new Subject<int>();
     public IObservable<int> attackObservable { get { return attackSubject; }}
@@ -29,7 +29,6 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         _enemyMove = new EnemyMove(4, gameObject);
         _playerAgent = player.GetComponent<PlayerAgent>();
         _playerController = player.GetComponent<PlayerController>();
-        _sliderModel = GetComponent<SliderModel>();
 
         moveSubject
             .Where(move => _enemyMove.IsStage(moveList[move]))
@@ -39,7 +38,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     //エピソード開始時
     public override void OnEpisodeBegin()
     {
-        _sliderModel.Initialize(hpValue, mpValue);
+        _lifePresenter.Initialize(hpValue, mpValue);
         enemyState = State.Normal;
     }
 
@@ -70,8 +69,9 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
 
     public virtual void Attacked(float damage)
     {
-        _sliderModel.hp.Value -= (int)damage;
-        if (_playerController != null && _sliderModel.hp.Value <= 0)
+        hpValue -= (int)damage;
+        _lifePresenter.OnChangeHpLife(hpValue);
+        if (_playerController != null && hpValue <= 0)
         {
             GameManeger.Instance.SetCurrentState(GameManeger.GameState.Win);
             Destroy(gameObject);
@@ -81,15 +81,15 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     //プロパティー
     public int GetHpValue
     {
-        get { return this._sliderModel.hp.Value; }  //取得用
-        set { this._sliderModel.hp.Value = value; } //値入力用
+        get { return this.hpValue; }  //取得用
+        set { this.hpValue = value; } //値入力用
     }
 
     //プロパティー
     public int GetMpValue
     {
-        get { return this._sliderModel.mp.Value; }  //取得用
-        set { this._sliderModel.mp.Value = value; } //値入力用
+        get { return this.mpValue; }  //取得用
+        set { this.mpValue = value; } //値入力用
     }
 
     //プロパティー

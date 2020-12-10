@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class PlayerMove
 {
-    private readonly GameObject _player;
+    private readonly GameObject player;
+    private List<GameObject> stageList = new List<GameObject>(); //ステージのオブジェクトリスト
+    private int playerPos;
 
-    public PlayerMove(GameObject gameObject)
+    public PlayerMove(GameObject _player, List<GameObject> _stageList)
     {
-        _player = gameObject;
+        player = _player;
+        stageList = _stageList;
+        playerPos = 4; //初期位置
     }
 
-    public void Move(GameObject movePos)
+    public bool IsMove(int _moveDirection)
     {
-        _player.transform.position = movePos.transform.position;
-        _player.transform.position += new Vector3(0, -1, -1);
+        var nextPos = playerPos + _moveDirection;
+        if (nextPos < 0 || nextPos > 8) return false;
+
+        if (_moveDirection == 1 && nextPos % 3 == 0) return false;
+
+        if (_moveDirection == -1 && playerPos % 3 == 0) return false;
+
+        playerPos = nextPos;
+        return true;
     }
 
-    public void SelectMove(int number)
+    public void Move()
     {
-        var movePos = StageManager.Instance.playerStageList[number];
-        _player.transform.position = movePos.transform.position;
-        _player.transform.position += new Vector3(0, -1, -1);
+        player.transform.position = stageList[playerPos].transform.position;
+        player.transform.position += new Vector3(0, -1, -1);
     }
-
 }

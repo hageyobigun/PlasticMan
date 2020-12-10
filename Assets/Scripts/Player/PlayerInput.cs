@@ -4,28 +4,26 @@ using UnityEngine;
 
 public class PlayerInput : IPlayerInput
 {
-    private int moveDirection;
 
     public int Inputting()
     {
-        moveDirection = 0;
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))//上
         {
-            moveDirection = -3;
+             return (-3);
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))//下
         {
-            moveDirection = 3;
+            return (3);
         }
         else if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))//左
         {
-            moveDirection = -1;
+            return (-1);
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))//右
         {
-            moveDirection = 1;
+            return (1);
         }
-        return moveDirection;
+        return (0);
     }
 
     public bool IsBulltetAttack() => Input.GetKeyDown(KeyCode.Space);

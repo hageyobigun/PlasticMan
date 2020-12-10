@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : SingletonMonoBehaviour<StageManager>
+public class StageManager : MonoBehaviour
 {
     [SerializeField]private GameObject playerStageBlockParent = null;
     [SerializeField]private GameObject enemyStageBlockParent = null;
-    public List<GameObject> playerStageList = new List<GameObject>();
-    public List<GameObject> enemyStageList = new List<GameObject>();
+    private List<GameObject> playerStageList = new List<GameObject>();
+    private List<GameObject> enemyStageList = new List<GameObject>();
 
     public StageCheck _stageCheck;
 
-
-    // Start is called before the first frame update
     private void Start()
     {
-        getStage();
+        StageLoading();
         _stageCheck = new StageCheck();
     }
 
-    private void getStage()
+
+    //ステージ読み込み
+    private void StageLoading()
     {
         foreach (Transform childTransform in playerStageBlockParent.transform)
         {
             playerStageList.Add(childTransform.gameObject);
+
         }
         foreach (Transform childTransform in enemyStageBlockParent.transform)
         {
@@ -31,5 +32,24 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         }
     }
 
+    public List<GameObject> GetPlayerStageList
+    {
+        get { return playerStageList;}
+    }
 
+    public List<GameObject> GetEnemyStageList
+    {
+        get { return enemyStageList; }
+    }
+
+
+    //public GameObject GetPlayerStage(int number)
+    //{
+    //    return (playerStageList[number]);
+    //}
+
+    //public GameObject GetEnemyStage(int number)
+    //{
+    //    return (enemyStageList[number]);
+    //}
 }

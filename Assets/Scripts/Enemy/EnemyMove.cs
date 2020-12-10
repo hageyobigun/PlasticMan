@@ -29,7 +29,7 @@ public class EnemyMove
 
     public void Move()
     {
-        enemy.transform.position = StageManager.Instance.enemyStageList[_enemyPos].transform.position;
+        //enemy.transform.position = StageManager.Instance.enemyStageList[_enemyPos].transform.position;
         enemy.transform.position += new Vector3(0, -1, -1);
     }
 }

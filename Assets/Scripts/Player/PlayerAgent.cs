@@ -13,9 +13,7 @@ public class PlayerAgent : Agent , Player.IAttackable
     private int[] moveList = { -3, -1, 1, 3, 0};
 
     private PlayerMove _playerMove;
-    private PlayerStage _playerStage;
     private PlayerAttack _playerAttack;
-    private SliderModel _sliderModel;
     private BaseEnemyAgent _baseEnemyAgent;
 
     private Subject<int> attackSubject = new Subject<int>();
@@ -27,10 +25,8 @@ public class PlayerAgent : Agent , Player.IAttackable
 
     public override void Initialize()
     {
-        _playerMove = new PlayerMove(this.gameObject);
-        _playerStage = new PlayerStage(4);
+        //_playerMove = new PlayerMove(this.gameObject);
         _playerAttack = GetComponent<PlayerAttack>();
-        _sliderModel = GetComponent<SliderModel>();
         _baseEnemyAgent = enemy.GetComponent<BaseEnemyAgent>();
         isAttack = true;
 
@@ -45,34 +41,34 @@ public class PlayerAgent : Agent , Player.IAttackable
             });
 
         attackSubject
-            .Where(attack => attack == 2 && _sliderModel.mp.Value >= 3 && isAttack == true)
+            .Where(attack => attack == 2 && mpValue >= 3 && isAttack == true)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
             {
                 _playerAttack.FireAttack();
-                _sliderModel.mp.Value -= 3;
+                mpValue -= 3;
                 playerState = State.Fire_Attack;
                 isAttack = false;
             });
 
         attackSubject
-            .Where(attack => attack == 3 && _sliderModel.mp.Value >= 4 && isAttack == true)
+            .Where(attack => attack == 3 && mpValue >= 4 && isAttack == true)
             .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
             .Subscribe(_ =>
             {
                 _playerAttack.BombAttack();
-                _sliderModel.mp.Value -= 4;
+                mpValue -= 4;
                 playerState = State.Bomb_Attack;
                 isAttack = false;
             });
 
         attackSubject
-            .Where(attack => attack == 4 && _sliderModel.mp.Value >= 5 && isAttack == true)
+            .Where(attack => attack == 4 && mpValue >= 5 && isAttack == true)
             .ThrottleFirst(TimeSpan.FromSeconds(2.5f))
             .Subscribe(_ =>
             {
                 StartCoroutine(_playerAttack.BarrierGuard());
-                _sliderModel.mp.Value -= 5;
+                mpValue -= 5;
                 playerState = State.Barrier;
                 isAttack = false;
             });
@@ -82,9 +78,9 @@ public class PlayerAgent : Agent , Player.IAttackable
             .Delay(TimeSpan.FromSeconds(0.1f))
             .Subscribe(_ => isAttack = true);
 
-        moveSubject
-            .Where(move => _playerStage.IsStage(moveList[move]))
-            .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
+        //moveSubject
+        //    .Where(move => _playerStage.IsStage(moveList[move]))
+        //    .Subscribe(_ => _playerMove.Move(_playerStage.getPlayerPos));
 
     }
 
@@ -92,14 +88,13 @@ public class PlayerAgent : Agent , Player.IAttackable
     {
         sensor.AddObservation(this.transform.position);
         sensor.AddObservation(enemy.transform.position);
-        sensor.AddObservation(_sliderModel.mp.Value);
+        sensor.AddObservation(mpValue);
     }
 
 
     //エピソード開始時
     public override void OnEpisodeBegin()
     {
-        _sliderModel.Initialize(hpValue, mpValue);
         playerState = State.Normal;
     }
 
@@ -126,7 +121,7 @@ public class PlayerAgent : Agent , Player.IAttackable
             }
         }
 
-        if (_sliderModel.hp.Value < 0)
+        if (hpValue < 0)
         {
             EndEpisode();
         }
@@ -134,14 +129,14 @@ public class PlayerAgent : Agent , Player.IAttackable
 
     public void Attacked(float damage)
     {
-        _sliderModel.hp.Value -= (int)damage;
+        hpValue -= (int)damage;
     }
 
         //プロパティー
     public int GetHpValue
     {
-        get { return this._sliderModel.hp.Value; }  //取得用
-        private set { this._sliderModel.hp.Value = value; } //値入力用
+        get { return this.hpValue; }  //取得用
+        private set { this.hpValue = value; } //値入力用
     }
 
     //プロパティー

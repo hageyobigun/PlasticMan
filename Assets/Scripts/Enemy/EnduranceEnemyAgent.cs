@@ -1,12 +1,49 @@
-﻿using Unity.MLAgents.Sensors;
+﻿using System;
+using Character;
+using UniRx;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 
 public class EnduranceEnemyAgent : BaseEnemyAgent
 {
+    private Subject<Unit> BarrierSubject = new Subject<Unit>();
 
     public override void Initialize()
     {
         base.Initialize();
+        attackObservable//通常弾
+            .Where(attack => attack == 1)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
+            .Subscribe(_ =>
+            {
+                _enemyAttacks.BulletAttack();
+                //GetState = State.Bullet_Attack;
+            });
+
+        attackObservable//炎
+            .Where(attack => attack == 2 && GetMpValue >= 3)
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Subscribe(_ =>
+            {
+                _enemyAttacks.FireAttack();
+                MpConsumption(3);
+                //GetState = State.Fire_Attack;
+            });
+
+        attackObservable//バリア
+            .Where(attack => attack == 3 && GetMpValue >= 5)
+            .ThrottleFirst(TimeSpan.FromSeconds(2.5f))
+            .Subscribe(_ =>
+            {
+                StartCoroutine(_enemyAttacks.BarrierGuard());
+                MpConsumption(5);
+                GetState = State.Barrier;
+                BarrierSubject.OnNext(Unit.Default);
+            });
+
+        BarrierSubject
+            .Delay(TimeSpan.FromSeconds(2.0f))
+            .Subscribe(_ => GetState = State.Normal);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -14,6 +51,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
         sensor.AddObservation(this.transform.position);
         sensor.AddObservation(GetHpValue);
         sensor.AddObservation(GetMpValue);
+        sensor.AddObservation((float)GetState);
         if (player != null)
         {
             sensor.AddObservation(player.transform.position);
@@ -25,17 +63,11 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             sensor.AddObservation(this.transform.position);
             sensor.AddObservation(0);
         }
-        sensor.AddObservation((float)GetState);
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        base.OnEpisodeBegin();
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        base.OnActionReceived(vectorAction);
+        base.OnActionReceived(vectorAction);//攻撃　0:なし　1:通常弾　2:炎 3:バリア
 
         if (_playerAgent != null)
         {

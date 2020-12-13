@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using System;
 using Character;
+using Game;
 
 public class PlayerController : MonoBehaviour , Player.IAttackable
 {
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
     private PlayerAttack _PlayerAttack;
-    [SerializeField] private LifePresenter _lifePresente = null;
+    [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
@@ -82,7 +81,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _playerInput = new PlayerInput();
         _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
         _PlayerAttack = GetComponent<PlayerAttack>();
-        _lifePresente.Initialize(hpValue, mpValue);
+        _lifePresenter.Initialize(hpValue, mpValue);
         playerState = State.Normal;
     }
 
@@ -90,10 +89,10 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     public void Attacked(float damage)
     {
         hpValue -= (int)damage;
-        _lifePresente.OnChangeHpLife(hpValue);
+        _lifePresenter.OnChangeHpLife(hpValue);
         if (hpValue <= 0)
         {
-            GameManeger.Instance.SetCurrentState(GameManeger.GameState.Lose);
+            GameManeger.Instance.currentGameStates.Value = GameState.Lose;
             Destroy(gameObject);
         }
     }
@@ -102,7 +101,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private void MpConsumption(int useValue)
     {
         mpValue -= useValue;
-        _lifePresente.OnChangeMpLife(mpValue);
+        _lifePresenter.OnChangeMpLife(mpValue);
     }
 
 

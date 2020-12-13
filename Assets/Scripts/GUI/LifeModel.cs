@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
 
-
 public class LifeModel
 {
     // Model

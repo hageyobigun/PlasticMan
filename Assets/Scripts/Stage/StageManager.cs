@@ -9,12 +9,9 @@ public class StageManager : MonoBehaviour
     private List<GameObject> playerStageList = new List<GameObject>();
     private List<GameObject> enemyStageList = new List<GameObject>();
 
-    public StageCheck _stageCheck;
-
     private void Start()
     {
         StageLoading();
-        _stageCheck = new StageCheck();
     }
 
 
@@ -41,15 +38,4 @@ public class StageManager : MonoBehaviour
     {
         get { return enemyStageList; }
     }
-
-
-    //public GameObject GetPlayerStage(int number)
-    //{
-    //    return (playerStageList[number]);
-    //}
-
-    //public GameObject GetEnemyStage(int number)
-    //{
-    //    return (enemyStageList[number]);
-    //}
 }

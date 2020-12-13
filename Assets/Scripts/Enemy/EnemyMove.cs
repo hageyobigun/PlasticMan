@@ -4,32 +4,37 @@ using UnityEngine;
 
 public class EnemyMove
 {
-    private int _enemyPos;
-    private GameObject enemy;
+    private readonly GameObject enemy;
+    private List<GameObject> stageList = new List<GameObject>(); //ステージのオブジェクトリスト
+    private int enemyPos;
+    private int[] moveList = { -3, -1, 1, 3, 0 };//動く方向のリスト{上、左、右、下、静止}
 
-    public EnemyMove(int enemyPos, GameObject gameObject)
+    public EnemyMove(GameObject _enemy, List<GameObject> _stageList)
     {
-        _enemyPos = enemyPos;
-        enemy = gameObject;
+        enemy = _enemy;
+        stageList = _stageList;
+        enemyPos = 4;//初期位置
     }
 
-    public bool IsStage(int _moveDirection)
+    public bool IsMove(int moveDirection)
     {
-        var nextPos = _enemyPos + _moveDirection;
+        moveDirection = moveList[moveDirection];//動く方向の値に修正
+
+        var nextPos = enemyPos + moveDirection;
         if (nextPos < 0 || nextPos > 8) return false;
 
-        if (_moveDirection == 1 && nextPos % 3 == 0) return false;
+        if (moveDirection == 1 && nextPos % 3 == 0) return false;
 
-        if (_moveDirection == -1 && _enemyPos % 3 == 0) return false;
+        if (moveDirection == -1 && enemyPos % 3 == 0) return false;
 
-        _enemyPos += _moveDirection;
-
+        enemyPos += moveDirection;
         return true;
     }
 
     public void Move()
     {
-        //enemy.transform.position = StageManager.Instance.enemyStageList[_enemyPos].transform.position;
+        enemy.transform.position = stageList[enemyPos].transform.position;
         enemy.transform.position += new Vector3(0, -1, -1);
     }
+
 }

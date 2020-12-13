@@ -4,87 +4,35 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
 using System;
+using Game;
 
 public class GameManeger : SingletonMonoBehaviour<GameManeger>
 {
-    public enum GameState
-    {
-        Opening,
-        Start,
-        Playing_Vs,
-        Win,
-        Lose
-    }
 
-    private GameState currentGameState;
-    private Subject<GameState> gameStateSubjet = new Subject<GameState>();
-    public IObservable<GameState> gameStateChanged{get { return gameStateSubjet; }}
+    public ReactiveProperty<GameState> currentGameStates = new ReactiveProperty<GameState>();
 
     public int enemyNumber;
 
 
     void Start()
     {
-        currentGameState = GameState.Opening;
         enemyNumber = 0;
         DontDestroyOnLoad(this.gameObject);
-    }
 
-    public void SetCurrentState(GameState state)
-    {
-        currentGameState = state;
-        OnGameStateChanged(currentGameState);
-    }
+        currentGameStates
+            .Where(state => state == GameState.Opening)
+            .Subscribe(_ => SceneManager.LoadScene("Title"));
 
-    // 状態が変わったら何をするか
-    void OnGameStateChanged(GameState state)
-    {
-        switch (state)
-        {
-            case GameState.Opening:
-                GameTitle();
-                break;
-            case GameState.Start:
-                GameStart();
-                break;
-            case GameState.Playing_Vs:
-                GamePlayVs();
-                break;
-            case GameState.Win:
-                GameWin();
-                break;
-            case GameState.Lose:
-                GameLose();
-                break;
-            default:
-                break;
+        currentGameStates
+            .Where(state => state == GameState.Start)
+            .Subscribe(_ => SceneManager.LoadScene("Start"));
 
-        }
-    }
+        currentGameStates
+            .Where(state => state == GameState.VsGame)
+            .Subscribe(_ => SceneManager.LoadScene("Play"));
 
-    private void GameTitle()//タイトル画面
-    {
-        SceneManager.LoadScene("Title");
-    }
-
-    private void GameStart()//選択画面
-    {
-        SceneManager.LoadScene("Start");
-    }
-
-    private void GamePlayVs()//ゲーム画面
-    {
-        gameStateSubjet = new Subject<GameState>();
-        SceneManager.LoadScene("Play");
-    }
-
-    private void GameWin()//ゲームオーバー
-    {
-        gameStateSubjet.OnNext(currentGameState);
-    }
-
-    private void GameLose()//ゲームオーバー
-    {
-        gameStateSubjet.OnNext(currentGameState);
+        currentGameStates
+            .Where(state => state == GameState.RushGame)
+            .Subscribe(_ => SceneManager.LoadScene("Play"));
     }
 }

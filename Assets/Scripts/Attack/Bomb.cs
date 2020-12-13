@@ -6,6 +6,7 @@ public class Bomb : MonoBehaviour
 {
 
     [SerializeField] private int playerId = 0;
+    
 
     private float gravity = -9.8f;    //重力
     [SerializeField] private float flightTime = 10;  //滞空時間
@@ -48,33 +49,4 @@ public class Bomb : MonoBehaviour
         Instantiate(explosion, new Vector3(transform.position.x, -2.0f, transform.position.z), Quaternion.identity);
     }
 
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (playerId == 1)//player
-    //    {
-    //        var attackable = collision.GetComponent<Enemy.IAttackable>();
-    //        if (attackable != null)
-    //        {
-    //            attackable.Attacked(4);
-    //        }
-    //    }
-    //    else if (playerId == -1)//enemy
-    //    {
-    //        var attackable = collision.GetComponent<Player.IAttackable>();
-    //        if (attackable != null)
-    //        {
-    //            attackable.Attacked(4);
-    //        }
-    //    }
-
-    //    var attacknotable = collision.GetComponent<IAttacknotable>();
-    //    if (attacknotable != null)
-    //    {
-    //        if (attacknotable.barriered(playerId))
-    //        {
-    //            Destroy(gameObject);
-    //        }
-    //    }
-    //}
 }

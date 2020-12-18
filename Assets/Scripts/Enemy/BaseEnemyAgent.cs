@@ -52,8 +52,11 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         int move = (int)vectorAction[0]; //1:上　2:左　3:右　4:下　5:静止
         int attack = (int)vectorAction[1];
 
-        moveSubject.OnNext(move);
-        attackSubject.OnNext(attack);
+        if (GameManeger.Instance.currentGameStates.Value == GameState.Play)
+        {
+            moveSubject.OnNext(move);
+            attackSubject.OnNext(attack);
+        }
         if (attack == 0)
         {
             enemyState = State.Normal;

@@ -6,6 +6,7 @@
         Start,
         VsGame,
         RushGame,
+        NextEnemy,
         Play,
         Win,
         Lose

@@ -34,5 +34,4 @@ public class SelectButton : MonoBehaviour
         _selectView.CloseImage(selectNumber);
     }
 
-
 }

@@ -373,9 +373,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1050250777}
-        m_TargetAssemblyTypeName: SelectButton, Assembly-CSharp
-        m_MethodName: Close
+      - m_Target: {fileID: 1050250778}
+        m_TargetAssemblyTypeName: SelectionEnemy, Assembly-CSharp
+        m_MethodName: Enemy_Rush
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1293,8 +1293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1379.9999, y: 601.00006}
-  m_SizeDelta: {x: 333, y: 365.75116}
+  m_AnchoredPosition: {x: 1372, y: 609.2}
+  m_SizeDelta: {x: 429.5277, y: 675.0466}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &310432732
 MonoBehaviour:
@@ -1309,14 +1309,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8bfadec067237c04ab16144f6847e733, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6716d4a0327723d479f7f354eac8fee9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2021,7 +2021,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4ae49494a73ff584099f601cb159abba, type: 3}
+  m_Sprite: {fileID: 21300026, guid: f776e2e9690501e41a2e5b81ceb440b9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2875,7 +2875,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameStates:
     value: 1
-  enemyNumber: 0
 --- !u!4 &1417184803
 Transform:
   m_ObjectHideFlags: 0

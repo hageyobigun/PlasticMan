@@ -24,11 +24,13 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //移動
         this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
             .Subscribe(_ => _playerMove.Move());
 
         //攻撃(bullet)
         this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsBulltetAttack())
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ =>
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //攻撃(fire)
         this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsFireAttack() && mpValue >= 3)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //攻撃(bomb)
         this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsBombAttack() && mpValue >= 4)
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
@@ -64,6 +68,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
         //防御(barrier)
         this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsBarrier() && mpValue >= 5)
             .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
             .Subscribe(_ =>

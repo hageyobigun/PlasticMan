@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Game;
 
 public class StartBattle : MonoBehaviour
 {
@@ -17,8 +17,9 @@ public class StartBattle : MonoBehaviour
     {
         startText.text = "READY";
         yield return new WaitForSeconds(1f);
-        startText.text = "GO!!";
+        startText.text = "   GO!!";
         yield return new WaitForSeconds(0.5f);
         startText.enabled = false;
+        GameManeger.Instance.currentGameStates.Value = GameState.Play;
     }
 }

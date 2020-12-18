@@ -27,6 +27,10 @@ public class ResultPresenter : MonoBehaviour
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Lose)
             .Subscribe(_ => Lose());
 
+        this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.RushClear)
+            .Subscribe(_ => resultView.RushGameClear());
+
     }
 
 

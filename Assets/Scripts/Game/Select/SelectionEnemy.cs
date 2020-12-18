@@ -24,6 +24,7 @@ public class SelectionEnemy : MonoBehaviour
 
     public void Enemy_Rush()
     {
+        GameManeger.Instance.GetEnemyNumber = 0;
         GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
     }
 }

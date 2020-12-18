@@ -6,7 +6,6 @@ using Game;
 public class EnemyManeger : MonoBehaviour
 {
     [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
-    private bool isRushGame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -15,13 +14,20 @@ public class EnemyManeger : MonoBehaviour
         {
             enemyList[i].SetActive(false);
         }
-
-        if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame)
+        if (GameManeger.Instance.GetEnemyNumber < enemyList.Count)
         {
-            isRushGame = true;
+            enemyList[GameManeger.Instance.GetEnemyNumber].SetActive(true);//戦う敵を出現させる
         }
-        enemyList[GameManeger.Instance.GetEnemyNumber].SetActive(true);
+        else
+        {
+            if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame) //BossRush Clear
+            {
+                GameManeger.Instance.currentGameStates.Value = GameState.RushClear;
+            }
+            else
+            {
+                Debug.LogError("enemy_not_found"); //敵が登録されていない場合
+            }
+        }
     }
-
-
 }

@@ -8,6 +8,7 @@ public class ResultView : MonoBehaviour
     [SerializeField] private GameObject vsResultImage = null;
     [SerializeField] private GameObject rushWinResultImage = null;
     [SerializeField] private GameObject rushLoseResultImage = null;
+    [SerializeField] private GameObject rushClearImage = null;
 
     [SerializeField] TextMeshProUGUI winText = null;
     [SerializeField] TextMeshProUGUI loseText = null;
@@ -15,8 +16,13 @@ public class ResultView : MonoBehaviour
     //bossrushで勝利
     public void RushGameWin()
     {
-        winText.enabled = true;
         rushWinResultImage.SetActive(true);
+    }
+
+    //bossrushで勝利
+    public void RushGameClear()
+    {
+        rushClearImage.SetActive(true);
     }
 
     //bossrushで敗北

@@ -13,6 +13,7 @@ public class ResultButton : MonoBehaviour
 
     public void RetryRushButton()
     {
+        GameManeger.Instance.GetEnemyNumber = 0;
         GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
     }
 

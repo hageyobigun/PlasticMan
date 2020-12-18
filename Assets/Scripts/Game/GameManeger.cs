@@ -37,11 +37,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //ゲーム画面BossRush
         currentGameStates
             .Where(state => state == GameState.RushGame)
-            .Subscribe(_ =>
-            {
-                enemyNumber = 0;
-                SceneManager.LoadScene("Play");
-            });
+            .Subscribe(_ => SceneManager.LoadScene("Play"));
     }
 
 

@@ -9,6 +9,7 @@
         NextEnemy,
         Play,
         Win,
-        Lose
+        Lose,
+        RushClear
     }
 }

@@ -45,11 +45,12 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         hpValue = MaxHpValue;
         mpValue = MaxMpValue;
         enemyState = State.Normal;
+        moveSubject.OnNext(0);//初期位置設定
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        int move = (int)vectorAction[0]; //1:上　2:左　3:右　4:下　5:静止
+        int move = (int)vectorAction[0]; //0:静止 1:上　2:左　3:右　4:下
         int attack = (int)vectorAction[1];
 
         if (GameManeger.Instance.currentGameStates.Value == GameState.Play)

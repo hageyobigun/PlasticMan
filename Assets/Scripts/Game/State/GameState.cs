@@ -6,10 +6,10 @@
         Start,
         VsGame,
         RushGame,
-        NextEnemy,
         Play,
         Win,
         Lose,
-        RushClear
+        RushClear,
+        Pause
     }
 }

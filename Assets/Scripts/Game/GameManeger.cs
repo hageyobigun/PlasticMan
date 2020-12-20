@@ -38,6 +38,16 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         currentGameStates
             .Where(state => state == GameState.RushGame)
             .Subscribe(_ => SceneManager.LoadScene("Play"));
+
+        //play
+        currentGameStates
+            .Where(state => state == GameState.Play)
+            .Subscribe(_ => Time.timeScale = 1.0f);
+
+        //pause
+        currentGameStates
+            .Where(state => state == GameState.Pause)
+            .Subscribe(_ => Time.timeScale = 0f);
     }
 
 

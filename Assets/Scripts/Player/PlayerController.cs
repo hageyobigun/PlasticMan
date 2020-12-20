@@ -9,14 +9,15 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 {
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
-    private PlayerAttack _PlayerAttack;
+    private PlayerAttack _playerAttack;
     [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
 
-    private State playerState;
-
+    private State playerAttackState;
+    private State playerGuardState;
+    [SerializeField] private float barrierInterval = 1.0f;
 
     private void Awake()
     {
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ =>
             {
-                _PlayerAttack.BulletAttack();
-                playerState = State.Bullet_Attack;
+                _playerAttack.BulletAttack();
+                playerAttackState = State.Bullet_Attack;
             });
 
 
@@ -47,9 +48,9 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                {
-                   _PlayerAttack.FireAttack();
+                   _playerAttack.FireAttack();
                    MpConsumption(3);
-                   playerState = State.Fire_Attack;
+                   playerAttackState = State.Fire_Attack;
                }
             );
 
@@ -60,9 +61,9 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                 {
-                    _PlayerAttack.BombAttack();
+                    _playerAttack.BombAttack();
                     MpConsumption(4);
-                    playerState = State.Bomb_Attack;
+                    playerAttackState = State.Bomb_Attack;
                 }
             );
 
@@ -70,12 +71,12 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsBarrier() && mpValue >= 5)
-            .ThrottleFirst(TimeSpan.FromSeconds(1.0f))
+            .ThrottleFirst(TimeSpan.FromSeconds(barrierInterval))
             .Subscribe(_ =>
                 {
-                    StartCoroutine(_PlayerAttack.BarrierGuard());
+                    BarrierInterVal();
                     MpConsumption(5);
-                    playerState = State.Barrier;
+                    playerGuardState = State.Barrier;
                 }
             );
     }
@@ -85,21 +86,33 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     {
         _playerInput = new PlayerInput();
         _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
-        _PlayerAttack = GetComponent<PlayerAttack>();
+        _playerAttack = GetComponent<PlayerAttack>();
         _lifePresenter.Initialize(hpValue, mpValue);
-        playerState = State.Normal;
+        playerAttackState = State.Normal;
+        playerGuardState = State.Normal;
     }
 
     //ダメージを受ける
     public void Attacked(float damage)
     {
-        hpValue -= (int)damage;
-        _lifePresenter.OnChangeHpLife(hpValue);
-        if (hpValue <= 0)
+        if (playerGuardState != State.Barrier) //バリア状態だったら無効化
         {
-            GameManeger.Instance.currentGameStates.Value = GameState.Lose;
-            Destroy(gameObject);
+            hpValue -= (int)damage;
+            _lifePresenter.OnChangeHpLife(hpValue);
+            if (hpValue <= 0)
+            {
+                GameManeger.Instance.currentGameStates.Value = GameState.Lose;
+                Destroy(gameObject);
+            }
         }
+    }
+
+    //バリアを呼び出し終了後に処理
+    public void BarrierInterVal()
+    {
+        Observable.FromCoroutine(() => _playerAttack.BarrierGuard(barrierInterval))
+            .Subscribe(_ => playerGuardState = State.Normal)
+            .AddTo(this);
     }
 
     //MP消費
@@ -111,17 +124,12 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
 
 
     //プロパティー
-    public int GetHpValue
-    {
-        get { return this.hpValue; }  //取得用
-        private set { this.hpValue = value; } //値入力用
-    }
+    public int GetHpValue { get { return this.hpValue; }}
 
-    //プロパティー
-    public State GetState
-    {
-        get { return this.playerState; }  //取得用
-        private set { this.playerState = value; } //値入力用
-    }
+    //プロパティー 攻撃状態
+    public State GetAttackState{get { return this.playerAttackState; }}
+
+    //プロパティー 防御状態
+    public State GetGuardState{get { return this.playerGuardState; }}
 
 }

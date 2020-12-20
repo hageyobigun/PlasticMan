@@ -15,7 +15,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
             .Subscribe(_ =>
             {
                 _enemyAttacks.BulletAttack();
-                GetState = State.Bullet_Attack;
+                GetAttackState = State.Bullet_Attack;
             });
 
         attackObservable//炎
@@ -25,7 +25,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
             {
                 _enemyAttacks.FireAttack();
                 MpConsumption(3);
-                GetState = State.Fire_Attack;
+                GetAttackState = State.Fire_Attack;
             });
 
         attackObservable//爆弾
@@ -35,37 +35,39 @@ public class AttackEnemyAgent : BaseEnemyAgent
             {
                 _enemyAttacks.BombAttack();
                 MpConsumption(4);
-                GetState = State.Bomb_Attack;
+                GetAttackState = State.Bomb_Attack;
             });
     }
 
+    //観察対象 個数:9(自分の位置(3), 自分のMP(1),　自分の攻撃状態(1), playerの位置(3), playerの防御状態(1))
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(this.transform.position);
         sensor.AddObservation(GetMpValue);
-        sensor.AddObservation((float)GetState);
+        sensor.AddObservation((float)GetAttackState);
         if (player != null)
         {
             sensor.AddObservation(player.transform.position);
-            if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
-            else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
+            if (_playerAgent != null)
+            {
+                sensor.AddObservation((float)_playerAgent.GetGuardState);
+            }
+            else if (_playerController != null)
+            {
+                sensor.AddObservation((float)_playerController.GetGuardState);
+            }
         }
-        else
+        else //playerが消滅(撃破)した際のバグ対策
         {
             sensor.AddObservation(this.transform.position);
-            sensor.AddObservation(0);
+            sensor.AddObservation((float)State.Normal);
         }
-     
-    }
 
-    public override void OnEpisodeBegin()
-    {
-        base.OnEpisodeBegin();//攻撃　0:なし　1:通常弾　2:炎 3:ボム
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        base.OnActionReceived(vectorAction);
+        base.OnActionReceived(vectorAction); //攻撃　0:なし　1:通常弾　2:炎 3:ボム
 
         if (_playerAgent != null)
         {
@@ -77,8 +79,13 @@ public class AttackEnemyAgent : BaseEnemyAgent
         }
     }
 
+    //ダメージ処理
     public override void Attacked(float damage)
     {
         base.Attacked(damage);
+        if (GetHpValue <= 0)//死亡(学習中）
+        {
+            EndEpisode();
+        }
     }
 }

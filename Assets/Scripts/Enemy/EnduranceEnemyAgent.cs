@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class EnduranceEnemyAgent : BaseEnemyAgent
 {
-    private Subject<Unit> BarrierSubject = new Subject<Unit>();
+    [SerializeField] private float barrierInterval = 1.0f;
+    [SerializeField] private float oneStepReward = 0; //1stepの報酬の大きさ
 
     public override void Initialize()
     {
@@ -17,7 +18,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             .Subscribe(_ =>
             {
                 _enemyAttacks.BulletAttack();
-                //GetState = State.Bullet_Attack;
+                GetAttackState = State.Bullet_Attack;
             });
 
         attackObservable//炎
@@ -27,41 +28,48 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             {
                 _enemyAttacks.FireAttack();
                 MpConsumption(3);
-                //GetState = State.Fire_Attack;
+                GetAttackState = State.Fire_Attack;
             });
 
         attackObservable//バリア
             .Where(attack => attack == 3 && GetMpValue >= 5)
-            .ThrottleFirst(TimeSpan.FromSeconds(2.5f))
+            .ThrottleFirst(TimeSpan.FromSeconds(barrierInterval))
             .Subscribe(_ =>
             {
-                StartCoroutine(_enemyAttacks.BarrierGuard());
+                BarrierInterVal();
                 MpConsumption(5);
-                GetState = State.Barrier;
-                BarrierSubject.OnNext(Unit.Default);
+                GetGuardState = State.Barrier;
             });
-
-        BarrierSubject
-            .Delay(TimeSpan.FromSeconds(2.0f))
-            .Subscribe(_ => GetState = State.Normal);
     }
 
+    /*
+     * 観察対象 個数:11(自分の位置(3),自分のHP(1), 自分のMP(1), 自分の防御状態(1), 自分の攻撃状態(1),
+     * playerの位置(3), playerの攻撃状態(1))
+    */
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(this.transform.position);
         sensor.AddObservation(GetHpValue);
         sensor.AddObservation(GetMpValue);
-        sensor.AddObservation((float)GetState);
+        sensor.AddObservation((float)GetGuardState);
+        sensor.AddObservation((float)GetAttackState);
+
         if (player != null)
         {
             sensor.AddObservation(player.transform.position);
-            if (_playerAgent != null) sensor.AddObservation((float)_playerAgent.GetState);
-            else if (_playerController != null) sensor.AddObservation((float)_playerController.GetState);
+            if (_playerAgent != null)
+            {
+                sensor.AddObservation((float)_playerAgent.GetAttackState);
+            }
+            else if (_playerController != null)
+            {
+                sensor.AddObservation((float)_playerController.GetAttackState);
+            }
         }
-        else
+        else //playerが消滅(撃破)した際のバグ対策
         {
             sensor.AddObservation(this.transform.position);
-            sensor.AddObservation(0);
+            sensor.AddObservation((float)State.Normal);
         }
     }
 
@@ -77,17 +85,27 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
                 EndEpisode();
             }
         }
+    }
 
-        if (StepCount % 1000 == 0)
+    //ダメージ処理
+    public override void Attacked(float damage)
+    {
+        if (GetGuardState != State.Barrier)//防御中は無効化
         {
-            AddReward(0.1f);
+            base.Attacked(damage);
+            if (GetHpValue <= 0)//死亡(学習中）
+            {
+                AddReward(StepCount * oneStepReward); //生きている時間(ステップ数)が長いほど高い報酬を与える
+                EndEpisode();
+            }
         }
     }
 
-    
-
-    public override void Attacked(float damage)
+    //バリアを呼び出し終了後に処理
+    public void BarrierInterVal()
     {
-        base.Attacked(damage);
+        Observable.FromCoroutine(() => _enemyAttacks.BarrierGuard(barrierInterval))
+            .Subscribe(_ => GetGuardState = State.Normal)
+            .AddTo(this);
     }
 }

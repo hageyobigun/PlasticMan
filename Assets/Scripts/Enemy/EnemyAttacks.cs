@@ -32,10 +32,10 @@ public class EnemyAttacks : MonoBehaviour
         Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, -1.0f), Quaternion.identity);
     }
 
-    public IEnumerator BarrierGuard()
+    public IEnumerator BarrierGuard(float interval)
     {
         barrier.SetActive(true);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(interval);
         barrier.SetActive(false);
     }
 }

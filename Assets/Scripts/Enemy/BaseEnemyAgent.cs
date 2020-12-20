@@ -7,20 +7,24 @@ using Game;
 
 public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
 {
-    [SerializeField] private int MaxHpValue = 100;
-    [SerializeField] private int MaxMpValue = 100;
+    [SerializeField] private int maxHpValue = 100;
+    [SerializeField] private int maxMpValue = 100;
     private int hpValue;
     private int mpValue;
-    private State enemyState;
+    private State enemyAttackState;
+    private State enemyGuardState;
+    //class
     private EnemyMove _enemyMove;
     protected EnemyAttacks _enemyAttacks;
     [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
 
+    //行動subject
     private Subject<int> moveSubject = new Subject<int>();
     private Subject<int> attackSubject = new Subject<int>();
     public IObservable<int> attackObservable { get { return attackSubject; }}
 
+    //player関連
     public GameObject player;
     protected PlayerAgent _playerAgent;
     protected PlayerController _playerController;
@@ -32,51 +36,34 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         _playerAgent = player.GetComponent<PlayerAgent>();
         _playerController = player.GetComponent<PlayerController>();
 
+
         moveSubject
             .Where(move => _enemyMove.IsMove(move))
             .Subscribe(_ => _enemyMove.Move());
 
+        attackSubject
+            .Where(attack => attack == 0)
+            .Subscribe(_ => enemyAttackState = State.Normal);//攻撃しない
     }
 
     //エピソード開始時
     public override void OnEpisodeBegin()
     {
-        _lifePresenter.Initialize(MaxHpValue, MaxMpValue);
-        hpValue = MaxHpValue;
-        mpValue = MaxMpValue;
-        enemyState = State.Normal;
+        _lifePresenter.Initialize(maxHpValue, maxMpValue);
+        hpValue = maxHpValue;
+        mpValue = maxMpValue;
+        enemyAttackState = State.Normal;
+        enemyGuardState = State.Normal;
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        int move = (int)vectorAction[0]; //0:静止 1:上　2:左　3:右　4:下
-        int attack = (int)vectorAction[1];
-
-        if (GameManeger.Instance.currentGameStates.Value == GameState.Play)
-        {
+        if (GameManeger.Instance.currentGameStates.Value == GameState.Play)//play開始
+        { 
+            int move = (int)vectorAction[0]; //0:静止 1:上　2:左　3:右　4:下
+            int attack = (int)vectorAction[1]; //攻撃　継承した先で登録
             moveSubject.OnNext(move);
             attackSubject.OnNext(attack);
-        }
-        if (attack == 0)
-        {
-            enemyState = State.Normal;
-        }
-
-        if (GetHpValue <= 0)//死亡
-        {
-            EndEpisode();
-        }
-
-        if (player != null)
-        {
-            if (_playerController != null)//切り替え可能
-            {
-                if (_playerController.GetHpValue <= 0) //撃破
-                {
-                    AddReward(1.0f);
-                    EndEpisode();
-                }
-            }
         }
     }
 
@@ -84,7 +71,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     {
         hpValue -= (int)damage;
         _lifePresenter.OnChangeHpLife(hpValue);
-        if (_playerController != null && hpValue <= 0)
+        if (hpValue <= 0 && _playerController != null)//死亡(Game中)
         {
             GameManeger.Instance.currentGameStates.Value = GameState.Win;
             Destroy(gameObject);
@@ -112,10 +99,17 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         set { this.mpValue = value; } //値入力用
     }
 
-    //プロパティー
-    public State GetState
+    //プロパティー 攻撃状態
+    public State GetAttackState
     {
-        get { return this.enemyState; }  //取得用
-        set { this.enemyState = value; } //値入力用
+        get { return this.enemyAttackState; }  //取得用
+        set { this.enemyAttackState = value; } //値入力用
+    }
+
+    //プロパティー 防御状態
+    public State GetGuardState
+    {
+        get { return this.enemyGuardState; }  //取得用
+        set { this.enemyGuardState = value; } //値入力用
     }
 }

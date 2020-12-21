@@ -2603,7 +2603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &389449860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2811,7 +2811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &398592361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5467,7 +5467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &746127483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8811,9 +8811,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  maxHpValue: 100
+  maxHpValue: 50
   maxMpValue: 100
-  barrierInterval: 1
+  barrierInterval: 1.5
   enemy: {fileID: 185885796}
   _lifePresenter: {fileID: 1494508445}
   _stageManager: {fileID: 1860693380}
@@ -8829,7 +8829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 10
+  DecisionPeriod: 2
   TakeActionsBetweenDecisions: 0
 --- !u!114 &1227698768
 MonoBehaviour:
@@ -15577,6 +15577,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2469195566375677685, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2469195566375677689, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
       propertyPath: _lifePresenter
       value: 
@@ -15591,7 +15595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2469195566375677689, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
       propertyPath: barrierInterval
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2469195566375677689, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
       propertyPath: hpValue
@@ -15709,7 +15713,7 @@ PrefabInstance:
     - target: {fileID: 2505719332980839272, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1236278758}
+      objectReference: {fileID: 1227698764}
     - target: {fileID: 2505719332980839272, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
       propertyPath: MaxHpValue
       value: 10
@@ -15717,6 +15721,10 @@ PrefabInstance:
     - target: {fileID: 2505719332980839272, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
       propertyPath: maxHpValue
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2505719332980839273, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
+      propertyPath: DecisionPeriod
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2505719332980839274, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
       propertyPath: m_Name
@@ -15729,6 +15737,10 @@ PrefabInstance:
     - target: {fileID: 2505719332980839277, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
       propertyPath: m_Model
       value: 
+      objectReference: {fileID: 5022602860645237092, guid: bc5ea6b22ef884545abfb66fa2e8a3e8, type: 3}
+    - target: {fileID: 2505719332980839277, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
+      propertyPath: m_BrainParameters.NumStackedVectorObservations
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c805435f56754f4f82902ca9549bd4e, type: 3}
@@ -15806,14 +15818,18 @@ PrefabInstance:
     - target: {fileID: 5303859885703012396, guid: db293e336b21146fdb5e1aa57c3f0484, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: fd945cf54c42348b7a41478a30f3a068, type: 3}
     - target: {fileID: 5303859885703012398, guid: db293e336b21146fdb5e1aa57c3f0484, type: 3}
       propertyPath: m_Name
       value: AttackEnemyAgent
       objectReference: {fileID: 0}
     - target: {fileID: 5303859885703012398, guid: db293e336b21146fdb5e1aa57c3f0484, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5303859885703012399, guid: db293e336b21146fdb5e1aa57c3f0484, type: 3}
+      propertyPath: DecisionPeriod
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db293e336b21146fdb5e1aa57c3f0484, type: 3}
@@ -15876,10 +15892,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6283132930587718172, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
+      propertyPath: DecisionPeriod
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6283132930587718173, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 68986f53e4a0d4be0a2da42cab6986e2, type: 3}
     - target: {fileID: 6283132930587718173, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 11
@@ -15906,11 +15926,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6283132930587718175, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
       propertyPath: oneStepReward
-      value: 0.0001
+      value: 0.0002
       objectReference: {fileID: 0}
     - target: {fileID: 6283132930587718175, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
       propertyPath: barrierInterval
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6430983e56644a9daada0ae79550d6c, type: 3}

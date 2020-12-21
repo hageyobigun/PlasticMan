@@ -81,7 +81,8 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
         {
             if (_playerAgent.GetHpValue <= 0) //撃破
             {
-                AddReward(0.1f);
+                AddReward(0.1f + (StepCount * oneStepReward)); //生きている時間(ステップ数)が長いほど高い報酬を与える
+                Debug.Log("win" + StepCount * oneStepReward + 0.1);
                 EndEpisode();
             }
         }
@@ -96,6 +97,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             if (GetHpValue <= 0)//死亡(学習中）
             {
                 AddReward(StepCount * oneStepReward); //生きている時間(ステップ数)が長いほど高い報酬を与える
+                Debug.Log("lose" + StepCount * oneStepReward);
                 EndEpisode();
             }
         }

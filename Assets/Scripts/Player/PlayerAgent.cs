@@ -4,6 +4,7 @@ using Unity.MLAgents.Sensors;
 using UniRx;
 using System;
 using Character;
+using System.Collections;
 
 //enemyの学習のための対戦相手の役割 行動基準は基本player
 public class PlayerAgent : Agent , Player.IAttackable
@@ -126,10 +127,10 @@ public class PlayerAgent : Agent , Player.IAttackable
             }
         }
 
-        if (StepCount % 1000 == 0)
-        {
-            AddReward(0.1f);
-        }
+        //if (StepCount % 1000 == 0)
+        //{
+        //    AddReward(0.1f);
+        //}
     }
 
     //ダメージ処理
@@ -141,10 +142,20 @@ public class PlayerAgent : Agent , Player.IAttackable
             _lifePresenter.OnChangeHpLife(hpValue);
             if (hpValue < 0)//死亡
             {
+                AddReward(-0.1f);
                 EndEpisode();
             }
         }
     }
+
+    ////死亡した時、向こうがEndEpisodeをする前に終了してしまう対策
+    //public IEnumerator EndPlayer()
+    //{
+    //    yield return new WaitForSeconds(0.0f);
+    //    AddReward(-0.1f);
+    //    EndEpisode();
+
+    //}
 
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()

@@ -776,8 +776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650d9d2cc912e4c3497b11448ec080e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aaa: 0
-  enemyNumber: 0
+  currentGameStates:
+    value: 0
 --- !u!4 &1424062529
 Transform:
   m_ObjectHideFlags: 0
@@ -1476,7 +1476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 155, y: 316}
+  m_AnchoredPosition: {x: 82, y: 316}
   m_SizeDelta: {x: 1384.4993, y: 331.13144}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2020866323
@@ -1499,7 +1499,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RockMan
+  m_text: 'NO title
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}

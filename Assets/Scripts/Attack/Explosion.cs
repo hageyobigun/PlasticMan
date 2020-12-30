@@ -2,7 +2,7 @@
 using UniRx;
 using System;
 
-public class Explosion : MonoBehaviour
+public class Explosion : BaseAttack
 {
     private Animator animator;
 
@@ -17,24 +17,4 @@ public class Explosion : MonoBehaviour
             .AddTo(this);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var attackable_player = collision.GetComponent<Player.IAttackable>();
-        var attackable_enemy = collision.GetComponent<Enemy.IAttackable>();
-        if (attackable_player != null)
-        {
-            attackable_player.Attacked(2);
-        }
-
-        if (attackable_enemy != null)
-        {
-            attackable_enemy.Attacked(2);
-        }
-
-        var attacknotable = collision.GetComponent<IAttacknotable>();
-        if (attacknotable != null)
-        {
-            Destroy(gameObject);
-        }
-    }
 }

@@ -7,7 +7,6 @@ public class Bomb : MonoBehaviour
 
     [SerializeField] private int playerId = 0;
     
-
     private float gravity = -9.8f;    //重力
     [SerializeField] private float flightTime = 10;  //滞空時間
     [SerializeField] private float speedRate = 100;   //滞空時間を基準とした移動速度倍率

@@ -20,7 +20,11 @@ public class VsButton : MonoBehaviour
     private void SetButton(int number)
     {
         enemyButtons[number].OnClickAsObservable()
-            .Subscribe(_ => SelectEnemy(number));
+            .Subscribe(_ =>
+            {
+                SelectEnemy(number);
+                SoundManager.Instance.PlaySe("NormalButton");
+            });
     }
 
     private void SelectEnemy(int enemyNUmber)

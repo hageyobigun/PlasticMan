@@ -99,8 +99,7 @@ MonoBehaviour:
   playerId: 1
   flightTime: 2
   speedRate: 2
-  explosion: {fileID: 840650080068895203, guid: 47f004c4e7ded4c0cbd121eb760fde48, type: 3}
-  testBlock: {fileID: 5166890048568676314, guid: 77dff09eebc164ab9927c874a2f1475f, type: 3}
+  explosion: {fileID: 252961078033046548, guid: 89a8c0befb733411eaad6e1da25c61d3, type: 3}
 --- !u!61 &-5192467214227562915
 BoxCollider2D:
   m_ObjectHideFlags: 0

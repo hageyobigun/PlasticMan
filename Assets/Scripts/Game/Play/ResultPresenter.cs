@@ -33,7 +33,6 @@ public class ResultPresenter : MonoBehaviour
 
     }
 
-
     public void Win()
     {
         if (isRushGame == true)

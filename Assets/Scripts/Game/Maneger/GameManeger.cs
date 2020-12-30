@@ -21,7 +21,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
 
         //タイトル
         currentGameStates
-            .Where(state => state == GameState.Opening)
+            .Where(state => state == GameState.Title)
             .Subscribe(_ => SceneManager.LoadScene("Title"));
 
         //ゲーム選択画面

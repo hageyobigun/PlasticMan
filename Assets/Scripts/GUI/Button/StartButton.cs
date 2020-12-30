@@ -31,6 +31,7 @@ public class StartButton : MonoBehaviour
             {
                 angularFrequency *= 5; //点滅加速
                 scene_move.OnNext(Unit.Default);
+                SoundManager.Instance.PlaySe("TitleButton");
             });
 
         //n秒後にシーン移動

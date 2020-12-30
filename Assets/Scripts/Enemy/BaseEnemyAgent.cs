@@ -79,7 +79,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     }
 
     //MP消費
-    public void MpConsumption(int useValue)
+    public virtual void MpConsumption(int useValue)
     {
         mpValue -= useValue;
         _lifePresenter.OnChangeMpLife(mpValue);

@@ -11,7 +11,11 @@ public class RushButton : MonoBehaviour
     void Awake()
     {
         startButton.OnClickAsObservable()
-            .Subscribe(_ => StartRush());
+            .Subscribe(_ =>
+            {
+                StartRush();
+                SoundManager.Instance.PlaySe("NormalButton");
+            });
     }
 
     public void StartRush()

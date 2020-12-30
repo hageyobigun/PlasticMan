@@ -35,7 +35,7 @@ public class ResultButton : MonoBehaviour
 
     public void TitleButton()
     {
-        GameManeger.Instance.currentGameStates.Value = GameState.Opening;
+        GameManeger.Instance.currentGameStates.Value = GameState.Title;
     }
 
 }

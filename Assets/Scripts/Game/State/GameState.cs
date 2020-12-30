@@ -2,7 +2,7 @@
 {
     public enum GameState
     {
-        Opening,
+        Title,
         Start,
         VsGame,
         RushGame,

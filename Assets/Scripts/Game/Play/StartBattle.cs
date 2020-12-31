@@ -10,6 +10,7 @@ public class StartBattle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startText.gameObject.SetActive(true);
         StartCoroutine(StartBattleText());
     }
 

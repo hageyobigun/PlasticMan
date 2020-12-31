@@ -23,7 +23,7 @@ public class Flashing
                 {
                     character.enabled = true;
                     isFlash = false;
-                });
+                }).AddTo(character);
         }
     }
 

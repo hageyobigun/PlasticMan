@@ -33,27 +33,34 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.Start)
             .Subscribe(_ =>
             {
-                SoundManager.Instance.StopBgm();
                 SceneManager.LoadScene("Start");
                 SoundManager.Instance.PlayBgm("Select");
+                Time.timeScale = 1.0f;
             });
 
         //ゲーム画面１vs１
         currentGameStates
             .Where(state => state == GameState.VsGame)
-            .Subscribe(_ => SceneManager.LoadScene("Play"));
+            .Subscribe(_ =>
+            {
+                SceneManager.LoadScene("Play");
+                SoundManager.Instance.StopBgm();
+            });
 
         //ゲーム画面BossRush
         currentGameStates
             .Where(state => state == GameState.RushGame)
-            .Subscribe(_ => SceneManager.LoadScene("Play"));
+            .Subscribe(_ =>
+            {
+                SceneManager.LoadScene("Play");
+                SoundManager.Instance.StopBgm();
+            }); 
 
         //play
         currentGameStates
             .Where(state => state == GameState.Play)
             .Subscribe(_ =>
             {
-                SoundManager.Instance.StopBgm();
                 Time.timeScale = 1.0f;
                 SoundManager.Instance.PlayBgm("Fight");
             });

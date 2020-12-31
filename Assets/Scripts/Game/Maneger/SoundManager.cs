@@ -37,12 +37,13 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     //------------------------------------------------------------------------------
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
         if (this != Instance)
         {
             Destroy(this);
             return;
         }
+
+        DontDestroyOnLoad(this.gameObject);
 
         bgmSource = gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;

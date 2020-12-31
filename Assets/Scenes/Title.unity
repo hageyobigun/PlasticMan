@@ -495,8 +495,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume:
-    bgm: 1
-    se: 1
+    bgm: 0.8
+    se: 0.2
     mute: 0
 --- !u!4 &704373799
 Transform:
@@ -1523,7 +1523,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 142, y: 75.16998}
+  m_AnchoredPosition: {x: 114, y: 75.16998}
   m_SizeDelta: {x: 1384.4993, y: 331.13144}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2020866323
@@ -1546,9 +1546,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'NO title
-
-'
+  m_text: Plasticman
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}

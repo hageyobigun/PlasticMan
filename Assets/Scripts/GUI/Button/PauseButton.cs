@@ -10,6 +10,7 @@ public class PauseButton : MonoBehaviour
 
     public void Pause()
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         if (!isPause)//停止
         {
             GameManeger.Instance.currentGameStates.Value = GameState.Pause;

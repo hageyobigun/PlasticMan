@@ -22,12 +22,21 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //タイトル
         currentGameStates
             .Where(state => state == GameState.Title)
-            .Subscribe(_ => SceneManager.LoadScene("Title"));
+            .Subscribe(_ =>
+            {
+                SceneManager.LoadScene("Title");
+                SoundManager.Instance.StopBgm();
+            });
 
         //ゲーム選択画面
         currentGameStates
             .Where(state => state == GameState.Start)
-            .Subscribe(_ => SceneManager.LoadScene("Start"));
+            .Subscribe(_ =>
+            {
+                SoundManager.Instance.StopBgm();
+                SceneManager.LoadScene("Start");
+                SoundManager.Instance.PlayBgm("Select");
+            });
 
         //ゲーム画面１vs１
         currentGameStates
@@ -42,7 +51,12 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //play
         currentGameStates
             .Where(state => state == GameState.Play)
-            .Subscribe(_ => Time.timeScale = 1.0f);
+            .Subscribe(_ =>
+            {
+                SoundManager.Instance.StopBgm();
+                Time.timeScale = 1.0f;
+                SoundManager.Instance.PlayBgm("Fight");
+            });
 
         //pause
         currentGameStates

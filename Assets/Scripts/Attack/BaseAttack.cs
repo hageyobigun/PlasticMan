@@ -23,6 +23,7 @@ public abstract class BaseAttack : MonoBehaviour
             if (attackable != null)
             {
                 _flashing.Flash(collision.GetComponent<SpriteRenderer>());
+                SoundManager.Instance.PlaySe("Hit");
                 attackable.Attacked(damagePower);
                 Destroy(gameObject);
             }
@@ -33,6 +34,7 @@ public abstract class BaseAttack : MonoBehaviour
             if (attackable != null)
             {
                 _flashing.Flash(collision.GetComponent<SpriteRenderer>());
+                SoundManager.Instance.PlaySe("Hit");
                 attackable.Attacked(damagePower);
                 Destroy(gameObject);
             }
@@ -44,6 +46,7 @@ public abstract class BaseAttack : MonoBehaviour
         {
             if (attacknotable.barriered(playerId))
             {
+                SoundManager.Instance.PlaySe("Barrier");
                 Destroy(gameObject);
             }
         }

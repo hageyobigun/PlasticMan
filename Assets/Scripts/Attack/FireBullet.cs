@@ -11,6 +11,7 @@ public class FireBullet : BaseAttack
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.AddForce(new Vector2(500 * playerId, 0));
+        SoundManager.Instance.PlaySe("Fire");
     }
 
     private void OnBecameInvisible()

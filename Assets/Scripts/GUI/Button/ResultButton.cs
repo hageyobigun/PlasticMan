@@ -7,12 +7,14 @@ public class ResultButton : MonoBehaviour
 
     public void NextEnemyButton() //次の的に進む
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         GameManeger.Instance.GetEnemyNumber++;
         GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
     }
 
     public void RetryRushButton()
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         GameManeger.Instance.GetEnemyNumber = 0;
         GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
     }
@@ -22,6 +24,7 @@ public class ResultButton : MonoBehaviour
 
     public void RetryVsButton()
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         GameManeger.Instance.currentGameStates.Value = GameState.VsGame;
     }
 
@@ -30,11 +33,13 @@ public class ResultButton : MonoBehaviour
 
     public void BackOptionButton()
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         GameManeger.Instance.currentGameStates.Value = GameState.Start;
     }
 
     public void TitleButton()
     {
+        SoundManager.Instance.PlaySe("NormalButton");
         GameManeger.Instance.currentGameStates.Value = GameState.Title;
     }
 

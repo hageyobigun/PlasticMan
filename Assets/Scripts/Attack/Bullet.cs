@@ -11,6 +11,7 @@ public class Bullet : BaseAttack
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.AddForce(new Vector2(1000 * playerId, 0));
+        SoundManager.Instance.PlaySe("Shot");
     }
 
     private void OnBecameInvisible()

@@ -43,6 +43,7 @@ public class Bomb : MonoBehaviour
     //とりあえず後で改善予定
     private void Instance_explosion()
     {
+        SoundManager.Instance.PlaySe("Bomb");
         Instantiate(explosion, new Vector3(transform.position.x, 3.0f, transform.position.z), Quaternion.identity);
         Instantiate(explosion, new Vector3(transform.position.x, 0.5f, transform.position.z), Quaternion.identity);
         Instantiate(explosion, new Vector3(transform.position.x, -2.0f, transform.position.z), Quaternion.identity);

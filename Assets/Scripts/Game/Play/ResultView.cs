@@ -22,27 +22,28 @@ public class ResultView : MonoBehaviour
     //bossrushで勝利
     public void RushGameClear()
     {
+        SoundManager.Instance.StopBgm();
         rushClearImage.SetActive(true);
     }
 
     //bossrushで敗北
     public void RushGameLose()
     {
-        loseText.enabled = true;
+        loseText.gameObject.SetActive(true);
         rushLoseResultImage.SetActive(true);
     }
 
     //VSで勝利
     public void VsGameWin()
     {
-        winText.enabled = true;
+        winText.gameObject.SetActive(true);
         vsResultImage.SetActive(true);
     }
 
     //VSで敗北
     public void VsGameLose()
     {
-        loseText.enabled = true;
+        loseText.gameObject.SetActive(true);
         vsResultImage.SetActive(true);
     }
 }

@@ -22,7 +22,7 @@ public class ResultView : MonoBehaviour
     //bossrushで勝利
     public void RushGameClear()
     {
-        SoundManager.Instance.StopBgm();
+        SoundManager.Instance.StopBgm();//意味ないかも
         rushClearImage.SetActive(true);
     }
 

@@ -11347,7 +11347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1533619469
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11364,8 +11364,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.96904, y: 193.61}
-  m_SizeDelta: {x: 371.72784, y: 332.08075}
+  m_AnchoredPosition: {x: 1, y: 181.2}
+  m_SizeDelta: {x: 730.13495, y: 632.23676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1533619470
 MonoBehaviour:
@@ -11387,7 +11387,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b077818db7df77e4db729d473295e99e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f464ba935afc84ec59c7e42e79f02547, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -15799,6 +15799,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2469195566601743289, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
+      propertyPath: m_Color.a
+      value: 0.8352941
+      objectReference: {fileID: 0}
     - target: {fileID: 2469195566601743290, guid: 8476049d3e7e945d7b937e3dafe3f086, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15994,6 +15998,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6283132929987698481, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283132929987698508, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
+      propertyPath: m_Color.a
+      value: 0.90588236
+      objectReference: {fileID: 0}
     - target: {fileID: 6283132930587718144, guid: f6430983e56644a9daada0ae79550d6c, type: 3}
       propertyPath: m_Name
       value: EnduranceEnemyAgent

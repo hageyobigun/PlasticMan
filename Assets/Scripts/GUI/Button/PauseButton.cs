@@ -18,7 +18,6 @@ public class PauseButton : MonoBehaviour
         else//再開
         {
             GameManeger.Instance.currentGameStates.Value = GameState.Play;
-
         }
         isPause = !isPause;
         pauseImage.SetActive(isPause);

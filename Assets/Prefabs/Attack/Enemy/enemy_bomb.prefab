@@ -123,6 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: -1
-  flightTime: 2
-  speedRate: 2
+  flightTime: 0.8
+  jumpPower: 4
   explosion: {fileID: 840650080068895203, guid: 47f004c4e7ded4c0cbd121eb760fde48, type: 3}

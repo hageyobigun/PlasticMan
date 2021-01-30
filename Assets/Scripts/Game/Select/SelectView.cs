@@ -9,15 +9,15 @@ public class SelectView : MonoBehaviour
 {
     [SerializeField] private Image backImage = null;
     [SerializeField] private GameObject vsImage = null;
-    [SerializeField] private GameObject ruhsImage = null;
+    [SerializeField] private GameObject rushImage = null;
     [SerializeField] private GameObject explainImage = null;
 
-    //private SelectImageOpen _selectImageOpen;
+    private SelectImageOpen _selectImageOpen;
     private GameObject openImage;
 
     public void Awake()
     {
-        //_selectImageOpen = new SelectImageOpen();
+        _selectImageOpen = new SelectImageOpen();
         openImage = null;
     }
 
@@ -25,31 +25,30 @@ public class SelectView : MonoBehaviour
 
     public void OpneVsImage()
     {
-        vsImage.SetActive(true);
-        openImage = vsImage;
-        backImage.gameObject.SetActive(true);
+        OpenImage(vsImage);
     }
 
     public void OpneRushImage()
     {
-        ruhsImage.SetActive(true);
-        openImage = ruhsImage;
-        backImage.gameObject.SetActive(true);
+        OpenImage(rushImage);
     }
 
     public void OpneExplainImage()
     {
-        explainImage.SetActive(true);
-        openImage = explainImage;
-        backImage.gameObject.SetActive(true);
+        OpenImage(explainImage);
     }
 
+    private void OpenImage(GameObject selectImage)
+    {
+        openImage = selectImage;
+        backImage.gameObject.SetActive(true);
+        _selectImageOpen.ImageOpen(selectImage);
+    }
 
     //Image閉じる
     public void CloseImage()
     {
         openImage.gameObject.SetActive(false);
         backImage.gameObject.SetActive(false);
-        //EventSystem.current.SetSelectedGameObject(firstSelectButton);
     }
 }

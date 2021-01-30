@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class SelectImageOpen
 {
-    
-    public IEnumerator OpenImage(GameObject openImage)
+    private float firstScale = 0.7f;
+    private float delayTime = 0.2f;
+
+    public void ImageOpen(GameObject openImage)
     {
-        var size = 0f;
-        var speed = 0.05f;
-        var maxScale = openImage.transform.lossyScale;
+        var maxScale = openImage.transform.localScale;//元のサイズ取得
 
-        while (size <= maxScale.x)
-        {
-            openImage.transform.localScale = new Vector3(size, maxScale.y, maxScale.z);
-            size += speed;
+        openImage.transform.DOScale(maxScale * firstScale, 0f) //最初のサイズ
+            .SetDelay(delayTime)
+            .OnComplete(() =>
+            {
+                openImage.SetActive(true);//表示
+                openImage.transform.DOScale(maxScale, 0.2f);//UI演出　大きくする。
+            });
 
-            yield return null;
-        }
     }
 }

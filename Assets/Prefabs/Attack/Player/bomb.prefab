@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 1
-  flightTime: 2
-  speedRate: 2
+  flightTime: 0.8
+  jumpPower: 4
   explosion: {fileID: 252961078033046548, guid: 89a8c0befb733411eaad6e1da25c61d3, type: 3}
 --- !u!61 &-5192467214227562915
 BoxCollider2D:

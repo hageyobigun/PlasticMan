@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 
 
 public class SelectImageOpen
 {
     private float firstScale = 0.7f;
-    private float delayTime = 0.2f;
+    private float delayTime = 0.1f;
 
     public void ImageOpen(GameObject openImage)
     {
@@ -18,7 +16,9 @@ public class SelectImageOpen
             .OnComplete(() =>
             {
                 openImage.SetActive(true);//表示
-                openImage.transform.DOScale(maxScale, 0.2f);//UI演出　大きくする。
+                openImage.transform.DOScale(maxScale, 0.2f)
+                //.SetEase(Ease.OutBounce)
+                ;//UI演出　大きくする。
             });
 
     }

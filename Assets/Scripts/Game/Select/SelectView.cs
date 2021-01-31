@@ -2,8 +2,8 @@
 using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
+using DG.Tweening;
 
 public class SelectView : MonoBehaviour
 {
@@ -22,7 +22,6 @@ public class SelectView : MonoBehaviour
     }
 
     //Image表示
-
     public void OpneVsImage()
     {
         OpenImage(vsImage);

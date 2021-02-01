@@ -10,21 +10,25 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
 {
 
     public ReactiveProperty<GameState> currentGameStates = new ReactiveProperty<GameState>();
-
+    [SerializeField] private GameObject canvas = default;
     private int enemyNumber; //戦う敵の番号
-
+    private MoveScene _moveScene;
 
     void Start()
     {
         enemyNumber = 0;
         DontDestroyOnLoad(this.gameObject);
+        _moveScene = new MoveScene();
+        SceneManager.sceneLoaded += SceneLoaded;
 
         //タイトル
         currentGameStates
             .Where(state => state == GameState.Title)
+            .Skip(1)
             .Subscribe(_ =>
             {
-                SceneManager.LoadScene("Title");
+                //SceneManager.LoadScene("Title");
+                Scene("Title");
                 SoundManager.Instance.StopBgm();
             });
 
@@ -33,7 +37,8 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.Start)
             .Subscribe(_ =>
             {
-                SceneManager.LoadScene("Start");
+                //SceneManager.LoadScene("Start");
+                Scene("Start");
                 SoundManager.Instance.PlayBgm("Select");
                 Time.timeScale = 1.0f;
             });
@@ -43,7 +48,8 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.VsGame)
             .Subscribe(_ =>
             {
-                SceneManager.LoadScene("Play");
+                Scene("Play");
+                //SceneManager.LoadScene("Play");
                 SoundManager.Instance.StopBgm();
             });
 
@@ -52,7 +58,8 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.RushGame)
             .Subscribe(_ =>
             {
-                SceneManager.LoadScene("Play");
+                Scene("Play");
+                //SceneManager.LoadScene("Play");
                 SoundManager.Instance.StopBgm();
             }); 
 
@@ -69,6 +76,34 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         currentGameStates
             .Where(state => state == GameState.Pause)
             .Subscribe(_ => Time.timeScale = 0f);
+    }
+
+    private void Scene(string sceneName)
+    {
+        var copy = Instantiate(canvas, canvas.transform.position, Quaternion.identity);
+
+        Observable
+            .FromCoroutine(() => _moveScene.OpenBlackBlock(copy))
+            .Subscribe(_ =>
+            {
+                SceneManager.LoadScene(sceneName);
+            });
+    }
+
+    private void OpenScene()
+    {
+        var copy = Instantiate(canvas, canvas.transform.position, Quaternion.identity);
+        Observable
+            .FromCoroutine(() => _moveScene.CloseBlackBlock(copy))
+            .Subscribe(_ =>
+            {
+            });
+    }
+
+    // イベントハンドラー（イベント発生時に動かしたい処理）
+    void SceneLoaded(Scene nextScene, LoadSceneMode mode)
+    {
+        OpenScene();
     }
 
 

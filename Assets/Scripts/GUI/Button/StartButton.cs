@@ -29,12 +29,16 @@ public class StartButton : MonoBehaviour
         //スタート
         this.UpdateAsObservable()
             .Where(_ => Input.GetKeyDown(KeyCode.Return))
+            .Take(1)
             .Subscribe(_ =>
             {
                 tween.Kill(); //停止
                 SoundManager.Instance.PlaySe("TitleButton"); //サウンド
                 //MoveScene();
-                StartCoroutine(MoveScene());
+                //StartCoroutine(MoveScene());
+                GameManeger.Instance.currentGameStates.Value = GameState.Start;
+
+
                 //画面遷移
                 //whiteImage.DOFade(1, 1.0f)
                 //.OnComplete(() => GameManeger.Instance.currentGameStates.Value = GameState.Start);
@@ -63,7 +67,7 @@ public class StartButton : MonoBehaviour
             backList.RemoveAt(index);
             yield return new WaitForSeconds(0.003f);
         }
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(0.6f);
         GameManeger.Instance.currentGameStates.Value = GameState.Start;
     }
 

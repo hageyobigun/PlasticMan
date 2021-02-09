@@ -10,7 +10,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
 {
 
     public ReactiveProperty<GameState> currentGameStates = new ReactiveProperty<GameState>();
-    [SerializeField] private GameObject canvas = default;
+    [SerializeField] private GameObject loadSceneImage = default;
     private int enemyNumber; //戦う敵の番号
     private MoveScene _moveScene;
 
@@ -25,43 +25,26 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         currentGameStates
             .Where(state => state == GameState.Title)
             .Skip(1)
-            .Subscribe(_ =>
-            {
-                //SceneManager.LoadScene("Title");
-                Scene("Title");
-                SoundManager.Instance.StopBgm();
-            });
+            .Subscribe(_ => LoadScene("Title", "None"));
 
         //ゲーム選択画面
         currentGameStates
             .Where(state => state == GameState.Start)
             .Subscribe(_ =>
             {
-                //SceneManager.LoadScene("Start");
-                Scene("Start");
-                SoundManager.Instance.PlayBgm("Select");
+                LoadScene("Start", "Select");
                 Time.timeScale = 1.0f;
             });
 
         //ゲーム画面１vs１
         currentGameStates
             .Where(state => state == GameState.VsGame)
-            .Subscribe(_ =>
-            {
-                Scene("Play");
-                //SceneManager.LoadScene("Play");
-                SoundManager.Instance.StopBgm();
-            });
+            .Subscribe(_ => LoadScene("Play", "None"));
 
         //ゲーム画面BossRush
         currentGameStates
             .Where(state => state == GameState.RushGame)
-            .Subscribe(_ =>
-            {
-                Scene("Play");
-                //SceneManager.LoadScene("Play");
-                SoundManager.Instance.StopBgm();
-            }); 
+            .Subscribe(_ => LoadScene("Play", "None")); 
 
         //play
         currentGameStates
@@ -78,26 +61,26 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Subscribe(_ => Time.timeScale = 0f);
     }
 
-    private void Scene(string sceneName)
+    //シーン移動
+    private void LoadScene(string sceneName, string bgmName)
     {
-        var copy = Instantiate(canvas, canvas.transform.position, Quaternion.identity);
+        var copyLoadSceneImage = Instantiate(loadSceneImage, loadSceneImage.transform.position, Quaternion.identity);
 
+        //シーン移動演出
         Observable
-            .FromCoroutine(() => _moveScene.OpenBlackBlock(copy))
+            .FromCoroutine(() => _moveScene.LoadSceneImage(copyLoadSceneImage, true))
             .Subscribe(_ =>
             {
                 SceneManager.LoadScene(sceneName);
+                SoundManager.Instance.PlayBgm(bgmName);
             });
     }
 
+    //シーン移動完了後
     private void OpenScene()
     {
-        var copy = Instantiate(canvas, canvas.transform.position, Quaternion.identity);
-        Observable
-            .FromCoroutine(() => _moveScene.CloseBlackBlock(copy))
-            .Subscribe(_ =>
-            {
-            });
+        var copyLoadSceneImage = Instantiate(loadSceneImage, loadSceneImage.transform.position, Quaternion.identity);
+        StartCoroutine(_moveScene.LoadSceneImage(copyLoadSceneImage, false));
     }
 
     // イベントハンドラー（イベント発生時に動かしたい処理）
@@ -105,7 +88,6 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     {
         OpenScene();
     }
-
 
     public int GetEnemyNumber
     {

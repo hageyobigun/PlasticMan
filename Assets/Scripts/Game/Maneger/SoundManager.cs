@@ -125,6 +125,11 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     //------------------------------------------------------------------------------
     public void PlayBgm(string name)
     {
+        if (name == "None")
+        {
+            StopBgm();
+            return;
+        }
         int index = bgmIndexes[name];
         PlayBgm(index);
     }

@@ -31,9 +31,6 @@ public class StartButton : MonoBehaviour
                 tween.Kill(); //停止
                 SoundManager.Instance.PlaySe("TitleButton"); //サウンド
                 GameManeger.Instance.currentGameStates.Value = GameState.Start;
-                //画面遷移
-                //whiteImage.DOFade(1, 1.0f)
-                //.OnComplete(() => GameManeger.Instance.currentGameStates.Value = GameState.Start);
             });
     }
 

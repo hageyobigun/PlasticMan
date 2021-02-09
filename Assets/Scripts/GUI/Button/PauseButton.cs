@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Game;
+using DG.Tweening;
 
 public class PauseButton : MonoBehaviour
 {
     private bool isPause = false;
-    [SerializeField] private GameObject pauseImage = null;
+    [SerializeField] private GameObject pauseImage = default;
 
     public void Pause()
     {
@@ -22,4 +23,5 @@ public class PauseButton : MonoBehaviour
         isPause = !isPause;
         pauseImage.SetActive(isPause);
     }
+
 }

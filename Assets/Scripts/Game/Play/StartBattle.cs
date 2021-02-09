@@ -12,21 +12,28 @@ public class StartBattle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartSequence(startText);
+    }
 
-        startText.DOFade(1, 1.0f)
-            .OnComplete(() =>
-            {
-                startText.DOFade(0, 1.0f).SetDelay(0.2f).OnComplete(() =>
-                {
-                    startText.text = "  GO!!";
-                    startText.DOFade(1, 1.0f)
-                    .OnComplete(() =>
-                    {
-                        startText.DOFade(0, 1.0f).SetDelay(0.2f);
-                        GameManeger.Instance.currentGameStates.Value = GameState.Play;
-                    });
-                    startText.transform.DOScale(startText.transform.localScale * 1.5f, 1.0f);
-                });
-            });
+
+    private void StartSequence(TextMeshProUGUI startText)
+    {
+        var startSequence = DOTween.Sequence();
+
+        startSequence.Append(
+            DOTween.To(() => startText.characterSpacing,
+            x => startText.characterSpacing = x, 30, 1.0f)); //文字の空白
+
+        startSequence.Join(startText.DOFade(1, 1.0f));//表示
+
+        startSequence.Append(startText.DOFade(0, 1.0f).SetDelay(0.2f));//消える
+
+        startSequence.Append(startText.DOFade(1, 1.0f)
+            .OnStart(() => startText.text = "  GO!!"));//表示 & 文字変更
+
+        startSequence.Join(startText.transform.DOScale(startText.transform.localScale * 1.5f, 1.0f));//拡大
+
+        startSequence.Append(startText.DOFade(0, 1.0f).SetDelay(0.2f)
+            .OnComplete(() => GameManeger.Instance.currentGameStates.Value = GameState.Play)); //消える
     }
 }

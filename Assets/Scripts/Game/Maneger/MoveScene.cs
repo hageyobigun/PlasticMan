@@ -7,47 +7,35 @@ using UnityEngine.UI;
 public class MoveScene
 {
 
-    private List<GameObject> backList = new List<GameObject>();
+    private List<GameObject> blackImageList = new List<GameObject>();
+    private float intervalTime = 0.001f;
+    private float fullImageInterval = 0.5f;
 
-    public void GetBackList(GameObject canvas, bool isClose)
+    public void GetSceneImage(GameObject canvas, bool isLoad)
     {
-        // 子オブジェクトを全て取得する
+        // 子オブジェクトを全て取得し、見えなくする
         foreach (Transform childTransform in canvas.transform)
         {
-            backList.Add(childTransform.gameObject);
-            childTransform.gameObject.SetActive(isClose);
+            blackImageList.Add(childTransform.gameObject);
+            childTransform.gameObject.SetActive(isLoad);
         }
     }
 
-    public IEnumerator OpenBlackBlock(GameObject canvas)
+    //シーン移動演出
+    public IEnumerator LoadSceneImage(GameObject canvas, bool isLoad)
     {
-        GetBackList(canvas, false);
-        while (backList.Count > 0)
+        GetSceneImage(canvas, !isLoad);
+        //表示を切り替えたらリストから消す
+        while (blackImageList.Count > 0)
         {
-            int index = Random.Range(0, backList.Count);
-            backList[index].SetActive(true);
-            backList.RemoveAt(index);
-            if (backList.Count % 2 == 0)
+            int index = Random.Range(0, blackImageList.Count);
+            blackImageList[index].SetActive(isLoad);
+            blackImageList.RemoveAt(index);
+            if (blackImageList.Count % 2 == 0)
             {
-                yield return new WaitForSeconds(1.0f / 100000);
+                yield return new WaitForSeconds(intervalTime);
             }
         }
-        yield return new WaitForSeconds(0.6f);
-    }
-
-    public IEnumerator CloseBlackBlock(GameObject canvas)
-    {
-        GetBackList(canvas, true);
-        while (backList.Count > 0)
-        {
-            int index = Random.Range(0, backList.Count);
-            backList[index].SetActive(false);
-            backList.RemoveAt(index);
-            if (backList.Count % 2 == 0)
-            {
-                yield return new WaitForSeconds(1.0f / 100000);
-            }
-        }
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(fullImageInterval);
     }
 }

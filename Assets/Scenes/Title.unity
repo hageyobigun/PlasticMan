@@ -5938,7 +5938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameStates:
     value: 0
-  canvas: {fileID: 5507159554749057400, guid: a16d6367cdda14696ba0ef3701e9ab0b, type: 3}
+  loadSceneImage: {fileID: 5507159554749057400, guid: a16d6367cdda14696ba0ef3701e9ab0b, type: 3}
 --- !u!4 &1424062529
 Transform:
   m_ObjectHideFlags: 0

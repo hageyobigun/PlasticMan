@@ -14,7 +14,7 @@ public class PausePresenter : MonoBehaviour
     [SerializeField] private Button soundButton = default;
     [SerializeField] private Button yesButton = default;
     [SerializeField] private Button noButton = default;
-
+    [SerializeField] private Button closeButton = default;
     [SerializeField] private PauseView _pauseView = default;
 
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class PausePresenter : MonoBehaviour
         retryBuuton.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                _pauseView.RetryButton(GameState.Play);     //どうするか悩み中
+                _pauseView.SceneButton(GameState.Play, "リトライしますか?");//どうするか悩み中
                 SoundManager.Instance.PlaySe("NormalButton");
             });
 
@@ -41,7 +41,7 @@ public class PausePresenter : MonoBehaviour
         titleButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                _pauseView.TitleButton(GameState.Title);
+                _pauseView.SceneButton(GameState.Title, "タイトルに戻りますか?");//どうするか悩み中
                 SoundManager.Instance.PlaySe("NormalButton");
             });
 
@@ -49,7 +49,7 @@ public class PausePresenter : MonoBehaviour
         selectButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                _pauseView.SelectButton(GameState.Start);
+                _pauseView.SceneButton(GameState.Start, "選択画面に戻りますか?");//どうするか悩み中
                 SoundManager.Instance.PlaySe("NormalButton");
             });
 
@@ -57,7 +57,7 @@ public class PausePresenter : MonoBehaviour
         soundButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                //_pauseView.SoundButton();
+                _pauseView.SoundButton();
                 SoundManager.Instance.PlaySe("NormalButton");
             });
 
@@ -74,6 +74,13 @@ public class PausePresenter : MonoBehaviour
             .Subscribe(_ =>
             {
                 _pauseView.NoButton();
+                SoundManager.Instance.PlaySe("NormalButton");
+            });
+
+        closeButton.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                _pauseView.CloseButton();
                 SoundManager.Instance.PlaySe("NormalButton");
             });
 

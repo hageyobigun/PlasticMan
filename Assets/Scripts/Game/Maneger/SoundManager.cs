@@ -191,4 +191,18 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         seRequestQueue.Clear();
     }
 
+    //------------------------------------------------------------------------------
+
+    public void ChangeBgmVolume(float Volume)
+    {
+        volume.bgm = Volume;
+    }
+
+
+    //------------------------------------------------------------------------------
+
+    public void ChangeSeVolume(float Volume)
+    {
+        volume.se = Volume;
+    }
 }

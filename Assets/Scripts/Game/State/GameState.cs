@@ -10,6 +10,7 @@
         Win,
         Lose,
         RushClear,
-        Pause
+        Pause,
+        GameEnd
     }
 }

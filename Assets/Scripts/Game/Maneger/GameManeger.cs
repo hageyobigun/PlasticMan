@@ -30,11 +30,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //ゲーム選択画面
         currentGameStates
             .Where(state => state == GameState.Start)
-            .Subscribe(_ =>
-            {
-                LoadScene("Start", "Select");
-                Time.timeScale = 1.0f;
-            });
+            .Subscribe(_ => LoadScene("Start", "Select"));
 
         //ゲーム画面１vs１
         currentGameStates
@@ -51,7 +47,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.Play)
             .Subscribe(_ =>
             {
-                Time.timeScale = 1.0f;
+                Time.timeScale = 1.0f; //止まってたら動かす
                 SoundManager.Instance.PlayBgm("Fight");
             });
 
@@ -59,13 +55,18 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         currentGameStates
             .Where(state => state == GameState.Pause)
             .Subscribe(_ => Time.timeScale = 0f);
+
+        //ゲーム終了
+        currentGameStates
+            .Where(state => state == GameState.GameEnd)
+            .Subscribe(_ => Application.Quit());
     }
 
     //シーン移動
     private void LoadScene(string sceneName, string bgmName)
     {
         var copyLoadSceneImage = Instantiate(loadSceneImage, loadSceneImage.transform.position, Quaternion.identity);
-
+        Time.timeScale = 1.0f; //止まってたら動かす
         //シーン移動演出
         Observable
             .FromCoroutine(() => _moveScene.LoadSceneImage(copyLoadSceneImage, true))

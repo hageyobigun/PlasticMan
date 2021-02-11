@@ -5506,7 +5506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume:
-    bgm: 0.8
+    bgm: 0.5
     se: 0.2
     mute: 0
 --- !u!4 &704373799

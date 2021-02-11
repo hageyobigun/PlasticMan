@@ -7,10 +7,11 @@ using DG.Tweening;
 
 public class SelectView : MonoBehaviour
 {
-    [SerializeField] private Image backImage = null;
-    [SerializeField] private GameObject vsImage = null;
-    [SerializeField] private GameObject rushImage = null;
-    [SerializeField] private GameObject explainImage = null;
+    [SerializeField] private Image backImage = default;
+    [SerializeField] private GameObject vsImage = default;
+    [SerializeField] private GameObject rushImage = default;
+    [SerializeField] private GameObject explainImage = default;
+    [SerializeField] private GameObject soundImage = default;
 
     private SelectImageOpen _selectImageOpen;
     private GameObject openImage;
@@ -37,11 +38,17 @@ public class SelectView : MonoBehaviour
         OpenImage(explainImage);
     }
 
+    public void OpenSoundImage()
+    {
+        OpenImage(soundImage);
+    }
+
     private void OpenImage(GameObject selectImage)
     {
         openImage = selectImage;
         backImage.gameObject.SetActive(true);
         _selectImageOpen.ImageOpen(selectImage);
+        SoundManager.Instance.PlaySe("NormalButton");
     }
 
     //Image閉じる
@@ -49,5 +56,6 @@ public class SelectView : MonoBehaviour
     {
         openImage.gameObject.SetActive(false);
         backImage.gameObject.SetActive(false);
+        SoundManager.Instance.PlaySe("Cancel");
     }
 }

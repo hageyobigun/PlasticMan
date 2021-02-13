@@ -11,6 +11,7 @@
         Lose,
         RushClear,
         Pause,
-        GameEnd
+        GameEnd,
+        Retry
     }
 }

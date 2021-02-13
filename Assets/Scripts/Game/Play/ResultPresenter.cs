@@ -7,13 +7,13 @@ using UniRx.Triggers;
 
 public class ResultPresenter : MonoBehaviour
 {
-    private ResultView resultView;
+    private ResultView _resultView;
     private bool isRushGame = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        resultView = GetComponent<ResultView>();
+        _resultView = GetComponent<ResultView>();
         if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame)
         {
             isRushGame = true;
@@ -29,7 +29,7 @@ public class ResultPresenter : MonoBehaviour
 
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.RushClear)
-            .Subscribe(_ => resultView.RushGameClear());
+            .Subscribe(_ => _resultView.RushGameClear());
 
     }
 
@@ -37,24 +37,17 @@ public class ResultPresenter : MonoBehaviour
     {
         if (isRushGame == true)
         {
-            resultView.RushGameWin();
+            _resultView.RushGameWin();
         }
         else
         {
-            resultView.VsGameWin();
+            _resultView.VsGameWin();
         }
     }
+    
 
     public void Lose()
     {
-        if (isRushGame == true)
-        {
-            resultView.RushGameLose();
-        }
-        else
-        {
-            resultView.VsGameLose();
-        }
+        _resultView.GameLose();
     }
-
 }

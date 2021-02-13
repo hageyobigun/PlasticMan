@@ -14,6 +14,8 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     private int enemyNumber; //戦う敵の番号
     private MoveScene _moveScene;
 
+    private bool isRushRetry;
+
     void Start()
     {
         enemyNumber = 0;
@@ -30,7 +32,11 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //ゲーム選択画面
         currentGameStates
             .Where(state => state == GameState.Start)
-            .Subscribe(_ => LoadScene("Start", "Select"));
+            .Subscribe(_ =>
+            {
+                LoadScene("Start", "Select");
+                isRushRetry = false;
+            });
 
         //ゲーム画面１vs１
         currentGameStates
@@ -40,7 +46,11 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         //ゲーム画面BossRush
         currentGameStates
             .Where(state => state == GameState.RushGame)
-            .Subscribe(_ => LoadScene("Play", "None")); 
+            .Subscribe(_ =>
+            {
+                LoadScene("Play", "None");
+                isRushRetry = true;
+            }); 
 
         //play
         currentGameStates
@@ -60,6 +70,14 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         currentGameStates
             .Where(state => state == GameState.GameEnd)
             .Subscribe(_ => Application.Quit());
+
+        currentGameStates
+            .Where(state => state == GameState.Retry)
+            .Subscribe(_ =>
+            {
+                if (isRushRetry) enemyNumber = 0; //rushゲームだったら最初から
+                LoadScene("Play", "None");
+            });
     }
 
     //シーン移動
@@ -84,7 +102,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         StartCoroutine(_moveScene.LoadSceneImage(copyLoadSceneImage, false));
     }
 
-    // イベントハンドラー（イベント発生時に動かしたい処理）
+    // イベントハンドラー
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)
     {
         OpenScene();

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using Game;
 using DG.Tweening;
@@ -12,11 +11,11 @@ public class StartBattle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartSequence(startText);
+        StartSequence();
     }
 
-
-    private void StartSequence(TextMeshProUGUI startText)
+    //スタート演出
+    private void StartSequence()
     {
         var startSequence = DOTween.Sequence();
 

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class ResultView : MonoBehaviour
 {
-    [SerializeField] private GameObject vsResultImage = null;
-    [SerializeField] private GameObject rushWinResultImage = null;
-    [SerializeField] private GameObject rushLoseResultImage = null;
-    [SerializeField] private GameObject rushClearImage = null;
+    [SerializeField] private GameObject rushWinResultImage = default;
+    [SerializeField] private GameObject rushClearImage = default;
+    [SerializeField] private GameObject resultImage = default;
 
-    [SerializeField] TextMeshProUGUI winText = null;
-    [SerializeField] TextMeshProUGUI loseText = null;
+    [SerializeField] TextMeshProUGUI winText = default;
+    [SerializeField] TextMeshProUGUI loseText = default;
 
     //bossrushで勝利
     public void RushGameWin()
@@ -22,28 +22,20 @@ public class ResultView : MonoBehaviour
     //bossrushで勝利
     public void RushGameClear()
     {
-        SoundManager.Instance.StopBgm();//意味ないかも
         rushClearImage.SetActive(true);
-    }
-
-    //bossrushで敗北
-    public void RushGameLose()
-    {
-        loseText.gameObject.SetActive(true);
-        rushLoseResultImage.SetActive(true);
     }
 
     //VSで勝利
     public void VsGameWin()
     {
         winText.gameObject.SetActive(true);
-        vsResultImage.SetActive(true);
+        resultImage.SetActive(true);
     }
 
-    //VSで敗北
-    public void VsGameLose()
+    //敗北
+    public void GameLose()
     {
         loseText.gameObject.SetActive(true);
-        vsResultImage.SetActive(true);
+        resultImage.SetActive(true);
     }
 }

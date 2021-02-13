@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UniRx;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
 
 public class SelectView : MonoBehaviour
 {

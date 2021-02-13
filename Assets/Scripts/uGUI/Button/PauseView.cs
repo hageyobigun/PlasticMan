@@ -11,10 +11,12 @@ public class PauseView : MonoBehaviour
     [SerializeField] private GameObject pauseMenu = default;    //pauseメニュー
     [SerializeField] private Image  backBlackImage = default;    //薄暗い背景
     [SerializeField] private GameObject confirmImage = default; //確認画面
-    [SerializeField] private GameObject SoundBar = default; //音量調整
+    [SerializeField] private GameObject soundBar = default; //音量調整
 
     private float menuPos;       //メニューの位置
     private GameState moveScene; //どこのシーンに行くか
+
+    private SelectImageOpen _selectImageOpen;
 
     void Awake()
     {
@@ -22,7 +24,8 @@ public class PauseView : MonoBehaviour
         //最初に全部見えなくしておく
         pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.0f);
         backBlackImage.gameObject.SetActive(false);
-        SoundBar.SetActive(false);
+        soundBar.SetActive(false);
+        _selectImageOpen = new SelectImageOpen();
     }
 
     public void PauseButton()
@@ -41,7 +44,7 @@ public class PauseView : MonoBehaviour
             GameManeger.Instance.currentGameStates.Value = GameState.Play;
             pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.5f).SetEase(Ease.InOutBack);
             backBlackImage.gameObject.SetActive(false);
-            SoundBar.SetActive(false);
+            soundBar.SetActive(false);
         }
     }
     //シーン移動するボタン(リトライ、タイトル、選択画面)
@@ -49,17 +52,19 @@ public class PauseView : MonoBehaviour
     {
         backText.text = text;
         confirmImage.SetActive(true);
-        SoundBar.SetActive(false);
+        soundBar.SetActive(false);
         moveScene = gameState;
         SoundManager.Instance.PlaySe("NormalButton");
+        _selectImageOpen.ImageOpen(confirmImage);
     }
 
     //あとで
     public void SoundButton()
     {
         confirmImage.SetActive(false);
-        SoundBar.SetActive(true);
+        soundBar.SetActive(true);
         SoundManager.Instance.PlaySe("NormalButton");
+        _selectImageOpen.ImageOpen(soundBar);
     }
 
     //シーン移動
@@ -79,7 +84,7 @@ public class PauseView : MonoBehaviour
     //閉じるボタン(sound)
     public void CloseButton()
     {
-        SoundBar.SetActive(false);
+        soundBar.SetActive(false);
         SoundManager.Instance.PlaySe("NormalButton");
     }
 

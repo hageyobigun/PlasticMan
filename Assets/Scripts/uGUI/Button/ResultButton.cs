@@ -1,46 +1,42 @@
 ﻿using UnityEngine;
 using Game;
+using UniRx;
+using UnityEngine.UI;
 
 public class ResultButton : MonoBehaviour
 {
-    //BossRush Button
+    [SerializeField] private Button retryBuuton = default;
+    [SerializeField] private Button titleButton = default;
+    [SerializeField] private Button selectButton = default;
+    [SerializeField] private Button gameEndButoon = default;
 
-    public void NextEnemyButton() //次の的に進む
+    // Start is called before the first frame update
+    void Start()
     {
-        SoundManager.Instance.PlaySe("NormalButton");
-        GameManeger.Instance.GetEnemyNumber++;
-        GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
+
+        //リトライボタン
+        retryBuuton.OnClickAsObservable()
+            .Subscribe(_ => MoveSceneButton(GameState.Retry));//どうするか悩み中)
+
+        //タイトルに戻るボタン
+        titleButton.OnClickAsObservable()
+            .Subscribe(_ => MoveSceneButton(GameState.Title));
+
+        //選択画面に戻るボタン
+        selectButton.OnClickAsObservable()
+            .Subscribe(_ => MoveSceneButton(GameState.Start));
+
+
+        //ゲーム終了画面表示
+        gameEndButoon.OnClickAsObservable()
+            .Subscribe(_ => MoveSceneButton(GameState.GameEnd));
     }
 
-    public void RetryRushButton()
+    //シーン移動するボタン(リトライ、タイトル、選択画面)
+    public void MoveSceneButton(GameState gameState)
     {
+        GameManeger.Instance.currentGameStates.Value = gameState;
         SoundManager.Instance.PlaySe("NormalButton");
-        GameManeger.Instance.GetEnemyNumber = 0;
-        GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
-    }
-
-
-    //Vs Button
-
-    public void RetryVsButton()
-    {
-        SoundManager.Instance.PlaySe("NormalButton");
-        GameManeger.Instance.currentGameStates.Value = GameState.VsGame;
-    }
-
-
-    //共通リトライボタン
-
-    public void BackOptionButton()
-    {
-        SoundManager.Instance.PlaySe("NormalButton");
-        GameManeger.Instance.currentGameStates.Value = GameState.Start;
-    }
-
-    public void TitleButton()
-    {
-        SoundManager.Instance.PlaySe("NormalButton");
-        GameManeger.Instance.currentGameStates.Value = GameState.Title;
     }
 
 }

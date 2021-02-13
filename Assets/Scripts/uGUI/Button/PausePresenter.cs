@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine.UI;
@@ -30,7 +28,7 @@ public class PausePresenter : MonoBehaviour
 
         //リトライボタン
         retryBuuton.OnClickAsObservable()
-            .Subscribe(_ => _pauseView.SceneButton(GameState.Play, "リトライしますか?"));//どうするか悩み中)
+            .Subscribe(_ => _pauseView.SceneButton(GameState.Retry, "リトライしますか?"));//どうするか悩み中)
 
         //タイトルに戻るボタン
         titleButton.OnClickAsObservable()

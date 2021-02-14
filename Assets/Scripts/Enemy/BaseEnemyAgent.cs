@@ -73,7 +73,10 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
         _lifePresenter.OnChangeHpLife(hpValue);
         if (hpValue <= 0 && _playerController != null)//死亡(Game中)
         {
-            GameManeger.Instance.currentGameStates.Value = GameState.Win;
+            ResultManeger.Instance.resultStates.Value = ResultState.Win;
+            //sliderが戻ってしまうバグ防止
+            maxHpValue = hpValue;
+            maxMpValue = mpValue;
             Destroy(gameObject);
         }
     }

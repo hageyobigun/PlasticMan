@@ -10,26 +10,29 @@ public class ResultPresenter : MonoBehaviour
     private ResultView _resultView;
     private bool isRushGame = false;
 
+    public ReactiveProperty<GameState> resultStates = new ReactiveProperty<GameState>();
+
     // Start is called before the first frame update
     void Start()
     {
+
         _resultView = GetComponent<ResultView>();
         if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame)
         {
             isRushGame = true;
         }
 
-        this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Win)
-            .Subscribe(_ => Win());
+        //resultStates
+        //    .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Win)
+        //    .Subscribe(_ => Win());
 
-        this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Lose)
-            .Subscribe(_ => Lose());
+        //resultStates
+        //    .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Lose)
+        //    .Subscribe(_ => Lose());
 
-        this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.RushClear)
-            .Subscribe(_ => _resultView.RushGameClear());
+        //resultStates
+        //    .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.RushClear)
+        //    .Subscribe(_ => _resultView.RushGameClear());
 
     }
 

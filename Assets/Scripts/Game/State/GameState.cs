@@ -7,11 +7,17 @@
         VsGame,
         RushGame,
         Play,
-        Win,
-        Lose,
-        RushClear,
         Pause,
+        Result,
         GameEnd,
         Retry
+    }
+
+
+    public enum ResultState
+    {
+        Play,
+        Win,
+        Lose,
     }
 }

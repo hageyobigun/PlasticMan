@@ -66,17 +66,29 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
             .Where(state => state == GameState.Pause)
             .Subscribe(_ => Time.timeScale = 0f);
 
-        //ゲーム終了
+        //ゲーム終了(result画面）
+        currentGameStates
+            .Where(state => state == GameState.Result)
+            .Subscribe(_ => SoundManager.Instance.StopBgm());
+
+        //ゲーム終了(アプリ落とす）
         currentGameStates
             .Where(state => state == GameState.GameEnd)
             .Subscribe(_ => Application.Quit());
 
+        //リトライ
         currentGameStates
             .Where(state => state == GameState.Retry)
             .Subscribe(_ =>
             {
-                if (isRushRetry) enemyNumber = 0; //rushゲームだったら最初から
-                LoadScene("Play", "None");
+                if (isRushRetry)
+                {
+                    enemyNumber = 0; //rushゲームだったら最初から
+                    currentGameStates.Value = GameState.RushGame;
+                }
+                else{
+                    currentGameStates.Value = GameState.VsGame;
+                }
             });
     }
 

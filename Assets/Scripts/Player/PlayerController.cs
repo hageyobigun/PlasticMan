@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             _lifePresenter.OnChangeHpLife(hpValue);
             if (hpValue <= 0)
             {
-                GameManeger.Instance.currentGameStates.Value = GameState.Lose;
+                ResultManeger.Instance.resultStates.Value = ResultState.Lose;
                 Destroy(gameObject);
             }
         }

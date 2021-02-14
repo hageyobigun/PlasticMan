@@ -10,24 +10,24 @@ public class EnemyManeger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < enemyList.Count; i++) //最初に全部falseにしておく
+        var enemyNumber = GameManeger.Instance.GetEnemyNumber;
+        for (int i = 0; i < enemyList.Count; i++) //最初に全部falseにしておく
         {
             enemyList[i].SetActive(false);
         }
-        if (GameManeger.Instance.GetEnemyNumber < enemyList.Count)
+
+        if (enemyNumber < enemyList.Count)
         {
-            enemyList[GameManeger.Instance.GetEnemyNumber].SetActive(true);//戦う敵を出現させる
+            enemyList[enemyNumber].SetActive(true);//戦う敵を出現させる
         }
         else
         {
-            if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame) //BossRush Clear
-            {
-                GameManeger.Instance.currentGameStates.Value = GameState.RushClear;
-            }
-            else
-            {
-                Debug.LogError("enemy_not_found"); //敵が登録されていない場合
-            }
+            Debug.LogError("No enemy found"); //敵が登録されていない場合
+        }
+        if (enemyNumber == enemyList.Count - 1) //ラストの敵なのでrushのクリアのフラグ
+        {
+            ResultManeger.Instance.IsRushClear();
         }
     }
+
 }

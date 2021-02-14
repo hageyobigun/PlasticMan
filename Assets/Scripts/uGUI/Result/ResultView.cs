@@ -6,23 +6,25 @@ using TMPro;
 
 public class ResultView : MonoBehaviour
 {
-    [SerializeField] private GameObject rushWinResultImage = default;
-    [SerializeField] private GameObject rushClearImage = default;
+    [SerializeField] private NextRushGame _nextRushGame = default;
     [SerializeField] private GameObject resultImage = default;
-
     [SerializeField] TextMeshProUGUI winText = default;
     [SerializeField] TextMeshProUGUI loseText = default;
+    [SerializeField] TextMeshProUGUI clearText = default;
 
-    //bossrushで勝利
+
+
+    //BossRushで勝利
     public void RushGameWin()
     {
-        rushWinResultImage.SetActive(true);
+        _nextRushGame.NextSequence();
     }
 
-    //bossrushで勝利
+    //bossRushクリア
     public void RushGameClear()
     {
-        rushClearImage.SetActive(true);
+        clearText.gameObject.SetActive(true);
+        resultImage.SetActive(true);
     }
 
     //VSで勝利

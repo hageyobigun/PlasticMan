@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class Barrier : MonoBehaviour, IAttacknotable
 {
@@ -19,4 +21,5 @@ public class Barrier : MonoBehaviour, IAttacknotable
         
         return true;
    }
+
 }

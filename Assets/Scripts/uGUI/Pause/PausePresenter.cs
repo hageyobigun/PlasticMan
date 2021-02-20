@@ -21,7 +21,7 @@ public class PausePresenter : MonoBehaviour
     {
         //pause
         this.UpdateAsObservable()
-            .Where(_ => Input.GetKeyDown(KeyCode.Space))
+            .Where(_ => Input.GetButtonDown("pause"))
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Pause ||
                         GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Subscribe(_ => _pauseView.PauseButton());

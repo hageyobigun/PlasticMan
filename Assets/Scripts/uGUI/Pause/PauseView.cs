@@ -35,14 +35,14 @@ public class PauseView : MonoBehaviour
         if (!(GameManeger.Instance.currentGameStates.Value == GameState.Pause))
         {
             GameManeger.Instance.currentGameStates.Value = GameState.Pause;
-            pauseMenu.transform.DOLocalMoveX(menuPos, 0.5f).SetEase(Ease.OutBounce);
+            pauseMenu.transform.DOLocalMoveX(menuPos, 0.5f).SetEase(Ease.OutBounce);//横から出す
             backBlackImage.gameObject.SetActive(true);
         }
         //動かす
         else
         {
             GameManeger.Instance.currentGameStates.Value = GameState.Play;
-            pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.5f).SetEase(Ease.InOutBack);
+            pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.5f).SetEase(Ease.InOutBack);//横に戻す
             backBlackImage.gameObject.SetActive(false);
             soundBar.SetActive(false);
         }
@@ -58,7 +58,7 @@ public class PauseView : MonoBehaviour
         _selectImageOpen.ImageOpen(confirmImage);
     }
 
-    //あとで
+    //音量調整出す
     public void SoundButton()
     {
         confirmImage.SetActive(false);
@@ -82,6 +82,7 @@ public class PauseView : MonoBehaviour
     }
 
     //閉じるボタン(sound)
+    //Noと同じでもいいんじゃね?
     public void CloseButton()
     {
         soundBar.SetActive(false);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator BarrierGuard(float interval)
     {
+        //barrier.GetComponent<SpriteRenderer>().DOFade(1.0f, 0);
+        //barrier.GetComponent<SpriteRenderer>().DOFade(0.0f, interval);
         barrier.SetActive(true);
         yield return new WaitForSeconds(interval);
         barrier.SetActive(false);

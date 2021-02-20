@@ -17,6 +17,17 @@ public abstract class BaseAttack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
+        var attacknotable = collision.GetComponent<IAttacknotable>(); //バリア
+
+        if (attacknotable != null)
+        {
+            if (attacknotable.barriered(playerId))
+            {
+                SoundManager.Instance.PlaySe("Barrier");
+                Destroy(gameObject);
+            }
+        }
+
         if (playerId == 1)//player
         {
             var attackable = collision.GetComponent<Enemy.IAttackable>();
@@ -36,17 +47,6 @@ public abstract class BaseAttack : MonoBehaviour
                 _flashing.Flash(collision.GetComponent<SpriteRenderer>());
                 SoundManager.Instance.PlaySe("Hit");
                 attackable.Attacked(damagePower);
-                Destroy(gameObject);
-            }
-        }
-
-        var attacknotable = collision.GetComponent<IAttacknotable>(); //バリア
-
-        if (attacknotable != null)
-        {
-            if (attacknotable.barriered(playerId))
-            {
-                SoundManager.Instance.PlaySe("Barrier");
                 Destroy(gameObject);
             }
         }

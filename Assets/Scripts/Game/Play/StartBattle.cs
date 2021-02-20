@@ -19,6 +19,9 @@ public class StartBattle : MonoBehaviour
     {
         var startSequence = DOTween.Sequence();
 
+        startSequence.AppendInterval(2f);
+
+
         startSequence.Append(
             DOTween.To(() => startText.characterSpacing,
             x => startText.characterSpacing = x, 30, 1.0f)); //文字の空白

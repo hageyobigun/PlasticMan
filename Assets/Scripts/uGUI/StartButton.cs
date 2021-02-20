@@ -13,8 +13,6 @@ public class StartButton : MonoBehaviour
 {
     [SerializeField] private float time = 2.0f;
     [SerializeField] private TextMeshProUGUI _textMeshPro = default;
-    //[SerializeField] private Image whiteImage = null;
-    //[SerializeField] private Image blackBack = default;
 
     void Start()
     {
@@ -24,7 +22,7 @@ public class StartButton : MonoBehaviour
 
         //スタート
         this.UpdateAsObservable()
-            .Where(_ => Input.GetKeyDown(KeyCode.Return))
+            .Where(_ => Input.GetButtonDown("Enter"))
             .Take(1)
             .Subscribe(_ =>
             {
@@ -34,22 +32,6 @@ public class StartButton : MonoBehaviour
             });
     }
 
-    //16:9
-    //-375 375 200 -200  50が基準
-    //private void InstanceBlock()
-    //{
-    //    var oneBlockScale = blackBack.rectTransform.sizeDelta;
-    //    for (int x = -375; x <= 375; x += (int)oneBlockScale.x)
-    //    {
-    //        for (int y = -200; y <= 200; y += (int)oneBlockScale.x)
-    //        {
-    //            var copy = Instantiate(blackBack, new Vector3(x, y, 0), Quaternion.identity);
-    //            copy.transform.SetParent(canvas.transform, false);
-    //            copy.gameObject.SetActive(false);
-    //            backList.Add(copy);
-    //        }
-    //    }
-    //}
 
 
 }

@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     //初期化
     private void Initialize()
     {
-        _playerInput = new PlayerInput();
+        _playerInput = new GamePadInput();
         _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
         _playerAttack = GetComponent<PlayerAttack>();
         _lifePresenter.Initialize(hpValue, mpValue);

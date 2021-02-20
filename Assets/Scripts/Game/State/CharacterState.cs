@@ -1,5 +1,6 @@
 ﻿namespace Character
 {
+    //攻撃や防御の状態
     public enum State
     {
         Normal,

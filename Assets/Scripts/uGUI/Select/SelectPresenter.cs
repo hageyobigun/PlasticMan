@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UniRx;
 using Game;
+using UniRx.Triggers;
 
 public class SelectPresenter : MonoBehaviour
 {
@@ -52,5 +53,10 @@ public class SelectPresenter : MonoBehaviour
                 GameManeger.Instance.currentGameStates.Value = GameState.GameEnd;
                 SoundManager.Instance.PlaySe("NormalButton");
             });
+
+        //閉じるボタン
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetButtonDown("Cancel"))
+            .Subscribe(_ => _selectView.CloseImage());
     }
 }

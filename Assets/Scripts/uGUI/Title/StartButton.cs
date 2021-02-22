@@ -14,6 +14,8 @@ public class StartButton : MonoBehaviour
     [SerializeField] private float time = 2.0f;
     [SerializeField] private TextMeshProUGUI _textMeshPro = default;
 
+    private string[] controller = new string[10];
+
     void Start()
     {
 
@@ -30,8 +32,18 @@ public class StartButton : MonoBehaviour
                 SoundManager.Instance.PlaySe("TitleButton"); //サウンド
                 GameManeger.Instance.currentGameStates.Value = GameState.Start;
             });
+
+
+        //コントローラーによって表示文字変える
+        this.UpdateAsObservable()
+            .Subscribe(_ => controller = Input.GetJoystickNames());
+
+        this.UpdateAsObservable()
+            .Where(_ => controller.Length <= 0)
+            .Subscribe(_ => _textMeshPro.text = "PRESS ENTER");//キーボード
+
+        this.UpdateAsObservable()
+            .Where(_ => controller.Length == 1)
+            .Subscribe(_ => _textMeshPro.text = "PRESS BUTTON");//PS4
     }
-
-
-
 }

@@ -8,6 +8,9 @@ public class TestTwo : MonoBehaviour
 
     [SerializeField] private GameObject floor = default;
 
+    [field: SerializeField]
+    public int Level { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,5 @@ public class TestTwo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

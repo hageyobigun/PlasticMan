@@ -17,6 +17,7 @@ public class SelectImageOpen
         openSequence.Append(
             openImage.transform.DOScale(maxScale * firstScale, 0f) //最初のサイズを小さくする
             .OnComplete(() => openImage.SetActive(true)));//表示
+
         openSequence.Append(openImage.transform.DOScale(maxScale, openSpeed)); //拡大
     }
 

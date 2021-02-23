@@ -14,7 +14,9 @@ public class StartButton : MonoBehaviour
     [SerializeField] private float time = 2.0f;
     [SerializeField] private TextMeshProUGUI _textMeshPro = default;
 
-    private string[] controller = new string[10];
+    private string[] controller = new string[10]; //コントローラー入れるもの
+
+    [SerializeField] private MoveFloor _moveFloor = default;
 
     void Start()
     {
@@ -29,6 +31,7 @@ public class StartButton : MonoBehaviour
             .Subscribe(_ =>
             {
                 tween.Kill(); //停止
+                _moveFloor.StopMoving(); //停止
                 SoundManager.Instance.PlaySe("TitleButton"); //サウンド
                 GameManeger.Instance.currentGameStates.Value = GameState.Start;
             });

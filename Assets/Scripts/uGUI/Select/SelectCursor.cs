@@ -1,29 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class SelectCursor : MonoBehaviour
+public class SelectCursor
 {
-    [SerializeField] private Image cursorImage = default;
-    [SerializeField] private EventSystem eventSystem = default;
+    private Image cursorImage = default;
 
-    RectTransform rectTransform;
-
-    // Start is called before the first frame update
-    void Start()
+    public SelectCursor(Image _cursorImage)
     {
-
+        cursorImage = _cursorImage;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CursorMove(GameObject selectObj)
     {
-        var selectedObj = eventSystem.currentSelectedGameObject.gameObject;
-
-        cursorImage.transform.position = selectedObj.transform.position;
-        rectTransform = selectedObj.GetComponent<RectTransform>();
-        cursorImage.rectTransform.sizeDelta = rectTransform.sizeDelta + new Vector2(20, 20);
+        var rectTransform = selectObj.GetComponent<RectTransform>();
+        cursorImage.rectTransform.sizeDelta = rectTransform.sizeDelta + new Vector2(20, 20); //ボタンの大きさmに合わせる
+        cursorImage.transform.position = selectObj.transform.position; //位置を合わせる
     }
 }

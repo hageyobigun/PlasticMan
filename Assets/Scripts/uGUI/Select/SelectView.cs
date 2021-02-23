@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class SelectView : MonoBehaviour
 {
@@ -9,10 +8,12 @@ public class SelectView : MonoBehaviour
     [SerializeField] private GameObject rushImage = default;
     [SerializeField] private GameObject explainImage = default;
     [SerializeField] private GameObject soundImage = default;
+    [SerializeField] private GameObject firsttmage = default;//最初の選択肢画面
+    [SerializeField] private GameObject commonImage = default;
 
-    [SerializeField] private GameObject firsttmage = default;
+    [SerializeField] private EventSystemManeger _eventSystemManege  = default;
 
-    private GameObject openImage;
+    private GameObject openImage;//開いているimage
 
     public void Awake()
     {
@@ -23,27 +24,32 @@ public class SelectView : MonoBehaviour
     public void OpneVsImage()
     {
         OpenImage(vsImage);
+        _eventSystemManege.SetVsButton();
     }
 
     public void OpneRushImage()
     {
         OpenImage(rushImage);
+        _eventSystemManege.SetRushButton();
     }
 
     public void OpneExplainImage()
     {
         OpenImage(explainImage);
+        _eventSystemManege.SetExplainButton();
     }
 
     public void OpenSoundImage()
     {
         OpenImage(soundImage);
+        _eventSystemManege.SetSoundButton();
     }
 
     private void OpenImage(GameObject selectImage)
     {
         openImage = selectImage;
-        selectImage.SetActive(true);
+        openImage.SetActive(true);
+        commonImage.SetActive(true);
         firsttmage.SetActive(false);
         SoundManager.Instance.PlaySe("NormalButton");
     }
@@ -51,11 +57,13 @@ public class SelectView : MonoBehaviour
     //Image閉じる
     public void CloseImage()
     {
-        if (openImage != null)
+        if (openImage != null) //開いてないときは押せないようにしておく
         {
             openImage.gameObject.SetActive(false);
-            firsttmage.SetActive(true);
+            commonImage.SetActive(false);
             openImage = null;
+            firsttmage.SetActive(true);
+            _eventSystemManege.BackSelect();
             SoundManager.Instance.PlaySe("Cancel");
         }
     }

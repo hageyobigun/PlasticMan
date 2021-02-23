@@ -1,67 +1,63 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Game;
 using UniRx;
+using UnityEngine.EventSystems;
 
 public class ResultManeger : SingletonMonoBehaviour<ResultManeger>
 {
     [SerializeField] private ResultView _resultView = default;
-    public ReactiveProperty<ResultState> resultStates = new ReactiveProperty<ResultState>();
+    [SerializeField] private EventSystem eventSystem = default;
+    [SerializeField] private GameObject firstButton = default;
+
     private bool isRushGame = false;    //bossrushかどうか
     private bool isRushClaer = false; //bossrushクリア
-
+    private Subject<Unit> winSubject = new Subject<Unit>();
+    
     // Start is called before the first frame update
     void Start()
     {
 
-        if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame)
+        if (GameManeger.Instance.currentGameStates.Value == GameState.RushGame)//連戦かどうか
         {
             isRushGame = true;
         }
 
-        resultStates.Value = ResultState.Play;
+        //rushでクリアした場合
+        winSubject
+            .Where(_ => isRushGame)
+            .Where(_ => isRushClaer)
+            .Subscribe(_ => _resultView.RushGameClear());
 
-        resultStates
-            .Where(states => states == ResultState.Win)
-            .Subscribe(_ => Win());
+        //rushで勝利した場合
+        winSubject
+            .Where(_ => isRushGame)
+            .Where(_ => !isRushClaer)
+            .Subscribe(_ => _resultView.RushGameWin());
 
-        resultStates
-            .Where(states => states == ResultState.Lose)
-            .Subscribe(_ => Lose());
+        //vsで勝利した場合
+        winSubject
+            .Where(_ => !isRushGame)
+            .Subscribe(_ => _resultView.VsGameWin());
 
     }
 
     //rushの最後だと知らせるもの
-    public void IsRushClear()
-    {
-        isRushClaer = true;
-    }
+    public void IsRushClear() => isRushClaer = true;
 
-    public void Win()
-    {
-        GameManeger.Instance.currentGameStates.Value = GameState.Result;
-        if (isRushGame)
-        {
-            if (isRushClaer)
-            {
-                _resultView.RushGameClear();
-            }
-            else
-            {
-                _resultView.RushGameWin();
-            }
-        }
-        else
-        {
-            _resultView.VsGameWin();
-        }
-    }
-
-
+    //負けた
     public void Lose()
     {
+        eventSystem.SetSelectedGameObject(firstButton);
         GameManeger.Instance.currentGameStates.Value = GameState.Result;
         _resultView.GameLose();
     }
+
+    //勝利
+    public void Win()
+    {
+        eventSystem.SetSelectedGameObject(firstButton);
+        GameManeger.Instance.currentGameStates.Value = GameState.Result;
+        winSubject.OnNext(Unit.Default);
+    }
+
 }

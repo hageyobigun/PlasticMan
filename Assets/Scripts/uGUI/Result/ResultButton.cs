@@ -13,7 +13,6 @@ public class ResultButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         //リトライボタン
         retryBuuton.OnClickAsObservable()
             .Subscribe(_ => MoveSceneButton(GameState.Retry));//どうするか悩み中)
@@ -25,7 +24,6 @@ public class ResultButton : MonoBehaviour
         //選択画面に戻るボタン
         selectButton.OnClickAsObservable()
             .Subscribe(_ => MoveSceneButton(GameState.Start));
-
 
         //ゲーム終了画面表示
         gameEndButoon.OnClickAsObservable()

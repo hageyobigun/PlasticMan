@@ -33,14 +33,13 @@ public class EventSystemManeger : MonoBehaviour
         this.UpdateAsObservable()
             .Subscribe(_ => selectObj.Value = eventSystem.currentSelectedGameObject.gameObject);//選択ボタン取得
 
-        //洗濯しているものが変わったら
+        //選択しているものが変わったら
         selectObj
             .Skip(1)
             .Subscribe(select => _selectCursor.CursorMove(select));
 
         backButtonNavigation = backButton.navigation; //戻るボタンのナビケーション取得
     }
-
 
     public void SetVsButton()=>  SetSelectButton(vsButton);
 
@@ -49,7 +48,6 @@ public class EventSystemManeger : MonoBehaviour
     public void SetExplainButton() => SetSelectButton(explainButton);
 
     public void SetSoundButton() => SetSelectButton(soundButton);
-
 
     private void SetSelectButton(Button selectButton)
     {

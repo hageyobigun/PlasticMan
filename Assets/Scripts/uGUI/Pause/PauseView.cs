@@ -7,64 +7,64 @@ using Game;
 public class PauseView : MonoBehaviour
 {
     
-    [SerializeField] private TextMeshProUGUI backText = default; //確認画面のテキスト
+    [SerializeField] private TextMeshProUGUI menuText = default; //確認画面のテキスト
     [SerializeField] private GameObject pauseMenu = default;    //pauseメニュー
     [SerializeField] private Image  backBlackImage = default;    //薄暗い背景
     [SerializeField] private GameObject confirmImage = default; //確認画面
-    [SerializeField] private GameObject soundBar = default; //音量調整
+    [SerializeField] private GameObject soundBarImage= default; //音量調整
 
     private float menuPos;       //メニューの位置
+    private GameObject ActiveImage; //開いているイメージ
     private GameState moveScene; //どこのシーンに行くか
-
     private SelectImageOpen _selectImageOpen;
 
     void Awake()
     {
+        ActiveImage = null;
         menuPos = pauseMenu.transform.localPosition.x; //メニューを出す位置
-        //最初に全部見えなくしておく
+        //最初に見えなくしておく
         pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.0f);
-        backBlackImage.gameObject.SetActive(false);
-        soundBar.SetActive(false);
         _selectImageOpen = new SelectImageOpen();
     }
 
+    //止める
     public void PauseButton()
     {
+        pauseMenu.transform.DOLocalMoveX(menuPos, 0.5f).SetEase(Ease.OutBounce);//横から出す
+        backBlackImage.gameObject.SetActive(true);
         SoundManager.Instance.PlaySe("NormalButton");
-        //止める
-        if (!(GameManeger.Instance.currentGameStates.Value == GameState.Pause))
-        {
-            GameManeger.Instance.currentGameStates.Value = GameState.Pause;
-            pauseMenu.transform.DOLocalMoveX(menuPos, 0.5f).SetEase(Ease.OutBounce);//横から出す
-            backBlackImage.gameObject.SetActive(true);
-        }
-        //動かす
-        else
-        {
-            GameManeger.Instance.currentGameStates.Value = GameState.Play;
-            pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.5f).SetEase(Ease.InOutBack);//横に戻す
-            backBlackImage.gameObject.SetActive(false);
-            soundBar.SetActive(false);
-        }
     }
+
+    //再開
+    public void RestartButton()
+    {
+        pauseMenu.transform.DOLocalMoveX(menuPos - 300, 0.5f).SetEase(Ease.InOutBack);//横に戻す
+        backBlackImage.gameObject.SetActive(false);
+        ActiveImage.SetActive(false);
+        SoundManager.Instance.PlaySe("NormalButton");
+    }
+
     //シーン移動するボタン(リトライ、タイトル、選択画面)
     public void SceneButton(GameState gameState, string text)
     {
-        backText.text = text;
-        confirmImage.SetActive(true);
-        soundBar.SetActive(false);
+        menuText.text = text;
         moveScene = gameState;
-        SoundManager.Instance.PlaySe("NormalButton");
-        _selectImageOpen.ImageOpen(confirmImage);
+        MenuImageOpen(confirmImage);
     }
 
     //音量調整出す
     public void SoundButton()
     {
-        confirmImage.SetActive(false);
-        soundBar.SetActive(true);
+        MenuImageOpen(soundBarImage);
+    }
+
+    //表示
+    public void MenuImageOpen(GameObject selectImage)
+    {
+        selectImage.SetActive(true);
+        _selectImageOpen.ImageOpen(selectImage);
+        ActiveImage = selectImage;
         SoundManager.Instance.PlaySe("NormalButton");
-        _selectImageOpen.ImageOpen(soundBar);
     }
 
     //シーン移動
@@ -74,19 +74,14 @@ public class PauseView : MonoBehaviour
         SoundManager.Instance.PlaySe("NormalButton");
     }
 
-    //シーン移動しない
-    public void NoButton()
-    {
-        confirmImage.SetActive(false);
-        SoundManager.Instance.PlaySe("NormalButton");
-    }
-
-    //閉じるボタン(sound)
-    //Noと同じでもいいんじゃね?
+    //閉じるボタン(close, No)
     public void CloseButton()
     {
-        soundBar.SetActive(false);
-        SoundManager.Instance.PlaySe("NormalButton");
+        if (ActiveImage.activeInHierarchy != false && ActiveImage != null)//何も開いてないときは動かない
+        {
+            ActiveImage.SetActive(false);
+            SoundManager.Instance.PlaySe("NormalButton");
+        }
     }
 
 }

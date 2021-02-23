@@ -61,10 +61,10 @@ public class SelectView : MonoBehaviour
         {
             openImage.gameObject.SetActive(false);
             commonImage.SetActive(false);
-            openImage = null;
             firsttmage.SetActive(true);
             _eventSystemManege.BackSelect();
             SoundManager.Instance.PlaySe("Cancel");
+            openImage = null;
         }
     }
 }

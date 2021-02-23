@@ -24,28 +24,17 @@ public class ResultView : MonoBehaviour
     }
 
     //BossRushで勝利
-    public void RushGameWin()
-    {
-        _nextGameView.NextStage(nextText, backBlackImage);//boss rushの次へ行く演出
-    }
-
+    public void RushGameWin() =>  _nextGameView.NextStage(nextText, backBlackImage);//boss rushの次へ行く演出
+    
     //bossRushクリア
-    public void RushGameClear()
-    {
-        ResultOpen(clearText);
-    }
-
+    public void RushGameClear() => ResultOpen(clearText);
+    
     //VSで勝利
-    public void VsGameWin()
-    {
-        ResultOpen(winText);
-    }
-
+    public void VsGameWin() => ResultOpen(winText);
+    
     //敗北
-    public void GameLose()
-    {
-        ResultOpen(loseText);
-    }
+    public void GameLose() =>  ResultOpen(loseText);
+
 
     private void ResultOpen(TextMeshProUGUI resultText)
     {

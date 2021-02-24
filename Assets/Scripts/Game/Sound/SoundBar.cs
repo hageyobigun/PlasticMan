@@ -9,7 +9,6 @@ public class SoundBar : MonoBehaviour
     [SerializeField] private Slider bgmSlider = default;
     [SerializeField] private Slider seSlider = default;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +21,6 @@ public class SoundBar : MonoBehaviour
         seSlider.OnValueChangedAsObservable()
             .Subscribe(_ => SoundManager.Instance.ChangeSeVolume(seSlider.value));
     }
+
 
 }

@@ -198,7 +198,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         volume.bgm = Volume;
     }
 
-
     //------------------------------------------------------------------------------
 
     public void ChangeSeVolume(float Volume)

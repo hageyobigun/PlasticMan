@@ -7,7 +7,7 @@ public class ResultManeger : SingletonMonoBehaviour<ResultManeger>
 {
     [SerializeField] private ResultView _resultView = default;
     [SerializeField] private EventSystem eventSystem = default;
-    [SerializeField] private GameObject firstButton = default;
+    [SerializeField] private GameObject firstButton = default; //eventsystemにセットするボタン
 
     private bool isRushGame = false;    //bossrushかどうか
     private bool isRushClaer = false; //bossrushクリア

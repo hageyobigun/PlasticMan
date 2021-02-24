@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
 
-    private State playerAttackState;
-    private State playerGuardState;
+    private State playerAttackState;     //攻撃状態
+    private State playerGuardState;    //防御状態
     [SerializeField] private float barrierInterval = 1.0f;
 
     private void Awake()

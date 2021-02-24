@@ -11,11 +11,11 @@ public class ResultView : MonoBehaviour
     [SerializeField] TextMeshProUGUI clearText = default;
     [SerializeField] TextMeshProUGUI nextText = default;
 
-    [SerializeField] private GameObject resultMene = default;
-    [SerializeField] private Image backBlackImage = default;
+    [SerializeField] private GameObject resultMene = default;//リザルト画面
+    [SerializeField] private Image backBlackImage = default;//背景の黒
 
-    private ResultImageOpen _resultImageOpen;
-    private NextGameView _nextGameView;
+    private ResultImageOpen _resultImageOpen; //リザルト画面を開く演出
+    private NextGameView _nextGameView; //次の敵へ行く演出
 
     private void Start()
     {
@@ -35,7 +35,7 @@ public class ResultView : MonoBehaviour
     //敗北
     public void GameLose() =>  ResultOpen(loseText);
 
-
+    //リザルト画面表示
     private void ResultOpen(TextMeshProUGUI resultText)
     {
         resultText.gameObject.SetActive(true);

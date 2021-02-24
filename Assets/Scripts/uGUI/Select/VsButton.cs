@@ -11,12 +11,14 @@ public class VsButton : MonoBehaviour
 
     void Awake()
     {
+        //全部のボタンセット
         for(int buttonNUmber = 0; buttonNUmber < enemyButtons.Count; buttonNUmber++)
         {
             SetButton(buttonNUmber);
         }
     }
 
+    //ボタン毎に敵番号を入れる
     private void SetButton(int number)
     {
         enemyButtons[number].OnClickAsObservable()
@@ -27,6 +29,7 @@ public class VsButton : MonoBehaviour
             });
     }
 
+    //敵番号を入れてバトル画面へ
     private void SelectEnemy(int enemyNUmber)
     {
         GameManeger.Instance.GetEnemyNumber = enemyNUmber;

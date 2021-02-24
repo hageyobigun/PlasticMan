@@ -5,7 +5,7 @@ using Game;
 
 public class RushButton : MonoBehaviour
 {
-    [SerializeField] private Button startButton = null;
+    [SerializeField] private Button startButton = default;
 
     // Start is called before the first frame update
     void Awake()
@@ -18,6 +18,7 @@ public class RushButton : MonoBehaviour
             });
     }
 
+    //最初の敵をセットしてBossRush開始
     public void StartRush()
     {
         GameManeger.Instance.GetEnemyNumber = 0;

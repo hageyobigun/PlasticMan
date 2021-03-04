@@ -17,6 +17,7 @@ public class Test : MonoBehaviour
 
     private TextMeshProUGUI textMeshPro;
 
+
     private void Awake()
     {
         textMeshPro = test.GetComponent<TextMeshProUGUI>();

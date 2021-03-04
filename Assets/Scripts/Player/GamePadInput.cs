@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using System;
 
 public class GamePadInput : IPlayerInput
 {
@@ -9,9 +11,10 @@ public class GamePadInput : IPlayerInput
     private bool isMoveX;
     private bool isMoveY;
 
+    private Subject<Unit> moveInputSubject = new Subject<Unit>();
+
     public int Inputting()
     {
-
         moveX = Input.GetAxis("moveX");
         moveY = Input.GetAxis("moveY");
 
@@ -55,6 +58,8 @@ public class GamePadInput : IPlayerInput
         }
         return (0);
     }
+
+
     public bool IsBarrier() => Input.GetButtonDown("attack1"); //Aキー  四角ボタン
 
     public bool IsBombAttack() => Input.GetButtonDown("attack2"); //Wキー  Xボタン

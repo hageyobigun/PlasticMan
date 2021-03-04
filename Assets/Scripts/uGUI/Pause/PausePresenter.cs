@@ -108,7 +108,10 @@ public class PausePresenter : MonoBehaviour
     private void BackPauseMenu()
     {
         _pauseView.CloseButton();
-        eventSystem.SetSelectedGameObject(pushButton.gameObject);
+        if (pushButton != null)
+        {
+            eventSystem.SetSelectedGameObject(pushButton.gameObject);
+        }
     }
 
 }

@@ -21,8 +21,6 @@ public class MoveFloor : MonoBehaviour
 
     }
 
-
-
     public void  StopMoving()
     {
         moveTween.Kill();

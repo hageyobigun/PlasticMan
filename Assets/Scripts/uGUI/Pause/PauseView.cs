@@ -75,7 +75,8 @@ public class PauseView : MonoBehaviour
     //閉じるボタン(close, No)
     public void CloseButton()
     {
-        if (ActiveImage.activeInHierarchy != false && ActiveImage != null)//何も開いてないときは動かない
+        
+        if (ActiveImage != null && ActiveImage.activeInHierarchy != false)//何も開いてないときは動かない
         {
             ActiveImage.SetActive(false);//表示していたものを閉じる
             SoundManager.Instance.PlaySe("Cancel");

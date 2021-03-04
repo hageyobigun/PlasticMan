@@ -5,7 +5,6 @@ using DG.Tweening;
 public class SelectImageOpen
 {
     private float firstScale = 0.7f;
-    //private float delayTime = 0.1f;
     private float openSpeed = 0.2f;
 
     public void ImageOpen(GameObject openImage)

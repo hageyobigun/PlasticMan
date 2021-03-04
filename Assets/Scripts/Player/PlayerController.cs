@@ -24,10 +24,18 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         Initialize();
 
         //移動
-        this.UpdateAsObservable()
+        //this.UpdateAsObservable()
+        //    .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
+        //    .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
+        //    .Subscribe(_ => _playerMove.Move());
+
+        //移動(値が変化した時(動いた時だけ）
+        this.ObserveEveryValueChanged(value => _playerInput.Inputting())
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-            .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
+            .Where(value => value != 0)
+            .Where(value => _playerMove.IsMove(value))
             .Subscribe(_ => _playerMove.Move());
+
 
         //攻撃(bullet)
         this.UpdateAsObservable()

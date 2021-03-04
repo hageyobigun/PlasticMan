@@ -9,7 +9,7 @@ public class StageManager : MonoBehaviour
     private List<GameObject> playerStageList = new List<GameObject>();
     private List<GameObject> enemyStageList = new List<GameObject>();
 
-    private void Start()
+    private void Awake()
     {
         StageLoading();
     }

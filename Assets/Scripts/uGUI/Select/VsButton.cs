@@ -29,11 +29,10 @@ public class VsButton : MonoBehaviour
             });
     }
 
-    //敵番号を入れてバトル画面へ
+    //敵番号を入れる
     private void SelectEnemy(int enemyNUmber)
     {
         GameManeger.Instance.GetEnemyNumber = enemyNUmber;
-        GameManeger.Instance.currentGameStates.Value = GameState.VsGame;
     }
 
 }

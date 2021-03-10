@@ -130,7 +130,6 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _lifePresenter.OnChangeMpLife(mpValue);
     }
 
-
     //プロパティー
     public int GetHpValue { get { return this.hpValue; }}
 

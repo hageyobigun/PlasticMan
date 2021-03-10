@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+
 public class SelectView : MonoBehaviour
 {
     //[SerializeField] private Image backImage = default;
@@ -11,8 +12,7 @@ public class SelectView : MonoBehaviour
     [SerializeField] private GameObject firsttmage = default;//最初の選択肢画面
     [SerializeField] private GameObject commonImage = default; //先駆し画面以外の共通のもの（戻るボタン）
 
-    [SerializeField] private EventSystemManeger _eventSystemManege = default; 　//eventsystemで管理
-
+    [SerializeField] private SelectButton _selectButton = default;//画面ごとにボタンをセットするためのもの
 
     private GameObject openImage;//開いているimage
 
@@ -25,25 +25,26 @@ public class SelectView : MonoBehaviour
     public void OpneVsImage()
     {
         OpenImage(vsImage);
-        _eventSystemManege.SetVsButton();
+        _selectButton.SetVsButton();
+
     }
 
     public void OpneRushImage()
     {
         OpenImage(rushImage);
-        _eventSystemManege.SetRushButton();
+        _selectButton.SetRushButton();
     }
 
     public void OpneExplainImage()
     {
         OpenImage(explainImage);
-        _eventSystemManege.SetExplainButton();
+        _selectButton.SetExplainButton();
     }
 
     public void OpenSoundImage()
     {
         OpenImage(soundImage);
-        _eventSystemManege.SetSoundButton();
+        _selectButton.SetSoundButton();
     }
 
     //画面を開く
@@ -64,7 +65,7 @@ public class SelectView : MonoBehaviour
             openImage.gameObject.SetActive(false); //開いていたもの非表示
             commonImage.SetActive(false); //共通のものを非表示（戻るボタン）
             firsttmage.SetActive(true); //選択肢画面
-            _eventSystemManege.BackSelect();
+            _selectButton.SetBackSelectButton();//　前の画面のボタンセット
             SoundManager.Instance.PlaySe("Cancel");
             openImage = null;
         }

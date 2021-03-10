@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : SingletonMonoBehaviour<StageManager>
 {
     [SerializeField]private GameObject playerStageBlockParent = null;
     [SerializeField]private GameObject enemyStageBlockParent = null;
     private List<GameObject> playerStageList = new List<GameObject>();
     private List<GameObject> enemyStageList = new List<GameObject>();
 
-    private void Awake()
+    private void Start()
     {
         StageLoading();
     }

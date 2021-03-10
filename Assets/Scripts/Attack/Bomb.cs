@@ -38,11 +38,11 @@ public class Bomb : MonoBehaviour
         sequence = DOTween.Sequence();
 
         sequence.Append(this.transform.DOJump(endPos, jumpPower, 1, flightTime)
-        .OnComplete(() =>
-        {
-            Instance_explosion();
-            Destroy(gameObject);
-        })
+            .OnComplete(() =>
+            {
+                Instance_explosion();
+                Destroy(gameObject);
+            })
         );
 
     }

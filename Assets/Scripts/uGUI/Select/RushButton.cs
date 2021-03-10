@@ -18,10 +18,9 @@ public class RushButton : MonoBehaviour
             });
     }
 
-    //最初の敵をセットしてBossRush開始
+    //最初の敵をセット
     public void StartRush()
     {
         GameManeger.Instance.GetEnemyNumber = 0;
-        GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
     }
 }

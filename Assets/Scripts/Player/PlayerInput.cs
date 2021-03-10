@@ -2,7 +2,7 @@
 
 public class PlayerInput : IPlayerInput
 {
-
+    //キーボードのみ
     public int Inputting()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))//上

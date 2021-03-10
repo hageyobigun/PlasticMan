@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UniRx;
-using System;
+﻿using UnityEngine;
 
 public class GamePadInput : IPlayerInput
 {
@@ -11,54 +7,37 @@ public class GamePadInput : IPlayerInput
     private bool isMoveX;
     private bool isMoveY;
 
-    private Subject<Unit> moveInputSubject = new Subject<Unit>();
-
+    //ps4コントローラーとキーボード
     public int Inputting()
     {
         moveX = Input.GetAxis("moveX");
         moveY = Input.GetAxis("moveY");
 
-        //長押しで移動の防止（仮）
-        if (moveX == 0)
+        //長押しで移動の防止
+        if (moveX == 0) 
         {
             isMoveX = true;
         }
-
         if (moveY == 0)
         {
             isMoveY = true;
         }
 
-        if (isMoveX == true)
+        //-1, 1 動く方向 左、右
+        if (isMoveX == true && moveX != 0)
         {
-            if (moveX > 0)//左
-            {
-                isMoveX = false;
-                return (-1);
-            }
-            else if (moveX < 0)//右
-            {
-                isMoveX = false;
-                return (1);
-            }
+            isMoveX = false;
+            return ((int)moveX * -1);
         }
 
-        if (isMoveY == true)
+        //-3, 3 動く方向 上、下
+        if (isMoveY == true && moveY != 0)
         {
-            if (moveY > 0)//上
-            {
-                isMoveY = false;
-                return (-3);
-            }
-            else if (moveY < 0)//下
-            {
-                isMoveY = false;
-                return (3);
-            }
+            isMoveY = false;
+            return ((int)moveY * -3);
         }
         return (0);
     }
-
 
     public bool IsBarrier() => Input.GetButtonDown("attack1"); //Aキー  四角ボタン
 

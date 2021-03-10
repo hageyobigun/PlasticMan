@@ -11,12 +11,6 @@ public class EventSystemManeger : MonoBehaviour
     [SerializeField] private Image cursorImage = default;
 
     private SelectCursor _selectCursor;
-
-    [SerializeField] private Button vsButton = default;
-    [SerializeField] private Button rushButton = default;
-    [SerializeField] private Button explainButton = default;
-    [SerializeField] private Slider soundSlider = default;
-
     private GameObject pushButton;
 
     // Start is called before the first frame update
@@ -30,26 +24,21 @@ public class EventSystemManeger : MonoBehaviour
             .Subscribe(select => _selectCursor.CursorMove(select));
     }
 
-    public void SetVsButton()=>  SetSelectButton(vsButton);
-
-    public void SetRushButton() => SetSelectButton(rushButton);
-
-    public void SetExplainButton() => SetSelectButton(explainButton);
-
-    //サウンドはsliderなので別のもの
-    public void SetSoundButton()
-    {
-        pushButton = eventSystem.currentSelectedGameObject;//押したslider取得
-        eventSystem.SetSelectedGameObject(soundSlider.gameObject);//表示したimageのボタンを設定
-    }
     //ボタンをセット
-    private void SetSelectButton(Button selectButton)
+    public void SetSelectButton(Button selectButton)
     {
         pushButton = eventSystem.currentSelectedGameObject;//押したボタン取得
         eventSystem.SetSelectedGameObject(selectButton.gameObject);//表示したimageのボタンを設定
     }
 
-    public void BackSelect()
+    public void SetSelectSlider(Slider selctSlider)
+    {
+        pushButton = eventSystem.currentSelectedGameObject;//押したslider取得
+        eventSystem.SetSelectedGameObject(selctSlider.gameObject);//表示したimageのボタンを設定
+    }
+
+    //前のボタンセット
+    public void BackSelectButton()
     {
         EventSystem.current.SetSelectedGameObject(pushButton);//戻す
     }

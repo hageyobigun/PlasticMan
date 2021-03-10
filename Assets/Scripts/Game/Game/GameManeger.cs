@@ -14,7 +14,8 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     private int enemyNumber; //戦う敵の番号
     private MoveScene _moveScene;
 
-    private bool isRushRetry;
+    private bool isRushRetry;//rushgameのリトライかどうか
+    private bool isSceneMoveComplete;//シーンの移動完了したかどうか
 
     void Start()
     {
@@ -95,6 +96,7 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     //シーン移動
     private void LoadScene(string sceneName, string bgmName)
     {
+        isSceneMoveComplete = false;
         var copyLoadSceneImage = Instantiate(loadSceneImage, loadSceneImage.transform.position, Quaternion.identity);
         Time.timeScale = 1.0f; //止まってたら動かす
         //シーン移動演出
@@ -112,6 +114,10 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     {
         var copyLoadSceneImage = Instantiate(loadSceneImage, loadSceneImage.transform.position, Quaternion.identity);
         StartCoroutine(_moveScene.LoadSceneImage(copyLoadSceneImage, false));
+        //シーン移動演出完了したらフラグ立てる
+        Observable
+            .FromCoroutine(() => _moveScene.LoadSceneImage(copyLoadSceneImage, false))
+            .Subscribe(_ => isSceneMoveComplete = true);
     }
 
     // イベントハンドラー
@@ -124,5 +130,11 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
     {
         get { return this.enemyNumber; }  //取得用
         set { this.enemyNumber = value; } //値入力用
+    }
+
+    public bool GetSceneMoveComplete
+    {
+        get { return this.isSceneMoveComplete; }  //取得用
+        set { this.isSceneMoveComplete = value; } //値入力用
     }
 }

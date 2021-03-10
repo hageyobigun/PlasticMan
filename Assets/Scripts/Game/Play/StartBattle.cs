@@ -2,7 +2,8 @@
 using TMPro;
 using Game;
 using DG.Tweening;
-using UnityEngine.UI;
+using UniRx;
+using UniRx.Triggers;
 
 public class StartBattle : MonoBehaviour
 {
@@ -11,16 +12,17 @@ public class StartBattle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartSequence();
+        //シーンの移動が完了したら動かす
+        this.UpdateAsObservable()
+            .Where(_ => GameManeger.Instance.GetSceneMoveComplete)
+            .First()
+            .Subscribe(_ => StartSequence());
     }
 
     //スタート演出
     private void StartSequence()
     {
         var startSequence = DOTween.Sequence();
-
-        startSequence.AppendInterval(2f);
-
 
         startSequence.Append(
             DOTween.To(() => startText.characterSpacing,

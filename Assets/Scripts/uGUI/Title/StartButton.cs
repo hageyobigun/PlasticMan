@@ -13,13 +13,15 @@ public class StartButton : MonoBehaviour
 {
     [SerializeField] private float time = 2.0f;
     [SerializeField] private TextMeshProUGUI _textMeshPro = default;
-
+    [SerializeField] private MoveFloor _moveFloor = default;
+    [SerializeField] private GameObject runningMan = default;
     private string[] controller = new string[10]; //コントローラー入れるもの
 
-    [SerializeField] private MoveFloor _moveFloor = default;
+    private bool isRunning;
 
     void Start()
     {
+        isRunning = false;
 
         //点滅
         var tween = _textMeshPro.DOFade(0, time).SetLoops(-1, LoopType.Yoyo);
@@ -32,6 +34,7 @@ public class StartButton : MonoBehaviour
             {
                 tween.Kill(); //停止
                 _moveFloor.StopMoving(); //停止
+                isRunning = true;
                 SoundManager.Instance.PlaySe("TitleButton"); //サウンド
                 GameManeger.Instance.currentGameStates.Value = GameState.Start;
             });
@@ -48,5 +51,11 @@ public class StartButton : MonoBehaviour
         this.UpdateAsObservable()
             .Where(_ => controller.Length == 1)
             .Subscribe(_ => _textMeshPro.text = "PRESS BUTTON");//PS4
+
+
+        this.UpdateAsObservable()
+            .Where(_ => isRunning)
+            .Subscribe(_ => _moveFloor.RunningMan(runningMan));//走り出す
+
     }
 }

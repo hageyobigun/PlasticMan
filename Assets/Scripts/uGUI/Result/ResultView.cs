@@ -24,7 +24,8 @@ public class ResultView : MonoBehaviour
     }
 
     //BossRushで勝利
-    public void RushGameWin() =>  _nextGameView.NextStage(nextText, backBlackImage);//boss rushの次へ行く演出
+    public void RushGameWin() =>
+        _nextGameView.NextStage(nextText, backBlackImage);//boss rushの次へ行く演出
     
     //bossRushクリア
     public void RushGameClear() => ResultOpen(clearText);

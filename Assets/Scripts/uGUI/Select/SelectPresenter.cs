@@ -35,10 +35,5 @@ public class SelectPresenter : MonoBehaviour
         //閉じるボタン
         closeButton.OnClickAsObservable()
             .Subscribe(_ => _selectView.CloseImage());
-
-        //閉じるボタン
-        this.UpdateAsObservable()
-            .Where(_ => Input.GetButtonDown("Cancel"))
-            .Subscribe(_ => _selectView.CloseImage());
     }
 }

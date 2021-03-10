@@ -2,7 +2,7 @@
 using DG.Tweening;
 
 
-public class SelectImageOpen
+public class MenuButtonImageOpen
 {
     private float firstScale = 0.7f;
     private float openSpeed = 0.2f;

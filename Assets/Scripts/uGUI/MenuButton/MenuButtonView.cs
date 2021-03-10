@@ -8,11 +8,11 @@ public class MenuButtonView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI menuText = default; //確認画面のテキスト
     [SerializeField] private GameObject confirmImage = default; //確認画面
 
-    private SelectImageOpen _selectImageOpen;//開く演出
+    private MenuButtonImageOpen _menuButtonImageOpen;//開く演出
 
     void Awake()
     {
-        _selectImageOpen = new SelectImageOpen();
+        _menuButtonImageOpen = new MenuButtonImageOpen();
         confirmImage.SetActive(false);
     }
 
@@ -22,7 +22,7 @@ public class MenuButtonView : MonoBehaviour
     {
         menuText.text = text;//表示文字を変える
         confirmImage.SetActive(true);
-        _selectImageOpen.ImageOpen(confirmImage);//開く演出
+        _menuButtonImageOpen.ImageOpen(confirmImage);//開く演出
         SoundManager.Instance.PlaySe("NormalButton");
     }
 
@@ -36,10 +36,10 @@ public class MenuButtonView : MonoBehaviour
     //閉じるボタン(No)
     public void NoButton()
     {
-        if (confirmImage.activeInHierarchy != false) ////開いてないときは押せないようにしておく
+        if (confirmImage.activeInHierarchy == true) ////開いてないときは押せないようにしておく
         {
             confirmImage.SetActive(false);
-            SoundManager.Instance.PlaySe("NormalButton");
+            SoundManager.Instance.PlaySe("Cancel");
         }
     }
 }

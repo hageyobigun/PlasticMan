@@ -12,13 +12,13 @@ public class SelectButton : MonoBehaviour
 
     //eventSystemにそれぞれセットするためのもの
 
-    public void SetVsButton() => _eventSystemManege.SetSelectButton(vsButton);
+    public void SetVsButton() => _eventSystemManege.SetSelectObj(vsButton.gameObject);
 
-    public void SetRushButton() => _eventSystemManege.SetSelectButton(rushButton);
+    public void SetRushButton() => _eventSystemManege.SetSelectObj(rushButton.gameObject);
 
-    public void SetExplainButton() => _eventSystemManege.SetSelectButton(explainButton);
+    public void SetExplainButton() => _eventSystemManege.SetSelectObj(explainButton.gameObject);
 
-    public void SetSoundButton() => _eventSystemManege.SetSelectSlider(soundSlider);
+    public void SetSoundButton() => _eventSystemManege.SetSelectObj(soundSlider.gameObject);
 
     public void SetBackSelectButton() => _eventSystemManege.BackSelectButton();
 

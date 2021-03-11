@@ -10141,6 +10141,7 @@ MonoBehaviour:
   floor: {fileID: 2033471111}
   loopPoint: 1680
   moveSpeed: 5
+  runningSpeed: 0.1
 --- !u!4 &713821891
 Transform:
   m_ObjectHideFlags: 0
@@ -17394,6 +17395,7 @@ MonoBehaviour:
   time: 1
   _textMeshPro: {fileID: 901561915}
   _moveFloor: {fileID: 713821890}
+  runningMan: {fileID: 208784203}
 --- !u!4 &1774976262
 Transform:
   m_ObjectHideFlags: 0

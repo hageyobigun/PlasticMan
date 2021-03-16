@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerAnimation
 {
     private Animator animator;
-    private Animator a;
 
 
     public PlayerAnimation(Animator _animator)

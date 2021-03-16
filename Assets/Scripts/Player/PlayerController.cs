@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             if (hpValue <= 0)
             {
                 ResultManeger.Instance.Lose();
-                _playerAnimation.SetAnimation("Die");
                 Destroy(gameObject);
             }
         }

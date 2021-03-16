@@ -38,4 +38,34 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
     {
         get { return enemyStageList; }
     }
+
+    //どの台に乗っているか
+    public int GetPlayerPosNumber(Vector3 checkPos)
+    {
+        var number = 0;
+        for(number = 0; number < playerStageList.Count; number++)
+        {
+            if ((int)playerStageList[number].transform.position.x == (int)checkPos.x
+                && (int)playerStageList[number].transform.position.y == (int)checkPos.y)//ざっくりな位置  とりあえず
+            {
+                return number;
+            }
+        }
+        return 0;
+    }
+
+    //どの台に乗っているか
+    public int GetEnemyPosNumber(Vector3 checkPos)
+    {
+        var number = 0;
+        for (number = 0; number < playerStageList.Count; number++)
+        {
+            if ((int)enemyStageList[number].transform.position.x == (int)checkPos.x
+                && (int)enemyStageList[number].transform.position.y == (int)checkPos.y)//ざっくりな位置  とりあえず
+            {
+                return number;
+            }
+        }
+        return 0;
+    }
 }

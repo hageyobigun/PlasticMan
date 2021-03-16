@@ -21,6 +21,7 @@ public abstract class BaseAttack : MonoBehaviour
 
         if (attacknotable != null)
         {
+            //バリアに当たった
             if (attacknotable.barriered(playerId))
             {
                 SoundManager.Instance.PlaySe("Barrier");

@@ -29,7 +29,7 @@ public class EnemyAttacks : MonoBehaviour
 
     public void BombAttack()
     {
-        Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, -1.0f), Quaternion.identity);
+        var copyBomb = Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, -1.0f), Quaternion.identity);
     }
 
     public IEnumerator BarrierGuard(float interval)

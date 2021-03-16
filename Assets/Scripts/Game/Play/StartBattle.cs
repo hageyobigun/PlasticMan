@@ -16,7 +16,8 @@ public class StartBattle : MonoBehaviour
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.GetSceneMoveComplete)
             .First()
-            .Subscribe(_ => StartSequence());
+            .Subscribe(_ => StartSequence())
+            .AddTo(this);
     }
 
     //スタート演出

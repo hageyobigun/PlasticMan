@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
     private PlayerAttack _playerAttack;
+    private PlayerAnimation _playerAnimation;
     [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
     [SerializeField] private int hpValue = 100;
@@ -18,16 +19,10 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private State playerAttackState;     //攻撃状態
     private State playerGuardState;    //防御状態
     [SerializeField] private float barrierInterval = 1.0f;
-
+    
     private void Awake()
     {
         Initialize();
-
-        //移動
-        //this.UpdateAsObservable()
-        //    .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-        //    .Where(_ => _playerMove.IsMove(_playerInput.Inputting()))
-        //    .Subscribe(_ => _playerMove.Move());
 
         //移動(値が変化した時(動いた時だけ）
         this.ObserveEveryValueChanged(value => _playerInput.Inputting())
@@ -46,6 +41,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             {
                 _playerAttack.BulletAttack();
                 playerAttackState = State.Bullet_Attack;
+                _playerAnimation.SetAnimation("Attack");
             });
 
 
@@ -58,6 +54,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                {
                    _playerAttack.FireAttack();
                    MpConsumption(3);
+                   _playerAnimation.SetAnimation("Attack");
                    playerAttackState = State.Fire_Attack;
                }
             );
@@ -71,6 +68,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                 {
                     _playerAttack.BombAttack();
                     MpConsumption(4);
+                    _playerAnimation.SetAnimation("Attack");
                     playerAttackState = State.Bomb_Attack;
                 }
             );
@@ -87,6 +85,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
                     playerGuardState = State.Barrier;
                 }
             );
+
     }
 
     //初期化
@@ -98,6 +97,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         _lifePresenter.Initialize(hpValue, mpValue);
         playerAttackState = State.Normal;
         playerGuardState = State.Normal;
+        _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
     }
 
     //ダメージを受ける
@@ -107,9 +107,11 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
         {
             hpValue -= (int)damage;
             _lifePresenter.OnChangeHpLife(hpValue);
+            _playerAnimation.SetAnimation("Damage");
             if (hpValue <= 0)
             {
                 ResultManeger.Instance.Lose();
+                _playerAnimation.SetAnimation("Die");
                 Destroy(gameObject);
             }
         }

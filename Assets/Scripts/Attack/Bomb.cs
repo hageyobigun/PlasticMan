@@ -16,6 +16,10 @@ public class Bomb : MonoBehaviour
 
     private Sequence sequence;
 
+    private List<GameObject> stageList = new List<GameObject>();
+
+    private int targetStageNumber;
+
     public void Start()
     {
         ThrowBomb();
@@ -33,8 +37,19 @@ public class Bomb : MonoBehaviour
     public void ThrowBomb()
     {
         var startPos = transform.position; // 初期位置
-        var endPos = startPos + new Vector3(9.4f * playerId, 0, 0);//爆弾投下位置
+        //どうしよう...
+        if (playerId == 1)//plpayer
+        {
+            targetStageNumber = StageManager.Instance.GetPlayerPosNumber(this.transform.position);
+            stageList = StageManager.Instance.GetEnemyStageList;
+        }
+        else if(playerId == -1)//enemy
+        {
+            targetStageNumber = StageManager.Instance.GetEnemyPosNumber(this.transform.position);
+            stageList = StageManager.Instance.GetPlayerStageList;
+        }
 
+        var endPos = stageList[targetStageNumber].transform.position;//爆弾投下位置
         sequence = DOTween.Sequence();
 
         sequence.Append(this.transform.DOJump(endPos, jumpPower, 1, flightTime)
@@ -51,9 +66,12 @@ public class Bomb : MonoBehaviour
     private void Instance_explosion()
     {
         SoundManager.Instance.PlaySe("Bomb");
-        Instantiate(explosion, new Vector3(transform.position.x, 0f, transform.position.z), Quaternion.identity);
-        Instantiate(explosion, new Vector3(transform.position.x, -3.0f, transform.position.z), Quaternion.identity);
-        Instantiate(explosion, new Vector3(transform.position.x, -5.4f, transform.position.z), Quaternion.identity);
+        var setPos = targetStageNumber % 3;
+        for(int i = 0; i < 3; i++)
+        {
+            //三つ縦に爆発
+            Instantiate(explosion, stageList[setPos + i * 3].transform.position, Quaternion.identity);
+        }
     }
 
 }

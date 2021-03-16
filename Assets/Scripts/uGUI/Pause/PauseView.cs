@@ -18,6 +18,7 @@ public class PauseView : MonoBehaviour
     {
         menuSetPos = pauseMenu.transform.localPosition.x; //メニューを出す位置
         pauseMenu.transform.DOLocalMoveX(menuSetPos - menuFadePos, 0.0f); //最初に見えなくしておく
+        pauseMenu.SetActive(true);//オフになっていた時用
     }
 
     //止める

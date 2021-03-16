@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class MoveScene
 {
 
-    private List<GameObject> blackImageList = new List<GameObject>();
-    private float intervalTime = 0.001f;
+    private List<GameObject> blackImageList = new List<GameObject>();//たくさんの黒い正方形を収納
+    private float intervalTime = 0.00001f;
     private float fullImageInterval = 0.5f;
 
     public void GetSceneImage(GameObject canvas, bool isLoad)
@@ -25,7 +25,7 @@ public class MoveScene
     public IEnumerator LoadSceneImage(GameObject canvas, bool isLoad)
     {
         GetSceneImage(canvas, !isLoad);
-        //表示を切り替えたらリストから消す
+        //表示を切り替えたらリストからisLoadによって出したり消したりする
         while (blackImageList.Count > 0)
         {
             int index = Random.Range(0, blackImageList.Count);

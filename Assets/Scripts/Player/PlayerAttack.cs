@@ -28,8 +28,6 @@ public class PlayerAttack : MonoBehaviour
     public void BombAttack()
     {
         Instantiate(bomb, this.transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
-
-
     }
 
     public IEnumerator BarrierGuard(float interval)

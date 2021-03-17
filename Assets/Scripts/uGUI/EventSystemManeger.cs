@@ -48,13 +48,13 @@ public class EventSystemManeger : MonoBehaviour
         }
     }
 
-    //押したボタンではな鋳物をセットする
+    //押したボタンではなく指定したボタンをセットする
     public void FirstSetObj(GameObject setObj)
     {
         eventSystem.SetSelectedGameObject(setObj);//表示したimageのボタンを設定
     }
 
-    //リストも登録も解除
+    //リストも登録も解除で初期状態に
     public void Clear()
     {
         eventSystem.SetSelectedGameObject(null);//表示したimageのボタンを設定

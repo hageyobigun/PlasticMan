@@ -15,9 +15,11 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     private State enemyGuardState;
     //class
     private EnemyMove _enemyMove;
-    protected EnemyAttacks _enemyAttacks;
+    protected EnemyAnimation _enemyAnimation;
+    protected AttackManager _attackManager;
     [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
+    [SerializeField] private ResultPresenter _resultPresenter = default;
 
     //行動subject
     private Subject<int> moveSubject = new Subject<int>();
@@ -32,7 +34,8 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     public override void Initialize()
     {
         _enemyMove = new EnemyMove(gameObject, _stageManager.GetEnemyStageList);
-        _enemyAttacks = GetComponent<EnemyAttacks>();
+        _enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
+        _attackManager = GetComponent<AttackManager>();
         _playerAgent = player.GetComponent<PlayerAgent>();
         _playerController = player.GetComponent<PlayerController>();
 
@@ -71,9 +74,10 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     {
         hpValue -= (int)damage;
         _lifePresenter.OnChangeHpLife(hpValue);
+        _enemyAnimation.SetAnimation("Damage");
         if (hpValue <= 0 && _playerController != null)//死亡(Game中)
         {
-            ResultManeger.Instance.Win();
+            _resultPresenter.Win();
             //sliderが戻ってしまうバグ防止
             maxHpValue = hpValue;
             maxMpValue = mpValue;

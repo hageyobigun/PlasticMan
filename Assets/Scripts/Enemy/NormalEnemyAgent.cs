@@ -2,6 +2,7 @@
 using Character;
 using UniRx;
 using Unity.MLAgents.Sensors;
+using Mp;
 
 public class NormalEnemyAgent : BaseEnemyAgent
 {
@@ -15,7 +16,8 @@ public class NormalEnemyAgent : BaseEnemyAgent
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ =>
             {
-                _enemyAttacks.BulletAttack();
+                _attackManager.BulletAttack();
+                _enemyAnimation.SetAnimation("Attack");
                 GetAttackState = State.Bullet_Attack;
             });
 
@@ -24,8 +26,9 @@ public class NormalEnemyAgent : BaseEnemyAgent
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
             {
-                _enemyAttacks.FireAttack();
-                MpConsumption(3);
+                _attackManager.FireAttack();
+                _enemyAnimation.SetAnimation("Attack");
+                MpConsumption(Attack.firetMp);
                 GetAttackState = State.Fire_Attack;
             });
     }

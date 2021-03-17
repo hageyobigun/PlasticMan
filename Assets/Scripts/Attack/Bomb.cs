@@ -70,7 +70,8 @@ public class Bomb : MonoBehaviour
         for(int i = 0; i < 3; i++)
         {
             //三つ縦に爆発
-            Instantiate(explosion, stageList[setPos + i * 3].transform.position, Quaternion.identity);
+            Instantiate(explosion, stageList[setPos + i * 3].transform.position + new Vector3(0, 0, -1)
+                , Quaternion.identity);
         }
     }
 

@@ -6,6 +6,7 @@ using Game;
 public class EnemyManeger : MonoBehaviour
 {
     [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
+    [SerializeField] private ResultPresenter _resultPresenter = default;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class EnemyManeger : MonoBehaviour
         }
         if (enemyNumber == enemyList.Count - 1) //ラストの敵なのでrushのクリアのフラグ
         {
-            ResultManeger.Instance.IsRushClear();
+            _resultPresenter.IsRushClear();
         }
     }
 

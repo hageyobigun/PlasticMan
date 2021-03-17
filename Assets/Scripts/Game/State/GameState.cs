@@ -12,12 +12,4 @@
         GameEnd,
         Retry
     }
-
-
-    public enum ResultState
-    {
-        Play,
-        Win,
-        Lose,
-    }
 }

@@ -3,6 +3,7 @@ using Character;
 using UniRx;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using Mp;
 
 public class EnduranceEnemyAgent : BaseEnemyAgent
 {
@@ -17,7 +18,8 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ =>
             {
-                _enemyAttacks.BulletAttack();
+                _attackManager.BulletAttack();
+                _enemyAnimation.SetAnimation("Attack");
                 GetAttackState = State.Bullet_Attack;
             });
 
@@ -26,8 +28,9 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
             {
-                _enemyAttacks.FireAttack();
-                MpConsumption(3);
+                _attackManager.FireAttack();
+                _enemyAnimation.SetAnimation("Attack");
+                MpConsumption(Attack.firetMp);
                 GetAttackState = State.Fire_Attack;
             });
 
@@ -37,7 +40,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
             .Subscribe(_ =>
             {
                 BarrierInterVal();
-                MpConsumption(5);
+                MpConsumption(Attack.barrierMp);
                 GetGuardState = State.Barrier;
             });
     }
@@ -104,7 +107,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()
     {
-        Observable.FromCoroutine(() => _enemyAttacks.BarrierGuard(barrierInterval))
+        Observable.FromCoroutine(() => _attackManager.BarrierGuard(barrierInterval))
             .Subscribe(_ => GetGuardState = State.Normal)
             .AddTo(this);
     }

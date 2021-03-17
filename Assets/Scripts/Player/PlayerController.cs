@@ -4,14 +4,16 @@ using UniRx.Triggers;
 using System;
 using Character;
 using Game;
+using Mp;
 
 public class PlayerController : MonoBehaviour , Player.IAttackable
 {
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;
-    private PlayerAttack _playerAttack;
+    private AttackManager _attackManager;
     private PlayerAnimation _playerAnimation;
     [SerializeField] private LifePresenter _lifePresenter = null;
+    [SerializeField] private ResultPresenter _resultPresenter = default;
     [SerializeField] private StageManager _stageManager = null;
     [SerializeField] private int hpValue = 100;
     [SerializeField] private int mpValue = 100;
@@ -19,7 +21,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     private State playerAttackState;     //攻撃状態
     private State playerGuardState;    //防御状態
     [SerializeField] private float barrierInterval = 1.0f;
-    
+
     private void Awake()
     {
         Initialize();
@@ -39,7 +41,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
             .Subscribe(_ =>
             {
-                _playerAttack.BulletAttack();
+                _attackManager.BulletAttack();
                 playerAttackState = State.Bullet_Attack;
                 _playerAnimation.SetAnimation("Attack");
             });
@@ -52,8 +54,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                {
-                   _playerAttack.FireAttack();
-                   MpConsumption(3);
+                   _attackManager.FireAttack();
+                   MpConsumption(Attack.firetMp);
                    _playerAnimation.SetAnimation("Attack");
                    playerAttackState = State.Fire_Attack;
                }
@@ -66,8 +68,8 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
             .Subscribe(_ =>
                 {
-                    _playerAttack.BombAttack();
-                    MpConsumption(4);
+                    _attackManager.BombAttack();
+                    MpConsumption(Attack.bombMp);
                     _playerAnimation.SetAnimation("Attack");
                     playerAttackState = State.Bomb_Attack;
                 }
@@ -81,7 +83,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             .Subscribe(_ =>
                 {
                     BarrierInterVal();
-                    MpConsumption(5);
+                    MpConsumption(Attack.bulletMp);
                     playerGuardState = State.Barrier;
                 }
             );
@@ -93,11 +95,11 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     {
         _playerInput = new GamePadInput();
         _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
-        _playerAttack = GetComponent<PlayerAttack>();
+        _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+        _attackManager = GetComponent<AttackManager>();
         _lifePresenter.Initialize(hpValue, mpValue);
         playerAttackState = State.Normal;
         playerGuardState = State.Normal;
-        _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
     }
 
     //ダメージを受ける
@@ -110,7 +112,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
             _playerAnimation.SetAnimation("Damage");
             if (hpValue <= 0)
             {
-                ResultManeger.Instance.Lose();
+                _resultPresenter.Lose();
                 Destroy(gameObject);
             }
         }
@@ -119,7 +121,7 @@ public class PlayerController : MonoBehaviour , Player.IAttackable
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()
     {
-        Observable.FromCoroutine(() => _playerAttack.BarrierGuard(barrierInterval))
+        Observable.FromCoroutine(() => _attackManager.BarrierGuard(barrierInterval))
             .Subscribe(_ => playerGuardState = State.Normal)
             .AddTo(this);
     }

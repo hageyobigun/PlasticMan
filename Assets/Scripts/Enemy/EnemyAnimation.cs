@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class PlayerAnimation
+public class EnemyAnimation
 {
     private Animator animator;
 
 
-    public PlayerAnimation(Animator _animator)
+    public EnemyAnimation(Animator _animator)
     {
         this.animator = _animator;
     }
@@ -14,5 +14,4 @@ public class PlayerAnimation
     {
         animator.SetTrigger(triggerName);
     }
-
 }

@@ -35,7 +35,7 @@ public class ResultView : MonoBehaviour
     
     //敗北
     public void GameLose() =>  ResultOpen(loseText);
-
+    
     //リザルト画面表示
     private void ResultOpen(TextMeshProUGUI resultText)
     {

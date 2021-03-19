@@ -30,7 +30,11 @@ public class MenuButtonPresenter : MonoBehaviour
         //シーン移動開始(yesボタン）
         yesButton.OnClickAsObservable()
             .Where(_ => isOpen)
-            .Subscribe(_ => _menuButtonView.YesButton(_menuButtonModel.moveScene));
+            .Subscribe(_ =>
+            {
+                _menuButtonView.YesButton(_menuButtonModel.moveScene);
+                isOpen = false; //連打防止
+            });
 
         //キャンセル、閉じる
         noButton.OnClickAsObservable()

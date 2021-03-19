@@ -34,7 +34,7 @@ public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
     public override void Initialize()
     {
         _enemyMove = new EnemyMove(gameObject, _stageManager.GetEnemyStageList);
-        _enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
+        _enemyAnimation = new EnemyAnimation(this.GetComponent<Animator>());
         _attackManager = GetComponent<AttackManager>();
         _playerAgent = player.GetComponent<PlayerAgent>();
         _playerController = player.GetComponent<PlayerController>();

@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //攻撃の基底クラス
 public abstract class BaseAttack : MonoBehaviour
 {
     public int damagePower;　//与えるダメージ量
-    public int playerId; //プレイヤーID player:1 enemy:-1
     private Flashing _flashing; //ダメージを受けた際の点滅処理
 
     private void Awake()
@@ -14,42 +11,26 @@ public abstract class BaseAttack : MonoBehaviour
         _flashing = new Flashing();
     }
 
+    //衝突処理
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
         var attacknotable = collision.GetComponent<IAttacknotable>(); //バリア
-
         if (attacknotable != null)
         {
             //バリアに当たった
-            if (attacknotable.barriered(playerId))
-            {
-                SoundManager.Instance.PlaySe("Barrier");
-                Destroy(gameObject);
-            }
+            attacknotable.barriered();
+            Destroy(gameObject);
         }
-
-        if (playerId == 1)//player
+        
+        //攻撃hit (enemyとplayerの判別はレイヤーで当たり判定消している）
+        var attackable = collision.GetComponent<IAttackable>();
+        if (attackable != null)
         {
-            var attackable = collision.GetComponent<Enemy.IAttackable>();
-            if (attackable != null)
-            {
-                _flashing.Flash(collision.GetComponent<SpriteRenderer>());
-                SoundManager.Instance.PlaySe("Hit");
-                attackable.Attacked(damagePower);
-                Destroy(gameObject);
-            }
-        }
-        else if (playerId == -1)//enemy
-        {
-            var attackable = collision.GetComponent<Player.IAttackable>();
-            if (attackable != null)
-            {
-                _flashing.Flash(collision.GetComponent<SpriteRenderer>());
-                SoundManager.Instance.PlaySe("Hit");
-                attackable.Attacked(damagePower);
-                Destroy(gameObject);
-            }
+            _flashing.Flash(collision.GetComponent<SpriteRenderer>());
+            attackable.Attacked(damagePower);
+            SoundManager.Instance.PlaySe("Hit");
+            Destroy(gameObject);
         }
     }
 }

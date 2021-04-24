@@ -1,5 +1,4 @@
-﻿
-public interface IAttacknotable
+﻿public interface IAttacknotable
 {
-    bool barriered(int hitId);
+    void barriered();
 }

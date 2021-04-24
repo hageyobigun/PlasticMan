@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5000254474019270284}
   - component: {fileID: 3059906268374188826}
   - component: {fileID: 5000254474019270285}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: enemy_bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,4 +145,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePower: 1
-  playerId: -1
+  bulletSpeed: 1000
+  category: 1

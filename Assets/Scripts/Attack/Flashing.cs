@@ -5,12 +5,14 @@ using UniRx;
 
 public class Flashing
 {
-    private float flashTime;
-    private bool isFlash;
+    private float flashTime;//点滅回数
+    private float intervalTime;//点滅の感覚
+    private bool isFlash;//点滅中か
 
     public Flashing()
     {
         flashTime = 5.0f;
+        intervalTime = 0.1f;
     }
 
     public void Flash(SpriteRenderer character)
@@ -21,7 +23,7 @@ public class Flashing
                 .FromCoroutine(() => FlashInterval(character))
                 .Subscribe(_ =>
                 {
-                    character.enabled = true;
+                    character.enabled = true;//最後は表示に
                     isFlash = false;
                 }).AddTo(character);
         }
@@ -34,9 +36,9 @@ public class Flashing
         while (time < flashTime)
         {
             character.enabled = false;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(intervalTime);
             character.enabled = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(intervalTime);
             time += 1;
         }
     }

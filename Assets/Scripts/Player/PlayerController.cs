@@ -6,7 +6,7 @@ using Character;
 using Game;
 using Mp;
 
-public class PlayerController : MonoBehaviour , Player.IAttackable
+public class PlayerController : MonoBehaviour , IAttackable
 {
     private IPlayerInput _playerInput;
     private PlayerMove  _playerMove;

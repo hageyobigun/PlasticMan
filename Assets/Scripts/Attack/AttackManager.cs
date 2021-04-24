@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour
@@ -9,9 +8,6 @@ public class AttackManager : MonoBehaviour
     [SerializeField] private GameObject bomb = null;
     [SerializeField] private GameObject barrier = null;
 
-    [SerializeField]private int playerId = 0;
-
-    //playerとenemy同じ playerId = 1 はplayer  -1 は enemy
     public void Awake()
     {
         if (barrier != null) barrier.SetActive(false);
@@ -26,9 +22,7 @@ public class AttackManager : MonoBehaviour
     //ファイヤ
     public void FireAttack()
     {
-        //敵かプレイヤーかで向き調整
-        Instantiate(fireBullet, this.transform.position + new Vector3(0, 1.0f, 0),
-            Quaternion.Euler(0f, 0f, playerId * 90f));
+        Instantiate(fireBullet, this.transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
     }
 
     //ボム

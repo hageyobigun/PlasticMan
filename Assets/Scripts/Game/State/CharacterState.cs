@@ -1,5 +1,12 @@
 ﻿namespace Character
 {
+
+    public enum Category
+    {
+        Player,
+        Enemy
+    }
+
     //攻撃や防御の状態
     public enum State
     {

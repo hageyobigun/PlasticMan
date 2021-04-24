@@ -5,7 +5,7 @@ using System;
 using Character;
 using Game;
 
-public abstract class BaseEnemyAgent : Agent, Enemy.IAttackable
+public abstract class BaseEnemyAgent : Agent, IAttackable
 {
     [SerializeField] private int maxHpValue = 100;
     [SerializeField] private int maxMpValue = 100;

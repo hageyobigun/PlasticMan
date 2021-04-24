@@ -7,7 +7,7 @@ using Character;
 using System.Collections;
 
 //enemyの学習のための対戦相手の役割 行動基準は基本player
-public class PlayerAgent : Agent , Player.IAttackable
+public class PlayerAgent : Agent , IAttackable
 {
     [SerializeField] private int maxHpValue = 100;
     [SerializeField] private int maxMpValue = 100;

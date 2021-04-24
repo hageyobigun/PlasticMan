@@ -1,5 +1,4 @@
-﻿
-namespace Mp
+﻿namespace Mp
 {
     //消費MPのリスト
     public class Attack

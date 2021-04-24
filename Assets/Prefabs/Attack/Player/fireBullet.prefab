@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 739556528896637025}
   - component: {fileID: 3156429977005865011}
   - component: {fileID: 4675445121489762489}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fireBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,3 +166,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePower: 3
   playerId: 1
+  category: 0
+  fireSpeed: 500

@@ -27,7 +27,7 @@ public class NextGameView
         nextSequence.OnComplete(() =>
         {
             //次の敵を設定
-            GameManeger.Instance.GetEnemyNumber++;
+            GameManeger.Instance.EnemyNumber++;
             GameManeger.Instance.currentGameStates.Value = GameState.RushGame;
         });
 

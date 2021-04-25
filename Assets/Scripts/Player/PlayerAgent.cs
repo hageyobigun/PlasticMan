@@ -4,14 +4,13 @@ using Unity.MLAgents.Sensors;
 using UniRx;
 using System;
 using Character;
-using System.Collections;
+using Mp;
 
 //enemyの学習のための対戦相手の役割 行動基準は基本player
 public class PlayerAgent : Agent , IAttackable
 {
     [SerializeField] private int maxHpValue = 100;
     [SerializeField] private int maxMpValue = 100;
-    [SerializeField] private float barrierInterval = 1.0f;
     private int hpValue;
     private int mpValue;
 
@@ -19,7 +18,7 @@ public class PlayerAgent : Agent , IAttackable
     private int[] moveList = { 0, -3, -1, 1, 3 };//動く方向のリスト{静止, 上、左、右、下}
 
     private PlayerMove _playerMove;
-    private PlayerAttack _playerAttack;
+    private AttackManager _attackManager;
     [SerializeField] private LifePresenter _lifePresenter = null;
     [SerializeField] private StageManager _stageManager = null;
     private BaseEnemyAgent _baseEnemyAgent;
@@ -34,8 +33,8 @@ public class PlayerAgent : Agent , IAttackable
 
     public override void Initialize()
     {
-        _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
-        _playerAttack = GetComponent<PlayerAttack>();
+        _playerMove = new PlayerMove(this.gameObject, _stageManager.GetStageList(Category.Player));
+        _attackManager = GetComponent<AttackManager>();
         _baseEnemyAgent = enemy.GetComponent<BaseEnemyAgent>();
         isAttack = true;
 
@@ -45,40 +44,40 @@ public class PlayerAgent : Agent , IAttackable
 
         attackSubject
             .Where(attack => attack == 1 && isAttack == true)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
             .Subscribe(_ =>
             {
-                _playerAttack.BulletAttack();
+                _attackManager.BulletAttack();
                 playerAttackState = State.Bullet_Attack;
             });
 
         attackSubject
-            .Where(attack => attack == 2 && mpValue >= 3 && isAttack == true)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Where(attack => attack == 2 && mpValue >= Attack.firetMp && isAttack == true)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.firetInterval))
             .Subscribe(_ =>
             {
-                _playerAttack.FireAttack();
-                MpConsumption(3);
+                _attackManager.FireAttack();
+                MpConsumption(Attack.firetMp);
                 playerAttackState = State.Fire_Attack;
             });
 
         attackSubject
-            .Where(attack => attack == 3 && mpValue >= 4 && isAttack == true)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
+            .Where(attack => attack == 3 && mpValue >= Attack.bombMp && isAttack == true)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bombInterval))
             .Subscribe(_ =>
             {
-                _playerAttack.BombAttack();
-                MpConsumption(4);
+                _attackManager.BombAttack();
+                MpConsumption(Attack.bombMp);
                 playerAttackState = State.Bomb_Attack;
             });
 
         attackSubject
-            .Where(attack => attack == 4 && mpValue >= 5 && isAttack == true)
-            .ThrottleFirst(TimeSpan.FromSeconds(barrierInterval))
+            .Where(attack => attack == 4 && mpValue >= Attack.barrierMp && isAttack == true)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.barrierInterval))
             .Subscribe(_ =>
             {
                 BarrierInterVal();
-                MpConsumption(5);
+                MpConsumption(Attack.barrierMp);
                 playerGuardState = State.Barrier;
             });
 
@@ -120,7 +119,7 @@ public class PlayerAgent : Agent , IAttackable
 
         if (_baseEnemyAgent != null)
         {
-            if (_baseEnemyAgent.GetHpValue <= 1)
+            if (_baseEnemyAgent.HpValue <= 1)
             {
                 AddReward(1.0f);
                 EndEpisode();
@@ -160,7 +159,7 @@ public class PlayerAgent : Agent , IAttackable
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()
     {
-        Observable.FromCoroutine(() => _playerAttack.BarrierGuard(barrierInterval))
+        Observable.FromCoroutine(() => _attackManager.BarrierGuard(AttackInterval.bulletInterval))
             .Subscribe(_ => playerGuardState = State.Normal)
             .AddTo(this);
     }
@@ -173,24 +172,12 @@ public class PlayerAgent : Agent , IAttackable
     }
 
     //プロパティー
-    public int GetHpValue
-    {
-        get { return this.hpValue; }  //取得用
-        set { this.hpValue = value; } //値入力用
-    }
+    public int GetHpValue { get { return this.hpValue; } }
 
     //プロパティー 攻撃状態
-    public State GetAttackState
-    {
-        get { return this.playerAttackState; }  //取得用
-        set { this.playerAttackState = value; } //値入力用
-    }
+    public State GetAttackState { get { return this.playerAttackState; } }
 
     //プロパティー 防御状態
-    public State GetGuardState
-    {
-        get { return this.playerGuardState; }  //取得用
-        set { this.playerGuardState = value; } //値入力用
-    }
+    public State GetGuardState { get { return this.playerGuardState; } }
 
 }

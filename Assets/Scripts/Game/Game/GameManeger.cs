@@ -126,15 +126,11 @@ public class GameManeger : SingletonMonoBehaviour<GameManeger>
         OpenScene();
     }
 
-    public int GetEnemyNumber
+    public int EnemyNumber
     {
         get { return this.enemyNumber; }  //取得用
         set { this.enemyNumber = value; } //値入力用
     }
 
-    public bool GetSceneMoveComplete
-    {
-        get { return this.isSceneMoveComplete; }  //取得用
-        set { this.isSceneMoveComplete = value; } //値入力用
-    }
+    public bool SceneMoveComplete { get { return this.isSceneMoveComplete; } } //取得用
 }

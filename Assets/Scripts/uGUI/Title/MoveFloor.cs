@@ -19,7 +19,7 @@ public class MoveFloor : MonoBehaviour
         moveTween = floor.transform
             .DOLocalMoveX(floor.transform.localPosition.x - loopPoint, moveSpeed)
             .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Restart);
+            .SetLoops(-1, LoopType.Restart);//無限ループ
 
     }
 

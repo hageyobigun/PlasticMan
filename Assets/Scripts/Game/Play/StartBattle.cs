@@ -14,7 +14,7 @@ public class StartBattle : MonoBehaviour
     {
         //シーンの移動が完了したら動かす
         this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.GetSceneMoveComplete)
+            .Where(_ => GameManeger.Instance.SceneMoveComplete)
             .First()
             .Subscribe(_ => StartSequence())
             .AddTo(this);

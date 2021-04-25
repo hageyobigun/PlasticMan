@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MoveScene
 {
@@ -10,6 +8,7 @@ public class MoveScene
     private List<GameObject> blackImageList = new List<GameObject>();//たくさんの黒い正方形を収納
     private float intervalTime = 0.00001f;
     private float fullImageInterval = 0.5f;
+    private int openPanelCount = 2;//一回で出すパネルの数
 
     public void GetSceneImage(GameObject canvas, bool isLoad)
     {
@@ -31,7 +30,7 @@ public class MoveScene
             int index = Random.Range(0, blackImageList.Count);
             blackImageList[index].SetActive(isLoad);
             blackImageList.RemoveAt(index);
-            if (blackImageList.Count % 2 == 0)
+            if (blackImageList.Count % openPanelCount == 0)//n個ずつ
             {
                 yield return new WaitForSeconds(intervalTime);
             }

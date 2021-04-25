@@ -22,11 +22,11 @@ public class SelectView : MonoBehaviour
     }
 
     //Image表示
+    //ボタンをセットする
     public void OpneVsImage()
     {
         OpenImage(vsImage);
         _selectButton.SetVsButton();
-
     }
 
     public void OpneRushImage()

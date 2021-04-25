@@ -33,7 +33,7 @@ public abstract class BaseEnemyAgent : Agent, IAttackable
 
     public override void Initialize()
     {
-        _enemyMove = new EnemyMove(gameObject, _stageManager.GetEnemyStageList);
+        _enemyMove = new EnemyMove(gameObject, _stageManager.GetStageList(Category.Enemy));
         _enemyAnimation = new EnemyAnimation(this.GetComponent<Animator>());
         _attackManager = GetComponent<AttackManager>();
         _playerAgent = player.GetComponent<PlayerAgent>();
@@ -93,28 +93,28 @@ public abstract class BaseEnemyAgent : Agent, IAttackable
     }
 
     //プロパティー
-    public int GetHpValue
+    public int HpValue
     {
         get { return this.hpValue; }  //取得用
         set { this.hpValue = value; } //値入力用
     }
 
     //プロパティー
-    public int GetMpValue
+    public int MpValue
     {
         get { return this.mpValue; }  //取得用
         set { this.mpValue = value; } //値入力用
     }
 
     //プロパティー 攻撃状態
-    public State GetAttackState
+    public State AttackState
     {
         get { return this.enemyAttackState; }  //取得用
         set { this.enemyAttackState = value; } //値入力用
     }
 
     //プロパティー 防御状態
-    public State GetGuardState
+    public State GuardState
     {
         get { return this.enemyGuardState; }  //取得用
         set { this.enemyGuardState = value; } //値入力用

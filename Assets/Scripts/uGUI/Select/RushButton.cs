@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
-using Game;
 
 public class RushButton : MonoBehaviour
 {
@@ -21,6 +20,6 @@ public class RushButton : MonoBehaviour
     //最初の敵をセット
     public void StartRush()
     {
-        GameManeger.Instance.GetEnemyNumber = 0;
+        GameManeger.Instance.EnemyNumber = 0;//最初の敵セット
     }
 }

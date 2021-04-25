@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c0958bd763e408aac0e703dfc42170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 1
-  flightTime: 0.8
-  jumpPower: 4
   explosion: {fileID: 252961078033046548, guid: 89a8c0befb733411eaad6e1da25c61d3, type: 3}
+  flightTime: 1.5
+  speedRate: 4
+  category: 0
 --- !u!61 &-5192467214227562915
 BoxCollider2D:
   m_ObjectHideFlags: 0

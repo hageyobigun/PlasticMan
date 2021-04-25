@@ -12,34 +12,34 @@ public class AttackEnemyAgent : BaseEnemyAgent
         base.Initialize();
         attackObservable//通常弾
             .Where(attack => attack == 1)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
             .Subscribe(_ =>
             {
                 _attackManager.BulletAttack();
                 _enemyAnimation.SetAnimation("Attack");
-                GetAttackState = State.Bullet_Attack;
+                AttackState = State.Bullet_Attack;
             });
 
         attackObservable//炎
-            .Where(attack => attack == 2 && GetMpValue >= 3)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Where(attack => attack == 2 && MpValue >= Attack.firetMp)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.firetInterval))
             .Subscribe(_ =>
             {
                 _attackManager.FireAttack();
                 _enemyAnimation.SetAnimation("Attack");
                 MpConsumption(Attack.firetMp);
-                GetAttackState = State.Fire_Attack;
+                AttackState = State.Fire_Attack;
             });
 
         attackObservable//爆弾
-            .Where(attack => attack == 3 && GetMpValue >= 4)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.7f))
+            .Where(attack => attack == 3 && MpValue >= Attack.bombMp)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bombInterval))
             .Subscribe(_ =>
             {
                 _attackManager.BombAttack();
                 _enemyAnimation.SetAnimation("Attack");
                 MpConsumption(Attack.bombMp);
-                GetAttackState = State.Bomb_Attack;
+                AttackState = State.Bomb_Attack;
             });
     }
 
@@ -47,8 +47,8 @@ public class AttackEnemyAgent : BaseEnemyAgent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(this.transform.position);
-        sensor.AddObservation(GetMpValue);
-        sensor.AddObservation((float)GetAttackState);
+        sensor.AddObservation(MpValue);
+        sensor.AddObservation((float)AttackState);
         if (player != null)
         {
             sensor.AddObservation(player.transform.position);
@@ -87,7 +87,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
     public override void Attacked(float damage)
     {
         base.Attacked(damage);
-        if (GetHpValue <= 0)//死亡(学習中）
+        if (HpValue <= 0)//死亡(学習中）
         {
             EndEpisode();
         }

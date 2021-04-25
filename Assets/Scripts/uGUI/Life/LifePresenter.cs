@@ -6,7 +6,7 @@ using UniRx;
 public class LifePresenter : MonoBehaviour
 {
     // View
-    private LifeView lifeView;
+    [SerializeField] private LifeView lifeView = default;
     // Model
     private LifeModel lifeModel;
 
@@ -14,7 +14,6 @@ public class LifePresenter : MonoBehaviour
     public void Initialize(int hpValue, int mpValue)
     {
         lifeModel = new LifeModel(hpValue, mpValue);
-        lifeView = GetComponent<LifeView>();
         lifeView.SetMaxValue(hpValue, mpValue);
 
         lifeModel.hp

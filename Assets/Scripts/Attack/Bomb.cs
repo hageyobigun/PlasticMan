@@ -1,65 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using UniRx;
-using UniRx.Triggers;
-using Game;
+using Character;
 
 public class Bomb : MonoBehaviour
 {
-
-    [SerializeField] private int playerId = 0;    //1:player -1:enemy
-    [SerializeField] private float flightTime = 1.0f;  //滞空時間
-    [SerializeField] private float jumpPower = 5.0f;
     [SerializeField] private GameObject explosion = null;
-
-    private Sequence sequence;
+    [SerializeField] private float flightTime = 1.0f;  //滞空時間
+    [SerializeField] float speedRate = 1;   //滞空時間を基準とした移動速度倍率
+    private const float gravity = -9.8f;    //重力
 
     private List<GameObject> stageList = new List<GameObject>();
-
     private int targetStageNumber;
+    [SerializeField] private Category category = default;
 
     public void Start()
     {
-        ThrowBomb();
-        this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Pause)//止める
-            .Subscribe(_ => sequence.Pause());
-
-        this.UpdateAsObservable()
-            .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)//動かす
-            .Subscribe(_ => sequence.Play());
-
+        StartCoroutine(ThrowBomb(flightTime, speedRate, gravity));
     }
 
-    //爆弾発車
-    public void ThrowBomb()
+    //ボム発射
+    private IEnumerator ThrowBomb(float flightTime, float speedRate, float gravity)
     {
+
         var startPos = transform.position; // 初期位置
         //どうしよう...
-        if (playerId == 1)//plpayer
+        targetStageNumber = StageManager.Instance.GetStagePosNumber(this.transform.position, category);
+        if (category == Category.Player)//plpayer
         {
-            targetStageNumber = StageManager.Instance.GetPlayerPosNumber(this.transform.position);
-            stageList = StageManager.Instance.GetEnemyStageList;
+            stageList = StageManager.Instance.GetStageList(Category.Enemy);
         }
-        else if(playerId == -1)//enemy
+        else if (category == Category.Enemy)//enemy
         {
-            targetStageNumber = StageManager.Instance.GetEnemyPosNumber(this.transform.position);
-            stageList = StageManager.Instance.GetPlayerStageList;
+            stageList = StageManager.Instance.GetStageList(Category.Player);
         }
 
         var endPos = stageList[targetStageNumber].transform.position;//爆弾投下位置
-        sequence = DOTween.Sequence();
+        var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
+        var vn = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
 
-        sequence.Append(this.transform.DOJump(endPos, jumpPower, 1, flightTime)
-            .OnComplete(() =>
-            {
-                Instance_explosion();
-                Destroy(gameObject);
-            })
-        );
-
+        // 放物運動
+        for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
+        {
+            var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
+            p.y = startPos.y + vn * t + 0.5f * gravity * t * t; // 鉛直方向の座標 y
+            transform.position = p;
+            yield return null; //1フレーム経過
+        }
+        // 終点座標へ補正
+        transform.position = endPos;
+        Instance_explosion();
+        Destroy(gameObject);
     }
 
     //とりあえず後で改善予定
@@ -74,5 +65,8 @@ public class Bomb : MonoBehaviour
                 , Quaternion.identity);
         }
     }
+
+
+
 
 }

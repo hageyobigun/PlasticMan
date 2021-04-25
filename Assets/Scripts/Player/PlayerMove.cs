@@ -31,6 +31,6 @@ public class PlayerMove
     public void Move()
     {
         player.transform.position = stageList[playerPos].transform.position;
-        player.transform.position += new Vector3(0, -1, -1);
+        player.transform.position += new Vector3(0, -1, -1);//表示されうように
     }
 }

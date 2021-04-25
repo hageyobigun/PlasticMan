@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 
-
 public class MenuButtonImageOpen
 {
     private float firstScale = 0.7f;

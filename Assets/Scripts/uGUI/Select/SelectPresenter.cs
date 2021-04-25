@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
-using Game;
-using UniRx.Triggers;
 
 public class SelectPresenter : MonoBehaviour
 {

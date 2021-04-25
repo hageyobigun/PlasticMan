@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 using UniRx;
-using UniRx.Triggers;
 
 public class ResultPresenter : MonoBehaviour
 {

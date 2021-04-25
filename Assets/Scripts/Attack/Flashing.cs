@@ -5,15 +5,9 @@ using UniRx;
 
 public class Flashing
 {
-    private float flashTime;//点滅回数
-    private float intervalTime;//点滅の感覚
+    private float flashTime = 5.0f;//点滅回数
+    private float intervalTime = 0.1f;//点滅の感覚
     private bool isFlash;//点滅中か
-
-    public Flashing()
-    {
-        flashTime = 5.0f;
-        intervalTime = 0.1f;
-    }
 
     public void Flash(SpriteRenderer character)
     {

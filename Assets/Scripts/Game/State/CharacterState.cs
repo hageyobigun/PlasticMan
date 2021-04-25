@@ -1,6 +1,6 @@
 ﻿namespace Character
 {
-
+    //プレイヤーか敵かどうか
     public enum Category
     {
         Player,

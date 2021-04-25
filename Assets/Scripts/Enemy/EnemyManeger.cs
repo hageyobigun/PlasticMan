@@ -11,7 +11,7 @@ public class EnemyManeger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var enemyNumber = GameManeger.Instance.GetEnemyNumber;
+        var enemyNumber = GameManeger.Instance.EnemyNumber;
         for (int i = 0; i < enemyList.Count; i++) //最初に全部falseにしておく
         {
             enemyList[i].SetActive(false);

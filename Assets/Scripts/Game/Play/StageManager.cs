@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Character;
 
 public class StageManager : SingletonMonoBehaviour<StageManager>
 {
@@ -29,24 +30,31 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         }
     }
 
-    public List<GameObject> GetPlayerStageList
+    //categoryによってどっちのステージを返すか決める
+
+    //stageListを返す
+    public List<GameObject> GetStageList(Category category)
     {
-        get { return playerStageList;}
+        if (category == Category.Player)//plpayer
+        {
+            return playerStageList;
+        }
+        else if (category == Category.Enemy)//enemy
+        {
+            return enemyStageList;
+        }
+        return null;
     }
 
-    public List<GameObject> GetEnemyStageList
-    {
-        get { return enemyStageList; }
-    }
-
-    //どの台に乗っているか
-    public int GetPlayerPosNumber(Vector3 checkPos)
+    //どの台に乗っているかを返す
+    public int GetStagePosNumber(Vector3 checkPos, Category category)
     {
         var number = 0;
-        for(number = 0; number < playerStageList.Count; number++)
+        var stageList = GetStageList(category);
+        for (number = 0; number < stageList.Count; number++)
         {
-            if ((int)playerStageList[number].transform.position.x == (int)checkPos.x
-                && (int)playerStageList[number].transform.position.y == (int)checkPos.y)//ざっくりな位置  とりあえず
+            if ((int)stageList[number].transform.position.x == (int)checkPos.x
+                && (int)stageList[number].transform.position.y == (int)checkPos.y)//ざっくりな位置  とりあえず
             {
                 return number;
             }
@@ -54,18 +62,11 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         return 0;
     }
 
-    //どの台に乗っているか
-    public int GetEnemyPosNumber(Vector3 checkPos)
+    //指定されたブロックの返す
+    public GameObject GetStageBlock(int number, Category category)
     {
-        var number = 0;
-        for (number = 0; number < playerStageList.Count; number++)
-        {
-            if ((int)enemyStageList[number].transform.position.x == (int)checkPos.x
-                && (int)enemyStageList[number].transform.position.y == (int)checkPos.y)//ざっくりな位置  とりあえず
-            {
-                return number;
-            }
-        }
-        return 0;
+        var stageList = GetStageList(category);
+        return stageList[number];
     }
+
 }

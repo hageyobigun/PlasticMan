@@ -15,7 +15,6 @@ public class LifeModel
         mp = new ReactiveProperty<int>(mpValue);
     }
 
-
     public void UpdateHpLife(int value)
     {
         hp.Value = value;

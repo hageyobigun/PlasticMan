@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour , IAttackable
 
     private State playerAttackState;     //攻撃状態
     private State playerGuardState;    //防御状態
-    [SerializeField] private float barrierInterval = 1.0f;
 
     private void Awake()
     {
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour , IAttackable
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
             .Where(_ => _playerInput.IsBulltetAttack())
-            .ThrottleFirst(TimeSpan.FromSeconds(0.3f))
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
             .Subscribe(_ =>
             {
                 _attackManager.BulletAttack();
@@ -50,8 +49,8 @@ public class PlayerController : MonoBehaviour , IAttackable
         //攻撃(fire)
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-            .Where(_ => _playerInput.IsFireAttack() && mpValue >= 3)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Where(_ => _playerInput.IsFireAttack() && mpValue >= Attack.firetMp)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.firetInterval))
             .Subscribe(_ =>
                {
                    _attackManager.FireAttack();
@@ -64,8 +63,8 @@ public class PlayerController : MonoBehaviour , IAttackable
         //攻撃(bomb)
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-            .Where(_ => _playerInput.IsBombAttack() && mpValue >= 4)
-            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .Where(_ => _playerInput.IsBombAttack() && mpValue >= Attack.bombMp)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bombInterval))
             .Subscribe(_ =>
                 {
                     _attackManager.BombAttack();
@@ -78,8 +77,8 @@ public class PlayerController : MonoBehaviour , IAttackable
         //防御(barrier)
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-            .Where(_ => _playerInput.IsBarrier() && mpValue >= 5)
-            .ThrottleFirst(TimeSpan.FromSeconds(barrierInterval))
+            .Where(_ => _playerInput.IsBarrier() && mpValue >= Attack.barrierMp)
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.barrierInterval))
             .Subscribe(_ =>
                 {
                     BarrierInterVal();
@@ -94,7 +93,7 @@ public class PlayerController : MonoBehaviour , IAttackable
     private void Initialize()
     {
         _playerInput = new GamePadInput();
-        _playerMove = new PlayerMove(this.gameObject, _stageManager.GetPlayerStageList);
+        _playerMove = new PlayerMove(this.gameObject, _stageManager.GetStageList(Category.Player));
         _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
         _attackManager = GetComponent<AttackManager>();
         _lifePresenter.Initialize(hpValue, mpValue);
@@ -121,7 +120,7 @@ public class PlayerController : MonoBehaviour , IAttackable
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()
     {
-        Observable.FromCoroutine(() => _attackManager.BarrierGuard(barrierInterval))
+        Observable.FromCoroutine(() => _attackManager.BarrierGuard(AttackInterval.barrierInterval))
             .Subscribe(_ => playerGuardState = State.Normal)
             .AddTo(this);
     }

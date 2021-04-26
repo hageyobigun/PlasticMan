@@ -34,7 +34,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
 
         attackObservable//バリア
             .Where(attack => attack == 3 && MpValue >= Attack.barrierMp)
-            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
+            .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.barrierInterval))
             .Subscribe(_ =>
             {
                 BarrierInterVal();
@@ -104,7 +104,7 @@ public class EnduranceEnemyAgent : BaseEnemyAgent
     //バリアを呼び出し終了後に処理
     public void BarrierInterVal()
     {
-        Observable.FromCoroutine(() => _attackManager.BarrierGuard(AttackInterval.bulletInterval))
+        Observable.FromCoroutine(() => _attackManager.BarrierGuard(AttackInterval.barrierInterval))
             .Subscribe(_ => GuardState = State.Normal)
             .AddTo(this);
     }

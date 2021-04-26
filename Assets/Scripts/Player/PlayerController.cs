@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour , IAttackable
                 MpAction(Attack.bulletMp, "Attack");
             });
 
-
         //攻撃(fire)
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)

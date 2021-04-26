@@ -6,15 +6,14 @@ using UniRx.Triggers;
 using TMPro;
 using Game;
 using DG.Tweening;
-using UnityEngine.UI;
 
 
 public class StartButton : MonoBehaviour
 {
-    [SerializeField] private float time = 2.0f;
-    [SerializeField] private TextMeshProUGUI _textMeshPro = default;
-    [SerializeField] private MoveFloor _moveFloor = default;
-    [SerializeField] private GameObject runningMan = default;
+    [SerializeField] private float flashTime = 1.0f; //点滅周期
+    [SerializeField] private TextMeshProUGUI pressText = default;
+    [SerializeField] private MoveFloor _moveFloor = default;　　//背景や走る演出クラス
+    [SerializeField] private GameObject runningMan = default;　//走るプレイヤー
     private string[] controller = new string[10]; //コントローラー入れるもの
 
     private bool isRunning;
@@ -24,7 +23,7 @@ public class StartButton : MonoBehaviour
         isRunning = false;
 
         //点滅
-        var tween = _textMeshPro.DOFade(0, time).SetLoops(-1, LoopType.Yoyo);
+        var tween = pressText.DOFade(0, flashTime).SetLoops(-1, LoopType.Yoyo);
 
         //スタート
         this.UpdateAsObservable()
@@ -46,13 +45,13 @@ public class StartButton : MonoBehaviour
 
         this.UpdateAsObservable()
             .Where(_ => controller.Length <= 0)
-            .Subscribe(_ => _textMeshPro.text = "PRESS ENTER");//キーボード
+            .Subscribe(_ => pressText.text = "PRESS ENTER");//キーボード
 
         this.UpdateAsObservable()
             .Where(_ => controller.Length == 1)
-            .Subscribe(_ => _textMeshPro.text = "PRESS BUTTON");//PS4
+            .Subscribe(_ => pressText.text = "PRESS BUTTON");//PS4
 
-
+        //ループじゃないと動かないので
         this.UpdateAsObservable()
             .Where(_ => isRunning)
             .Subscribe(_ => _moveFloor.RunningMan(runningMan));//走り出す

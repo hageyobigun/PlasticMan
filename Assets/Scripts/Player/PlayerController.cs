@@ -36,13 +36,13 @@ public class PlayerController : MonoBehaviour , IAttackable
         //攻撃(bullet)
         this.UpdateAsObservable()
             .Where(_ => GameManeger.Instance.currentGameStates.Value == GameState.Play)
-            .Where(_ => _playerInput.IsBulltetAttack())
+            .Where(_ => _playerInput.IsBulltetAttack() && mpValue >= Attack.bulletMp)
             .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
             .Subscribe(_ =>
             {
                 _attackManager.BulletAttack();
                 playerAttackState = State.Bullet_Attack;
-                _playerAnimation.SetAnimation("Attack");
+                MpAction(Attack.bulletMp, "Attack");
             });
 
 
@@ -54,9 +54,8 @@ public class PlayerController : MonoBehaviour , IAttackable
             .Subscribe(_ =>
                {
                    _attackManager.FireAttack();
-                   MpConsumption(Attack.firetMp);
-                   _playerAnimation.SetAnimation("Attack");
                    playerAttackState = State.Fire_Attack;
+                   MpAction(Attack.firetMp, "Attack");
                }
             );
 
@@ -68,9 +67,8 @@ public class PlayerController : MonoBehaviour , IAttackable
             .Subscribe(_ =>
                 {
                     _attackManager.BombAttack();
-                    MpConsumption(Attack.bombMp);
-                    _playerAnimation.SetAnimation("Attack");
                     playerAttackState = State.Bomb_Attack;
+                    MpAction(Attack.bombMp, "Attack");
                 }
             );
 
@@ -82,8 +80,8 @@ public class PlayerController : MonoBehaviour , IAttackable
             .Subscribe(_ =>
                 {
                     BarrierInterVal();
-                    MpConsumption(Attack.bulletMp);
                     playerGuardState = State.Barrier;
+                    MpAction(Attack.barrierMp, "Attack");
                 }
             );
 
@@ -118,19 +116,21 @@ public class PlayerController : MonoBehaviour , IAttackable
     }
 
     //バリアを呼び出し終了後に処理
-    public void BarrierInterVal()
+    private void BarrierInterVal()
     {
         Observable.FromCoroutine(() => _attackManager.BarrierGuard(AttackInterval.barrierInterval))
             .Subscribe(_ => playerGuardState = State.Normal)
             .AddTo(this);
     }
 
-    //MP消費
-    private void MpConsumption(int useValue)
+    //攻撃や防御などMP使用行動
+    private void MpAction(int useMpvalue, string animationName)
     {
-        mpValue -= useValue;
+        mpValue -= useMpvalue;
         _lifePresenter.OnChangeMpLife(mpValue);
+        _playerAnimation.SetAnimation(animationName);
     }
+
 
     //プロパティー
     public int GetHpValue { get { return this.hpValue; }}

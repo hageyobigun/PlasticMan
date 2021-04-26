@@ -6,7 +6,11 @@ using Game;
 public class NextGameView
 {
 
+    private float stagingTime = 1.0f;  //演出時間
+    private float characterSpacing = 25f; //文字間隔
+
     //boss rushの次へ行く演出
+    //引数にテキストと画面を覆う黒いimage
     public void NextStage(TextMeshProUGUI nextText, Image blackImage)
     {
         var nextSequence = DOTween.Sequence();
@@ -16,13 +20,13 @@ public class NextGameView
 
         nextSequence.Append(
             DOTween.To(() => nextText.characterSpacing,
-            x => nextText.characterSpacing = x, 25, 1.0f)); //文字の空白
+            x => nextText.characterSpacing = x, characterSpacing, stagingTime)); //文字の空白
 
-        nextSequence.Join(nextText.DOFade(1, 1.0f));//表示
+        nextSequence.Join(nextText.DOFade(1, stagingTime));//表示
 
-        nextSequence.Append(nextText.DOFade(0, 1.0f).SetDelay(0.5f));//消える
+        nextSequence.Append(nextText.DOFade(0, stagingTime));//消える
 
-        nextSequence.Join(blackImage.DOFade(1, 1.0f));//画面を黒くしていく
+        nextSequence.Join(blackImage.DOFade(1, stagingTime));//画面を黒くしていく
 
         nextSequence.OnComplete(() =>
         {

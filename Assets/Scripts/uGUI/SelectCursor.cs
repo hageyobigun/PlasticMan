@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class SelectCursor
 {
-    private Image cursorImage = default;
-    private Vector2 size = new Vector2(20, 20);
+    private Image cursorImage = default; //カーソル
+    private Vector2 size = new Vector2(20, 20); //ボタンの周りを覆うための拡大率
 
     public SelectCursor(Image _cursorImage)
     {

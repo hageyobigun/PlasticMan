@@ -11,12 +11,12 @@ public class AttackEnemyAgent : BaseEnemyAgent
     {
         base.Initialize();
         attackObservable//通常弾
-            .Where(attack => attack == 1)
+            .Where(attack => attack == 1 && MpValue >= Attack.bulletMp)
             .ThrottleFirst(TimeSpan.FromSeconds(AttackInterval.bulletInterval))
             .Subscribe(_ =>
             {
                 _attackManager.BulletAttack();
-                _enemyAnimation.SetAnimation("Attack");
+                MpAction(Attack.bulletMp, "Attack");
                 AttackState = State.Bullet_Attack;
             });
 
@@ -26,8 +26,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
             .Subscribe(_ =>
             {
                 _attackManager.FireAttack();
-                _enemyAnimation.SetAnimation("Attack");
-                MpConsumption(Attack.firetMp);
+                MpAction(Attack.firetMp, "Attack");
                 AttackState = State.Fire_Attack;
             });
 
@@ -37,8 +36,7 @@ public class AttackEnemyAgent : BaseEnemyAgent
             .Subscribe(_ =>
             {
                 _attackManager.BombAttack();
-                _enemyAnimation.SetAnimation("Attack");
-                MpConsumption(Attack.bombMp);
+                MpAction(Attack.bombMp, "Attack");
                 AttackState = State.Bomb_Attack;
             });
     }

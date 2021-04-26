@@ -10140,7 +10140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 2033471111}
   loopPoint: 1680
-  moveSpeed: 5
+  backMoveSpeed: 5
   runningSpeed: 0.1
 --- !u!4 &713821891
 Transform:
@@ -17392,8 +17392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a36de9fefa140adb874e1c87a28956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 1
-  _textMeshPro: {fileID: 901561915}
+  flashTime: 1
+  pressText: {fileID: 901561915}
   _moveFloor: {fileID: 713821890}
   runningMan: {fileID: 208784203}
 --- !u!4 &1774976262

@@ -85,11 +85,12 @@ public abstract class BaseEnemyAgent : Agent, IAttackable
         }
     }
 
-    //MP消費
-    public virtual void MpConsumption(int useValue)
+    //攻撃や防御などMP使用行動
+    public void MpAction(int useMpvalue, string animationName)
     {
-        mpValue -= useValue;
+        mpValue -= useMpvalue;
         _lifePresenter.OnChangeMpLife(mpValue);
+        _enemyAnimation.SetAnimation(animationName);
     }
 
     //プロパティー

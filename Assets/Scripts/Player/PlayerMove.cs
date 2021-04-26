@@ -6,7 +6,7 @@ public class PlayerMove
 {
     private readonly GameObject player;
     private List<GameObject> stageList = new List<GameObject>(); //ステージのオブジェクトリスト
-    private int playerPos;
+    private int playerPos;//プレイヤーのポジション
 
     public PlayerMove(GameObject _player, List<GameObject> _stageList)
     {
@@ -15,6 +15,7 @@ public class PlayerMove
         playerPos = 4; //初期位置
     }
 
+    //移動可能かどうか
     public bool IsMove(int _moveDirection)
     {
         var nextPos = playerPos + _moveDirection;
@@ -28,6 +29,7 @@ public class PlayerMove
         return true;
     }
 
+    //移動
     public void Move()
     {
         player.transform.position = stageList[playerPos].transform.position;

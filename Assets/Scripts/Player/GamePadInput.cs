@@ -8,6 +8,7 @@ public class GamePadInput : IPlayerInput
     private bool isMoveY;
 
     //ps4コントローラーとキーボード
+    //移動
     public int Inputting()
     {
         moveX = Input.GetAxis("moveX");

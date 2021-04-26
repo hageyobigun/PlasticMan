@@ -5,10 +5,10 @@ using Character;
 
 public class StageManager : SingletonMonoBehaviour<StageManager>
 {
-    [SerializeField]private GameObject playerStageBlockParent = null;
-    [SerializeField]private GameObject enemyStageBlockParent = null;
-    private List<GameObject> playerStageList = new List<GameObject>();
-    private List<GameObject> enemyStageList = new List<GameObject>();
+    [SerializeField]private GameObject playerStageBlockParent = null; //プレイヤーステージブロックの親
+    [SerializeField]private GameObject enemyStageBlockParent = null;　//敵ステージブロックの親
+    private List<GameObject> playerStageList = new List<GameObject>();//プレイヤーステージブロックのリスト
+    private List<GameObject> enemyStageList = new List<GameObject>(); //敵ステージブロックのリスト
 
     private void Start()
     {

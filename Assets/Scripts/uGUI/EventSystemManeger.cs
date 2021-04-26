@@ -8,10 +8,10 @@ using UniRx;
 public class EventSystemManeger : MonoBehaviour
 {
     [SerializeField] private EventSystem eventSystem = default;
-    [SerializeField] private Image cursorImage = default;
+    [SerializeField] private Image cursorImage = default; //カーソル
 
-    private List<GameObject> pushButtonList = new List<GameObject>();
-    private int pushButtonListNumber;
+    private List<GameObject> pushButtonList = new List<GameObject>(); //押したボタンを入れていくリスト
+    private int pushButtonListNumber;  //入れていったボタンの番号
 
     private SelectCursor _selectCursor;
 
